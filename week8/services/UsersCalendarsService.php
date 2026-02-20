@@ -2,9 +2,9 @@
 
 require_once __DIR__ . "/../repository/DBAccess.php";
 
-class UsersGroupsService {
+class UsersCalendarsService {
     public static function getAll(){
-        $db = new DBAccess("users_groups");
+        $db = new DBAccess("users_calendars");
         $relations = $db->getAll();
 
         if (empty($relations)) {
@@ -15,7 +15,7 @@ class UsersGroupsService {
     }
 
     public static function getRelationById($id){
-        $db = new DBAccess("users_groups");
+        $db = new DBAccess("users_calendars");
         $relation = $db->findById($id);
 
         if (!$relation) {
@@ -25,18 +25,18 @@ class UsersGroupsService {
         return $relation;
     }
 
-    public static function getAllRelationsByGroup($groupId){
-        // Validate group exists
-        $dbGroups = new DBAccess("groups");
-        if (!$dbGroups->findById($groupId)) {
-            throw new Exception("Group not found.");
+    public static function getAllRelationsByCalId($calId){
+        // Validate calendar exists
+        $dbCals = new DBAccess("calendars");
+        if (!$dbCals->findById($calId)) {
+            throw new Exception("Calendar not found.");
         }
 
-        $db = new DBAccess("users_groups");
+        $db = new DBAccess("users_calendars");
         $relations = $db->getAll();
 
         return array_values(
-            array_filter($relations, fn($x) => $x["groupID"] == $groupId)
+            array_filter($relations, fn($x) => $x["calId"] == $calId)
         );
     }
 
@@ -47,7 +47,7 @@ class UsersGroupsService {
             throw new Exception("User not found.");
         }
 
-        $db = new DBAccess("users_groups");
+        $db = new DBAccess("users_calendars");
         $relations = $db->getAll();
 
         return array_values(
@@ -57,39 +57,39 @@ class UsersGroupsService {
 
 
  
-    // Requires: userId, groupId, adminId
-    public static function addUserToGroup($input){
+    // Requires: userId, calId, adminId
+    public static function addUserToCalendar($input){
         
         if (!isset($input["userId"])) {
             throw new Exception("User ID missing.");
         }
-        if (!isset($input["groupId"])) {
-            throw new Exception("Group ID missing.");
+        if (!isset($input["calId"])) {
+            throw new Exception("Calendar ID missing.");
         }
 
         $userId  = $input["userId"];
-        $groupId = $input["groupId"];
+        $calId = $input["calId"];
         $isAdmin = $input["isAdmin"] ?? false;
 
         $dbUsers  = new DBAccess("users");
-        $dbGroups = new DBAccess("groups");
-        $dbUG     = new DBAccess("users_groups");
+        $dbCals = new DBAccess("calendars");
+        $dbUG     = new DBAccess("users_calendars");
 
         // Finns user?
         if (!$dbUsers->findById($userId)) {
             throw new Exception("User not found.");
         }
 
-        // Finns group?
-        if (!$dbGroups->findById($groupId)) {
-            throw new Exception("Group not found.");
+        // Finns cal?
+        if (!$dbCals->findById($calId)) {
+            throw new Exception("Calendar not found.");
         }
 
         // finns reda u_g?
         $existing = $dbUG->getAll();
         foreach ($existing as $rel) {
             
-            if ($rel["userID"] == $userId && $rel["groupID"] == $groupId) {
+            if ($rel["userId"] == $userId && $rel["calId"] == $calId) {
                 throw new Exception("Relation already exists.");
             }
         }
@@ -97,7 +97,7 @@ class UsersGroupsService {
         $newRelation = [
             "id"      => uniqid(),
             "userID"  => $userId,
-            "groupID" => $groupId,
+            "calId" => $calId,
             "isAdmin" => $isAdmin
         ];
 
@@ -109,33 +109,33 @@ class UsersGroupsService {
 
 
     //  Requirs: id (relation id), adminId
-    public static function removeUserFromGroup($input) {
+    public static function removeUserFromCal($input) {
         
-        if (!isset($input["id"]))      throw new Exception("UserGroup ID missing.");
+        if (!isset($input["id"]))      throw new Exception("Users Calendar ID missing.");
         if (!isset($input["adminId"])) throw new Exception("Admin ID missing.");
 
         $relationId = $input["id"];
         $adminId    = $input["adminId"];
 
-        $dbUG = new DBAccess("users_groups");
+        $dbUG = new DBAccess("users_calendars");
 
         $relation = $dbUG->findById($relationId);
         if (!$relation) {
             throw new Exception("Relation not found.");
         }
 
-        $relations = self::getAllRelationsByGroup($relation["groupID"]);
+        $relations = self::getAllRelationsByCalId($relation["calId"]);
 
         // is admin is admin?
         $adminIsAdmin = false;
         foreach ($relations as $rel) {
-            if ($rel["userID"] == $adminId && $rel["isAdmin"] === true) {
+            if ($rel["userId"] == $adminId && $rel["isAdmin"] === true) {
                 $adminIsAdmin = true;
                 break;
             }
         }
         if (!$adminIsAdmin) {
-            throw new Exception("Only admin can remove users from group.");
+            throw new Exception("Only admin can remove users from calendar.");
         }
 
         return $dbUG->deleteData($relationId);
@@ -144,7 +144,7 @@ class UsersGroupsService {
 
 
     //  Requires: id (relation id), adminId
-    public static function makeUserGroupAdmin($input)
+    public static function makeUserCalAdmin($input)
     {
         if (!isset($input["id"]))      throw new Exception("Relation ID missing.");
         if (!isset($input["adminId"])) throw new Exception("Admin ID missing.");
@@ -152,14 +152,14 @@ class UsersGroupsService {
         $relationId = $input["id"];
         $adminId    = $input["adminId"];
 
-        $dbUG = new DBAccess("users_groups");
+        $dbUG = new DBAccess("users_calendars");
 
         $relation = $dbUG->findById($relationId);
         if (!$relation) {
             throw new Exception("Relation not found.");
         }
 
-        $relations = self::getAllRelationsByGroup($relation["groupID"]);
+        $relations = self::getAllRelationsByCalId($relation["calId"]);
 
         // is admin admin?
         $adminIsAdmin = false;

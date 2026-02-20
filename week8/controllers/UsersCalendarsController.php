@@ -1,24 +1,25 @@
 <?php
 
-require_once __DIR__ . "/../services/GroupsService.php";
+require_once __DIR__ . "/../services/UsersCalendarsService.php";
 
-class GroupsController
-{
-    public static function handle($method, $input): void
-    {
+class UsersCalendarsController {
+
+    public static function handle($method, $input): void {
 
         if ($method === "GET") {
             try {
-                // Get id from query, else set (no logic) null
-                $id = $_GET["id"] ?? null;
-                $name = $_GET["name"] ?? null;
+                $id      = $_GET["id"] ?? null;
+                $userId  = $_GET["userId"] ?? null;
+                $calId = $_GET["calId"] ?? null;
 
                 if ($id) {
-                    $result = GroupsService::getById($id);
-                } elseif ($name) {
-                    $result = GroupsService::getByName($name);
+                    $result = UsersCalendarsService::getRelationById($id);
+                } elseif ($userId) {
+                    $result = UsersCalendarsService::getAllRelationsByUser($userId);
+                } elseif ($calId) {
+                    $result = UsersCalendarsService::getAllRelationsByCalendar($calId);
                 } else {
-                    $result = GroupsService::getAll();
+                    $result = UsersCalendarsService::getAll();
                 }
 
                 http_response_code(200);
@@ -26,18 +27,16 @@ class GroupsController
                 return;
 
             } catch (Exception $exc) {
-                // Return errors, thrown from services, (HTTP)
                 http_response_code(400);
                 echo json_encode(["error" => $exc->getMessage()]);
                 return;
             }
+        }
 
-        } else if ($method === "POST") {
 
+        if ($method === "POST") {
             try {
-
-                $result = GroupsService::createGroup($input);
-
+                $result = UsersCalendarsService::addUserToCalendar($input);
                 http_response_code(201);
                 echo json_encode($result);
                 return;
@@ -47,41 +46,34 @@ class GroupsController
                 echo json_encode(["error" => $exc->getMessage()]);
                 return;
             }
+        }
 
-        } else if ($method === "PATCH") {
-            
+        if ($method === "PATCH") {
             try {
-                
-                $result = GroupsService::updateGroup($input); 
-                
+                $result = UsersCalendarsService::makeUserCalendarAdmin($input);
                 http_response_code(200);
                 echo json_encode($result);
                 return;
-                
+
             } catch (Exception $exc) {
                 http_response_code(400);
                 echo json_encode(["error" => $exc->getMessage()]);
                 return;
             }
+        }
 
-        } else if ($method === "DELETE") {
-
+        if ($method === "DELETE") {
             try {
-
-                $result = GroupsService::deleteGroup($input);
-
+                $result = UsersCalendarsService::removeUserFromCalendar($input);
                 http_response_code(200);
                 echo json_encode($result);
                 return;
 
             } catch (Exception $exc) {
-
                 http_response_code(400);
                 echo json_encode(["error" => $exc->getMessage()]);
                 return;
-
             }
         }
     }
-
 }
