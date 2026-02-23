@@ -4,7 +4,10 @@ require_once __DIR__ . "/../repository/DBAccess.php";
 
 class EventsRSVPService {
     /* ---- GET ---- */
-    public static function getAll($userId = null, $eventId = null){
+    public static function getAll($input){
+        
+        $eventId = $input["eventId"] ?? null;
+        $userId = $input["userId"] ?? null;
         
         if (!isset($userId, $eventId)) {
             throw new Exception("Missing attributes");
@@ -134,8 +137,6 @@ class EventsRSVPService {
         
         $db = new DBAccess("events_rsvp");
         $items = $db->getAll();
-        
-
         
         foreach($items as $currAvailability) {
             if (

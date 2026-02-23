@@ -80,13 +80,9 @@ class EventsRSVP {
 
         if ($method == "GET") {
 
-            // Params (GET)
-            $userId = $_GET["userId"] ?? null;
-            $eventId = $_GET["eventId"] ?? null;
-
             try {
 
-                $result = EventsRSVPService::getAll($userId, $eventId);
+                $result = EventsRSVPService::getAll($input);
                 return self::bubbleData($result, 200);
 
             } catch (Exception $exc) {
@@ -131,18 +127,8 @@ class EventsRSVP {
         if ($method == "DELETE") {
 
             try {
-
-                $userId = $input["userId"] ?? null;
-                $date = $input["date"] ?? null;
-                $calId = $input["calId"] ?? null;
-
-                // If input exists
-                if (!isset($userId, $date, $calId)) {
-                    $exc = new ErrorException("Missing attributes");
-                    return self::bubbleError($exc, "DELETE /try-block");
-                }
                     
-                $result = EventsRSVPService::delete($userId, $date, $calId);
+                $result = EventsRSVPService::delete($input);
                 return self::bubbleMessage($result, 200);
 
             } catch (Exception $exc) {
