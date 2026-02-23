@@ -182,7 +182,7 @@ async function test() {
         headers: { "Content-Type": "application/json" },
         method: "DELETE",
         body: JSON.stringify({
-            id: "699c70f348c24"
+            id: "65e10aa11e004"
         })
     });
     response = await fetch(req);
