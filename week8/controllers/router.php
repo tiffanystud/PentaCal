@@ -11,7 +11,7 @@ require_once "UsersAvailabilitiesController.php";
 require_once "EventsRSVPController.php";
 require_once "BackupDBController.php";
 require_once "RestoreDBController.php";
-require_once "friendshipsController.php";
+require_once "FriendshipsController.php";
 
 
 function Router($requestUrl = null){   
@@ -75,11 +75,11 @@ function Router($requestUrl = null){
                      
                     case "POST":
                         CorsMiddleware::handle();
+                        JsonMiddleware::handle();
                         FriendshipsController::handle($method, $input);
                         exit();
 
                     case "DELETE":
-                        $input = $_GET ?? [];
                         CorsMiddleware::handle();
                         FriendshipsController::handle($method, $input);
                         exit();
@@ -148,13 +148,13 @@ function Router($requestUrl = null){
             switch ($method) {
                case "GET": 
                     CorsMiddleware::handle();
-                    UsersGroupController::handle($method, $input);
+                    UsersCalendarsController::handle($method, $input);
                     break;
                 
                 default:
                     CorsMiddleware::handle();
                     JsonMiddleware::handle();
-                    UsersGroupController::handle($method, $input);
+                    UsersCalendarsController::handle($method, $input);
                     break;
             }  
             break;      

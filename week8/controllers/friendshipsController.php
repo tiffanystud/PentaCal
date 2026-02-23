@@ -17,35 +17,41 @@ class FriendshipsController{
                     throw new Exception("userId missing", 400);
                 }
                 // /friendships?userId=id
-                $result = FriendshipsService::getAllFriendships($userId);
+                $result = FriendshipsService::getAllFriendsByUser($userId);
                 self::json($result, 200);
+                return;
 
             } 
         //friendships?userId=id
-        if ($method === "POST"){
-            $userId = $input["userId1"] ?? null;
-            $friendId = $input["userId2"] ?? null;
-            if(!$userId1 || $userId2){
-                throw new Exception("Missing attributes", 400);
-            }
-            $result = FriendshipsService::newFriend($id);
-            self::json($result);
+            if ($method === "POST"){
+                error_log("POST friendships reached controller");
+                $userId = $input["userId1"] ?? null;
+                $friendId = $input["userId2"] ?? null;
+                if(!$userId || !$friendId){
+                    throw new Exception("Missing attributes", 400);
+                }
+                $result = FriendshipsService::newFriend($userId, $friendId);
+                error_log("Sending JSON response");
+                self::json($result, 200);
+                return;
 
-        }
-        // /friendships?userId=id&userId2=id
-        if ($method === "DELETE") {
-            $id1 = $input["userId1"] ?? null;
-            $id2 = $input["userId2"] ?? null;
-
-            if (!$id1 || !$id2){
-                throw new Exception("Missing attributes", 400);
             }
-            $result = FriendshipsService::deleteFriend($id1, $id2);
-            self::json($result, 200);
-            } 
+            // /friendships?userId=id&userId2=id
+            if ($method === "DELETE") {
+                $id1 = $input["userId1"] ?? null;
+                $id2 = $input["userId2"] ?? null;
+
+                if (!$id1 || !$id2){
+                    throw new Exception("Missing attributes", 400);
+                }
+                $result = FriendshipsService::deleteFriend($id1, $id2);
+                self::json($result, 200);
+                return;
+            }
         } catch (Exception $exc) {
             $code = $exc->getCode() ?:400;
-            self::json(["error" => $exc->getMessage()]);
+            self::json(["error" => $exc->getMessage()],$code);
+            return;
         }
 
 
