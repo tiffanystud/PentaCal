@@ -18,9 +18,6 @@ require_once "RestoreDBController.php";
 require_once "CalendarsController.php";
 require_once "PinnedCalendarsController.php";
 
-require_once "BackupDBController.php";
-require_once "RestoreDBController.php"
-;
 
 function Router($requestUrl = null){   
     
@@ -88,13 +85,13 @@ function Router($requestUrl = null){
             switch ($method) {
                 case "GET":
                     CorsMiddleware::handle();
-                    // EventAdminsController::handle($method, $input);
+                    EventAdminsController::handle($method, $input);
                     break;
                 
                 default: 
                     CorsMiddleware::handle();
                     JsonMiddleware::handle();
-                    // EventAdminsController::handle($method, $input);
+                    EventAdminsController::handle($method, $input);
                     break;
             }
             break;
