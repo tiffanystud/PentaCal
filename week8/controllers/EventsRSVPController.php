@@ -1,27 +1,23 @@
 <?php
 
 require_once __DIR__ . "/../services/EventsRSVPServices.php";
-class EventsRSVP {
+class EventsRSVPController {
 
     /* -- RESPONSES -- */
-    static function bubbleError($exc, $sender)
-    {
-
-        $responseCode;
-
-        // Check exc msg for response code
+    static function bubbleError($exc, $sender){
+        
+        // Check exc msg (set from services and catched or thrown w/exc in controller) to set correct response code 
         switch ($exc->getMessage()) {
 
             case "Missing attributes":
                 $responseCode = 400;
                 break;
 
-            case "Availability not found":
-            case "User or calendar not found":
+            case "RSVP not found":
                 $responseCode = 404;
                 break;
 
-            case "Availability already exists":
+            case "RSVP already exists":
                 $responseCode = 409;
                 break;
 
@@ -36,6 +32,7 @@ class EventsRSVP {
                 return self::bubbleDefault($positionMsg, 400);
         }
 
+        // After cases
         http_response_code($responseCode);
         echo json_encode(["error" => $exc->getMessage()]);
         exit;
@@ -68,7 +65,7 @@ class EventsRSVP {
         // Se över **
         $production = false;
         if ($production) {
-            // var_dump("Default bubble at: " . $position . " ----- UsersAvailabilitiesController.php ----- ");
+            // var_dump("Default bubble at: " . $position . " ----- EventsRSVP.php ----- ");
         }
 
         http_response_code($status);
@@ -83,16 +80,9 @@ class EventsRSVP {
 
         if ($method == "GET") {
 
-            $userId = $_GET["userId"] ?? null;
-            $date = $_GET["date"] ?? null;
-
             try {
 
-                if (!isset($userId, $date)) {
-                    throw new Exception("Missing attributes");
-                }
-
-                $result = EventsRSVPService::getAll($userId, $date);
+                $result = EventsRSVPService::getAll($input);
                 return self::bubbleData($result, 200);
 
             } catch (Exception $exc) {
@@ -106,22 +96,12 @@ class EventsRSVP {
         if ($method == "POST") {
 
             try {
-
-                $userId = $input["userId"] ?? null;
-                $date = $input["date"] ?? null;
-                $isAvailable = $input["isAvailable"] ?? null;
-                $calId = $input["calId"] ?? null;
-
-                if (!isset($userId, $date, $isAvailable, $calId)) {
-                    $exc = new ErrorException("Missing attributes");
-                    return self::bubbleError($exc, "POST /try-block");
-                }
-                    
-                $result = EventsRSVPService::create($userId, $date, $isAvailable, $calId);
+                 
+                $result = EventsRSVPService::create($input);
                 return self::bubbleMessage($result, 201);
 
             } catch (Exception $exc) {
-
+                
                 return self::bubbleError($exc, "POST /catch-block");
 
             }
@@ -132,16 +112,6 @@ class EventsRSVP {
         if ($method == "PATCH") {
 
             try {
-
-                $userId = $input["userId"] ?? null;
-                $date = $input["date"] ?? null;
-                $isAvailable = $input["isAvailable"] ?? null;
-                $calId = $input["calId"] ?? null;
-
-                if (!isset($userId, $date, $isAvailable, $calId)) {
-                    $exc = new Exception("Missing attributes");
-                    return self::bubbleError($exc, "PATCH /try-block");
-                }
                     
                 $result = EventsRSVPService::update($input);
                 return self::bubbleMessage($result, 200);
@@ -157,18 +127,8 @@ class EventsRSVP {
         if ($method == "DELETE") {
 
             try {
-
-                $userId = $input["userId"] ?? null;
-                $date = $input["date"] ?? null;
-                $calId = $input["calId"] ?? null;
-
-                // If input exists
-                if (!isset($userId, $date, $calId)) {
-                    $exc = new ErrorException("Missing attributes");
-                    return self::bubbleError($exc, "DELETE /try-block");
-                }
                     
-                $result = EventsRSVPService::delete($userId, $date, $calId);
+                $result = EventsRSVPService::delete($input);
                 return self::bubbleMessage($result, 200);
 
             } catch (Exception $exc) {
