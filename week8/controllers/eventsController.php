@@ -1,80 +1,86 @@
 <?php
 
-require_once "../services/EventsService.php";
+require_once "services/eventsService.php";
+
+
 
 class EventsController {
     public static function handle($method, $input) {
         if ($method === "GET") {
             try {
                 $eventId = $input["eventId"] ?? null;
-                $userId = $input["userId"] ?? null;
                 $calId = $input["calId"] ?? null;
 
-                if ($eventId) {
-                    createResp(EventsService::getEventById($eventId), 200);
+                if ($eventId && !$calId) {
+                    self::createResp(EventsService::getEventById($eventId), 200);
                     return;
-                } else if ($userId && $calId) {
-                    createResp(EventsService::getEventByUserAndCal(["userId" => $userId, "calId" => $calId]), 200);
+                } else if ($calId && !$eventId) {
+                    self::createResp(EventsService::getEventsCal($calId), 200);
                     return;
-                } else if (!$userId || !$calId) {
-                    createResp(EventService::getAllEvents(), 200);
+                } else if (!$eventId || !$calId) {
+                    self::createResp(EventsService::getAllEvents(), 200);
                     return;
                 } else {
-                    createResp(["error" => "Bad request"], 400);
+                    self::createResp(["error" => "Bad request"], 400);
                     return;
                 }
             } catch (Exception $e) {
-                createResp(["Error" => $e->getMessage()], 400);
+                $msg = $e->getMessage();
+                if ($msg === "Event not found" || $msg === "No events found") {
+                    self::createResp(["error" => "No event(s) found"], 404);
+                } else {
+                    self::createResp(["error" => $msg], 400);
+                }
                 return;
             }
         } else if ($method === "POST") {
             try {
-                createResp(EventsService::createNewEvent($input), 201);
+                self::createResp(EventsService::createNewEvent($input), 201);
                 return;
             } catch (Exception $e) {
                 $msg = $e->getMessage();
                 if ($msg === "Missing attributes") {
-                    createResp(["error" => $e->getMessage()], 400);
+                    self::createResp(["error" => $e->getMessage()], 400);
                     return;
-                } else if ($msg === "Event not found") {
-                    createResp(["error" => $e->getMessage()], 404);
+                } else if ($msg === "Cal not found") {
+                    self::createResp(["error" => $e->getMessage()], 404);
                     return;
                 } else if ($msg === "Unauthorized") {
-                    createResp(["error" => $e->getMessage()], 403);
+                    self::createResp(["error" => $e->getMessage()], 403);
                     return;
                 }
             }
         } else if ($method === "PATCH") {
             try {
-                createResp(EventsService::patchEvent($input), 200);
+                self::createResp(EventsService::patchEvent($input), 200);
                 return;
             } catch (Exception $e) {
                 $msg = $e->getMessage();
                 if ($msg === "Missing attributes") {
-                    createResp(["error" => $e->getMessage()], 400);
+                    self::createResp(["error" => $e->getMessage()], 400);
                     return;
                 } else if ($msg === "Unautorized") {
-                    createResp(["error" => $e->getMessage()], 403);
+                    self::createResp(["error" => $e->getMessage()], 403);
                     return;
                 } else if ($msg === "Not found") {
-                    createResp(["error" => $e->getMessage()], 404);
+                    self::createResp(["error" => $e->getMessage()], 404);
                     return;
                 }
             }
         } else if ($method === "DELETE") {
             try {
-                createResp(EventsService::deleteEvent($input));
+                self::createResp(EventsService::deleteEvent($input), 200);
                 return;
             } catch (Exception $e) {
                 $msg = $e->getMessage();
                 if ($msg === "Missing attributes") {
-                    createResp(["error" => $e->getMessage()], 400);
+                    self::createResp(["error" => $e->getMessage()], 400);
                     return;
                 } else if ($msg === "Unautorized") {
-                    createResp(["error" => $e->getMessage()], 403);
+                    self::createResp(["error" => $e->getMessage()], 403);
                     return;
                 } else if ($msg === "Not found") {
-                    createResp(["error" => $e->getMessage()], 404);
+                    self::createResp(["error" => $e->getMessage()], 404);
                     return;
                 }
             }
