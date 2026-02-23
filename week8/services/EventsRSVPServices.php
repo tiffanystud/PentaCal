@@ -73,6 +73,8 @@ class EventsRSVPService {
     /* --- PATCH ---- */
     public static function update($input)
     {
+        
+    // Upodetera alla så "isGoing" är med!
 
         $eventId = $input["eventId"] ?? null;
         $userId = $input["userId"] ?? null;
