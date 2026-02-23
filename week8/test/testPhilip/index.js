@@ -48,7 +48,7 @@ async function test() {
         headers: { "Content-Type": "application/json" },
         method: "PATCH",
         body: JSON.stringify({
-            id: "699c5ee852b34",
+            id: "65e10aa11b004",
             name: "newNameGroup"
         })
     });
@@ -76,7 +76,7 @@ async function test() {
         headers: { "Content-Type": "application/json" },
         method: "DELETE",
         body: JSON.stringify({
-            id: "699c5ee852b34",
+            id: "699c70f322ea5",
         })
     });
     response = await fetch(req);
@@ -98,7 +98,7 @@ async function test() {
 
 
     //Test 7
-    req = new Request("http://localhost:8000/calendars?calId=65e10aa11b002", {
+    req = new Request("http://localhost:8000/calendars?id=65e10aa11b004", {
         headers: { "Content-Type": "application/json" },
         method: "GET"
     });
@@ -108,7 +108,7 @@ async function test() {
     console.log(resource);
 
     //Test 8
-    req = new Request("http://localhost:8000/calendars?calId", {
+    req = new Request("http://localhost:8000/calendars?id", {
         headers: { "Content-Type": "application/json" },
         method: "GET"
     });
@@ -151,8 +151,8 @@ async function test() {
         headers: { "Content-Type": "application/json" },
         method: "POST",
         body: JSON.stringify({
-            userId: "3",
-            calId: "5"
+            userId: "4",
+            calId: "6"
         })
     });
     response = await fetch(req);
@@ -182,7 +182,7 @@ async function test() {
         headers: { "Content-Type": "application/json" },
         method: "DELETE",
         body: JSON.stringify({
-            id: "699c69a0ee05e"
+            id: "699c70f348c24"
         })
     });
     response = await fetch(req);

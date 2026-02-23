@@ -21,7 +21,13 @@
         {
             "id": "65e10aa11b004",
             "creatorId": "65e10aa11a004",
-            "name": "AW-teamet",
+            "name": "newNameGroup",
+            "type": "public"
+        },
+        {
+            "id": "699c72be30bef",
+            "creatorId": "3",
+            "name": "LatestTestgroup",
             "type": "public"
         }
     ]

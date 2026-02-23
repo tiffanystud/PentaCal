@@ -19,11 +19,11 @@ class CalendarsController{
             try{
                 // OM det inte finns några parameter, hämta alla
                 if(empty($input)){
-                    return self::sendResponse(calendarsService::calendarsGetAll(), 200);
+                    return self::sendResponse(CalendarsService::calendarsGetAll(), 200);
                 } else {
                     // Hämta en specifik calendar med id parameter
                     if(isset($input["id"])){
-                        return self::sendResponse(calendarsService::calendarsGetById($input), 200);
+                        return self::sendResponse(CalendarsService::calendarsGetById($input), 200);
     
                     } else {
                         return self::sendResponse(["error" => "Value missing"], 400);
