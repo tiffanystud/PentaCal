@@ -11,6 +11,7 @@ require_once "UsersAvailabilitiesController.php";
 require_once "EventsRSVPController.php";
 require_once "BackupDBController.php";
 require_once "RestoreDBController.php";
+require_once "EventsController.php";
 
 
 function Router($requestUrl = null){   
@@ -54,7 +55,18 @@ function Router($requestUrl = null){
             break;
 
         case "events":
-            //Handle events
+            switch($method) {
+                case "GET":
+                    CorsMiddleware::handle();
+                    EventsController::handle($method, $input);
+                    break;
+                
+                default:
+                    CorsMiddleware::handle();
+                    JsonMiddleware::handle();
+                    EventsController::handle($method, $input);
+                    break;
+            }
             break;
 
         case "event_admins":
