@@ -1,6 +1,9 @@
+
+
+// Send a req to filepath, and for all returned tests call createTestCard
 async function loadTestsForResource(resourceName, phpFilePath) {
 
-
+    // 
     const response = await fetch(phpFilePath).catch(err => {
     });
 
@@ -30,24 +33,20 @@ async function loadTestsForResource(resourceName, phpFilePath) {
         const card = createTestCard(test);
         container.appendChild(card);
     });
+    
 }
 
 async function runRequest(method, endpoint, data = null) {
 
     let url = endpoint;
 
-    // When db (backup/restore)
-    if (endpoint === "/backup_database" || endpoint === "/restore_database") { url = "http://localhost:8000" + endpoint; } 
-/*     if (endpoint === "/backup_database" || endpoint === "/restore_database") { 
-        
-        if (endpoint === "/backup_database" ) {
-            url = "http://localhost:8000/controllers/BackupDBController.php" 
-        }
-        if (endpoint === "/restore_database" ) {
-            url = "http://localhost:8000/controllers/RestoreDBController.php" 
-        }
-        
-    } */
+    // When db (backup/restore) build url diff.
+    if (endpoint === "/backup_database" || 
+        endpoint === "/restore_database") 
+    { 
+            url = "http://localhost:8000" + endpoint; 
+    } 
+
     
     // Om GET, bygg querystring
     if (method === "GET" && data) {
@@ -237,11 +236,26 @@ async function runAllTests() {
         "usersAvailabilities",
         "/resources/UsersAvailabilitiesTest.php"
     );
+    console.log("Efter U.AVAILS AV runAllTests")
+    await runRequest(
+        "POST", 
+        "/restore_database"
+    );
     
-    // Events RSVP (NÅR EJ/FÅR EJ FEEDBACK ATM, kolla sökvägar + html klasser)
+    
+    // Events RSVP
+    await runRequest(
+        "POST", 
+        "/backup_database"
+    );
     await loadTestsForResource(
-        "usersAvailabilities",
+        "eventsRSVP",
         "/resources/EventsRSVPTest.php"
+    );
+    console.log("Efter E.RSVPS AV runAllTests")
+    await runRequest(
+        "POST",
+         "/restore_database"
     );
     
     
@@ -253,7 +267,7 @@ async function runAllTests() {
     
     /* -- Rollback end -- */
     // Gör rollback efter alla test
-    await runRequest("POST", "/restore_database");
+   // await runRequest("POST", "/restore_database");
 }
 
 runAllTests();

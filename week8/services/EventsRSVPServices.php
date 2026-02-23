@@ -31,7 +31,7 @@ class EventsRSVPService {
             throw new Exception("RSVP not found");
         }
         
-        return $filtered;
+        return json_decode(json_encode($filtered), true);
  
     }
 
@@ -44,7 +44,7 @@ class EventsRSVPService {
         $reminder = $input["reminder"] ?? null;
 
         if (!isset($eventId, $userId, $isGoing, $reminder )) {
-            return new ErrorException("Missing attributes");
+            throw new Exception("Missing attributes");
         }
             
         $db =  new DBAccess("events_rsvp");
@@ -52,7 +52,8 @@ class EventsRSVPService {
         
         // Does RSVP exist
         foreach ($items as $currItem) {
-            if ($currItem["userId"] == $userId && $currItem["eventId"] == $eventId) {
+            if ($currItem["userId"] == $userId && 
+                $currItem["eventId"] == $eventId) {
                 throw new Exception("RSVP already exists");
             }
         }
@@ -69,7 +70,7 @@ class EventsRSVPService {
             "reminder" => $reminder
         ];
         
-        $result = $items->postData($newRSVP);
+        $result = $db->postData($newRSVP);
         return $result;        
             
     }
@@ -86,7 +87,7 @@ class EventsRSVPService {
         $reminder = $input["reminder"] ?? null;
         
         if (!isset($eventId, $userId, $isGoing, $reminder)) {
-            return new ErrorException("Missing attributes");
+            throw new Exception("Missing attributes");
         }
         
         $db = new DBAccess("events_rsvp");
@@ -119,7 +120,7 @@ class EventsRSVPService {
                 
         }
                 
-        throw new Exception("Availability not found");
+        throw new Exception("RSVP not found");
         
     }
 
@@ -132,7 +133,7 @@ class EventsRSVPService {
         $userId = $input["userId"] ?? null;
         
         if (!isset($eventId, $userId)) {
-            return new ErrorException("Missing attributes");
+            throw new Exception("Missing attributes");
         }
         
         $db = new DBAccess("events_rsvp");

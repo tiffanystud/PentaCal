@@ -62,7 +62,19 @@ function Router($requestUrl = null){
             break;
 
         case "events_rsvp":
-            //Handle event_rsvp
+            
+            switch ($method) {
+               case "GET": 
+                    CorsMiddleware::handle();
+                    EventsRSVPController::handle($method, $input);
+                    break;
+                   
+                default:
+                    CorsMiddleware::handle();
+                    JsonMiddleware::handle();
+                    EventsRSVPController::handle($method, $input);
+                    break;
+            }
             break;
 
         case "friendships":

@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../services/EventsRSVPServices.php";
-class EventsRSVP {
+class EventsRSVPController {
 
     /* -- RESPONSES -- */
     static function bubbleError($exc, $sender){

@@ -1,99 +1,137 @@
 <?php
 
+error_log("---------In EventsRSVPTest.php. - row 3");
 function runRequest($method, $endpoint, $data = null)
 {
-    $url = "http://localhost:8000" . $endpoint;
     
+    $url = "http://localhost:8000" . $endpoint;
+
     // Vid GETT bygg query m params
     if ($method === "GET" && $data !== null) {
-        
+
         $queryString = http_build_query($data);
         $url = $url . "?" . $queryString;
-        
+
     }
 
     $curlReq = curl_init($url);
     
+    
     // Svar som ttext och sätt HTTP metod
     curl_setopt($curlReq, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curlReq, CURLOPT_CUSTOMREQUEST, $method);
-    
+
     if ($method !== "GET" && $data !== null) {
-        
+
         $jsonBody = json_encode($data);
         $jsonHeader = ["Content-Type: application/json"];
-        
+
         // Sätt rättt headers
         curl_setopt($curlReq, CURLOPT_POSTFIELDS, $jsonBody);
-        curl_setopt($curlReq, CURLOPT_HTTPHEADER, $jsonHeader);
         
+        curl_setopt($curlReq, CURLOPT_HTTPHEADER, $jsonHeader);
+
     }
-    
+
     // Kör requesten och hämta datan
     $responseBody = curl_exec($curlReq);
     $responseCode = curl_getinfo($curlReq, CURLINFO_HTTP_CODE);
+
     
-    $response = ["status" => $responseCode, "body" => $responseBody]; 
+    // Testa som JSON annars Text?
+    $decodedBody = json_decode($responseBody, true);
+    
+    if ($decodedBody === null && $responseBody !== "") {
+        $decodedBody = $responseBody;
+    }
+    if ($responseBody === "") {
+        $decodedBody = null;
+    }
+
+    $response = [
+        "status" => $responseCode,
+        "body" => $decodedBody
+    ];
+
     return $response;
-    
+
 }
 
+/* ---------------- EVENTS_RSVP ---------------- */
 
-/* ------ USERS_AVAILABILITIES ------ */
+/* ---------- GET ---------- */
 
-/* -- GET -- */
-
-// 200
 function testGet_200()
 {
     $expected = [
         "status" => 200,
-        "body" => ["message" => "whatever your service returns"]
+        "body" => [[
+                "id" => "ID",
+                "eventId" => "ID",
+                "userId" => "ID",
+                "date" => "YYYY-MM-DD",
+                "isGoing" => "VALUE",
+                "reminder" => true
+        ]]
+    ];
+
+    $query = [
+        "eventId" => "65e10aa11c001",
+        "userId" => "65e10aa11a002"
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a001",
-            "date" => "2026-03-01"
-        ]
+        endpoint: "/events_rsvp",
+        data: $query
     );
 
     $result = [
         "name" => "GET 200",
+        "method" => "GET",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => $query,
+        "requestBody" => null,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Returns existing RSVP"
     ];
-    
+
     return $result;
-    
 }
 
 
-// 404
 function testGet_404()
 {
     $expected = [
         "status" => 404,
-        "body" => ["error" => "Availability not found"]
+        "body" => [
+            "error" => "RSVP not found"
+        ]
+    ];
+
+    $query = [
+        "eventId" => "65e10aa11c001",
+        "userId" => "65e10aa11a009"
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a001",
-            "date" => "0000-00-00"
-        ]
+        endpoint: "/events_rsvp",
+        data: $query
     );
 
     $result = [
         "name" => "GET 404",
+        "method" => "GET",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => $query,
+        "requestBody" => null,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "No RSVP exists for this event + user"
     ];
-    
+
     return $result;
 }
 
@@ -103,58 +141,83 @@ function testGet_400()
 {
     $expected = [
         "status" => 400,
-        "body" => ["error" => "Missing attributes"]
+        "body" => [
+            "error" => "Missing attributes"
+        ]
+    ];
+
+    $query = [
+        "eventId" => "65e10aa11c001"
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a001"
-        ]
+        endpoint: "/events_rsvp",
+        data: $query
     );
 
     $result = [
         "name" => "GET 400",
+        "method" => "GET",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => $query,
+        "requestBody" => null,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Missing userId or eventId"
     ];
-    
+
     return $result;
-    
 }
 
 
 
-/* -- POST -- */
+
+/* ---------- POST ---------- */
+
 
 // 201
-function testPost_201()
-{
+function testPost_201() {
     $expected = [
         "status" => 201,
-        "body" => ["message" => "created"]
+        "body" => [
+                "id" => "ID",
+                "eventId" => "ID",
+                "userId" => "ID",
+                "date" => "YYYY-MM-DD",
+                "isGoing" => "VALUE",
+                "reminder" => true
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c002",
+        "userId" => "65e10aa11a003",
+        "isGoing" => "yes",
+        "reminder" => true
     ];
 
     $actual = runRequest(
-        method: "POST",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "2026-03-20",
-            "isAvailable" => false,
-            "calId" => "65e10aa11b005"
-        ]
+        method: "POST", 
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "POST 201",
+        "method" => "POST",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Creates a new RSVP"
     ];
     
     return $result;
 }
+
+
 
 
 // 400
@@ -162,57 +225,35 @@ function testPost_400()
 {
     $expected = [
         "status" => 400,
-        "body" => ["error" => "Missing attributes"]
+        "body" => [
+            "error" => "Missing attributes"
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c002",
+        "userId" => "65e10aa11a003",
+        "isGoing" => "yes"
     ];
 
     $actual = runRequest(
         method: "POST",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "2026-03-20",
-            "isAvailable" => false
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "POST 400",
+        "method" => "POST",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Required fields missing"
     ];
     
     return $result;
-    
-}
-
-
-// 404
-function testPost_404()
-{
-    $expected = [
-        "status" => 404,
-        "body" => ["error" => "User or calendar not found"]
-    ];
-
-    $actual = runRequest(
-        method: "POST",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "2026-03-20",
-            "isAvailable" => false,
-            "calId" => "000000000000"
-        ]
-    );
-
-    $result = [
-        "name" => "POST 404",
-        "expected" => $expected,
-        "actual" => $actual
-    ];
-    
-    return $result;
-    
 }
 
 
@@ -221,92 +262,85 @@ function testPost_409()
 {
     $expected = [
         "status" => 409,
-        "body" => ["error" => "Availability already exists"]
+        "body" => [
+            "error" => "RSVP already exists"
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c001",
+        "userId" => "65e10aa11a002",
+        "isGoing" => "maybe",
+        "reminder" => true
     ];
 
     $actual = runRequest(
         method: "POST",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a001",
-            "date" => "2026-03-01",
-            "isAvailable" => false,
-            "calId" => "65e10aa11b001"
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "POST 409",
+        "method" => "POST",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Duplicate RSVP"
     ];
     
     return $result;
-    
 }
 
 
 
-/* -- PATCH -- */
 
-// 201
-function testPatch_201()
-{
+/* ---------- PATCH ---------- */
+
+// 200
+function testPatch_200(){
     $expected = [
         "status" => 200,
-        "body" => ["message" => "updated"]
+        "body" => [
+            "id" => "ID",
+            "eventId" => "ID",
+            "userId" => "ID",
+            "date" => "YYYY-MM-DD",
+            "isGoing" => "VALUE",
+            "reminder" => true
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c003",
+        "userId" => "65e10aa11a005",
+        "isGoing" => "no",
+        "reminder" => false
     ];
 
     $actual = runRequest(
         method: "PATCH",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a001",
-            "date" => "2026-03-01",
-            "isAvailable" => false,
-            "calId" => "65e10aa11b001"
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
-        "name" => "PATCH 201",
+        "name" => "PATCH 200",
+        "method" => "PATCH",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Updates RSVP"
     ];
     
     return $result;
-    
 }
 
 
-// 204
-function testPatch_204()
-{
-    $expected = [
-        "status" => 204,
-        "body" => null
-    ];
-
-    $actual = runRequest(
-        method: "PATCH",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a001",
-            "date" => "2026-03-01",
-            "isAvailable" => false,
-            "calId" => "65e10aa11b001"
-        ]
-    );
-
-    $result = [
-        "name" => "PATCH 204",
-        "expected" => $expected,
-        "actual" => $actual
-    ];
-    
-    return $result;
-    
-}
 
 
 // 400
@@ -314,28 +348,37 @@ function testPatch_400()
 {
     $expected = [
         "status" => 400,
-        "body" => ["error" => "Missing attributes"]
+        "body" => [
+            "error" => "Missing attributes"
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c003",
+        "userId" => "65e10aa11a005",
+        "isGoing" => "yes"
     ];
 
     $actual = runRequest(
         method: "PATCH",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "2026-03-20",
-            "isAvailable" => false
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "PATCH 400",
+        "method" => "PATCH",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Missing required fields"
     ];
     
     return $result;
-    
 }
+
 
 
 // 404
@@ -343,62 +386,83 @@ function testPatch_404()
 {
     $expected = [
         "status" => 404,
-        "body" => ["error" => "Availability not found"]
+        "body" => [
+            "error" => "RSVP not found"
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c009",
+        "userId" => "65e10aa11a009",
+        "isGoing" => "yes",
+        "reminder" => true
     ];
 
     $actual = runRequest(
         method: "PATCH",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "0000-00-00",
-            "isAvailable" => false,
-            "calId" => "65e10aa11b005"
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "PATCH 404",
+        "method" => "PATCH",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "No RSVP to update"
     ];
     
     return $result;
-    
 }
 
 
 
-/* -- DELETE -- */
+
+/* ---------- DELETE ---------- */
 
 // 200
 function testDelete_200()
 {
-    
     $expected = [
         "status" => 200,
-        "body" => ["message" => "deleted"]
+        "body" => [
+            "id" => "ID",
+            "eventId" => "ID",
+            "userId" => "ID",
+            "date" => "YYYY-MM-DD",
+            "isGoing" => "VALUE",
+            "reminder" => true
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c008",
+        "userId" => "65e10aa11a007"
     ];
 
     $actual = runRequest(
         method: "DELETE",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "2026-03-20",
-            "calId" => "65e10aa11b005"
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "DELETE 200",
+        "method" => "DELETE",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Deletes RSVP"
     ];
     
     return $result;
-    
 }
+
 
 
 // 400
@@ -406,26 +470,33 @@ function testDelete_400()
 {
     $expected = [
         "status" => 400,
-        "body" => ["error" => "Missing attributes"]
+        "body" => [
+            "error" => "Missing attributes"
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c008"
     ];
 
     $actual = runRequest(
         method: "DELETE",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "65e10aa11a00a",
-            "date" => "2026-03-20"
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "DELETE 400",
+        "method" => "DELETE",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "Missing userId or eventId"
     ];
     
     return $result;
-
 }
 
 
@@ -434,59 +505,59 @@ function testDelete_404()
 {
     $expected = [
         "status" => 404,
-        "body" => ["error" => "Availability not found"]
+        "body" => [
+            "error" => "RSVP not found"
+        ]
+    ];
+    
+    $body = [
+        "eventId" => "65e10aa11c004",
+        "userId" => "65e10aa11a001"
     ];
 
     $actual = runRequest(
         method: "DELETE",
-        endpoint: "/users_availabilities",
-        data: [
-            "userId" => "000000000000",
-            "date" => "2026-03-20",
-            "calId" => "65e10aa11b005"
-        ]
+        endpoint: "/events_rsvp",
+        data: $body
     );
 
     $result = [
         "name" => "DELETE 404",
+        "method" => "DELETE",
+        "endpoint" => "/events_rsvp",
+        "queryParams" => null,
+        "requestBody" => $body,
         "expected" => $expected,
-        "actual" => $actual
+        "actual" => $actual,
+        "info" => "No RSVP to delete"
     ];
     
     return $result;
 }
 
 
-/* ------ ALL TESTS ------ */
+
+/* ---------- RUN ALL TESTS ---------- */
 
 function runTests()
 {
-    $results = [];
+    return [
+        testGet_200(),
+        testGet_404(),
+        testGet_400(),
 
-    // GET
-    $results[] = testGet_200();
-    $results[] = testGet_404();
-    $results[] = testGet_400();
+        testPost_201(),
+        testPost_400(),
+        testPost_409(),
 
-/*
-    // POST
-    $results[] = testPost_201();
-    $results[] = testPost_400();
-    $results[] = testPost_404();
-    $results[] = testPost_409();
+        testPatch_200(),
+        testPatch_400(),
+        testPatch_404(),
 
-    // PATCH
-    $results[] = testPatch_201();
-    $results[] = testPatch_204();
-    $results[] = testPatch_400();
-    $results[] = testPatch_404();
-
-    // DELETE
-    $results[] = testDelete_200();
-    $results[] = testDelete_400();
-    $results[] = testDelete_404();
- */
-    return $results;
+        testDelete_200(),
+        testDelete_400(),
+        testDelete_404()
+    ];
 }
 
-echo json_encode(runTests(), JSON_PRETTY_PRINT);
+echo json_encode(["tests" => runTests()], JSON_PRETTY_PRINT);
