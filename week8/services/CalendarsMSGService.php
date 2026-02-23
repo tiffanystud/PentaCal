@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../repository/DBAccess.php";
+require_once __DIR__ . "CalendarService.php";
 
 class CalendarsMSGService {
     /* ---- GET ---- */
@@ -34,77 +35,48 @@ class CalendarsMSGService {
         return json_decode(json_encode($filtered), true);
  
     }
-    
-    //????
-    public static function getByDate($input){
-        
-        $senderId = $input["senderID"] ?? null;
-        $calId = $input["calID"] ?? null;
-        $date = $input["date"] ?? null;
-        
-        if (!isset($senderId, $calId, $date)) {
-            throw new Exception("Missing attributes");
-        }
-
-        $db = new DBAccess("events_rsvp");
-        $items = $db->getAll();
-                   
-        $filtered = [];
-
-        // Säkerställer vi bara en rad med samma userID och eventId?
-        foreach ($items as $currItem) {
-            if ($currItem["userId"] == $userId && 
-                $currItem["eventId"] == $eventId 
-                ) {
-                $filtered[] = $currItem;
-            }
-        }
-
-        if (!$filtered) {
-            throw new Exception("RSVP not found");
-        }
-        
-        return json_decode(json_encode($filtered), true);
- 
-    }
-    
 
     /* --- POST ---- */
     public static function create($input){
         
-        $eventId = $input["eventId"] ?? null;
-        $userId = $input["userId"] ?? null;
-        $isGoing = $input["isGoing"] ?? null;
-        $reminder = $input["reminder"] ?? null;
-
-        if (!isset($eventId, $userId, $isGoing, $reminder )) {
+        $senderId = $input["senderID"] ?? null;
+        $calId = $input["calID"] ?? null;
+        $content = $input["content"] ?? null;
+        
+        if (!isset($eventId, $userId, $content)) {
             throw new Exception("Missing attributes");
         }
-            
-        $db =  new DBAccess("events_rsvp");
-        $items = $db->getAll();
         
-        // Does RSVP exist
-        foreach ($items as $currItem) {
-            if ($currItem["userId"] == $userId && 
-                $currItem["eventId"] == $eventId) {
-                throw new Exception("RSVP already exists");
+        // $calendars = CalendarsService::calendarsGetAll();
+        
+        $dbCals =  new DBAccess("calendars");
+        $itemsCals = $dbCals->getAll();
+        
+        // Does calendar exist
+        foreach ($itemsCals as $currItem) {
+            if ($currItem["userId"] == $calId) {
+                throw new Exception("Invalid calendar");
             }
         }
     
         
-        // Create new RSVP
+        // Create new MSG
         $date = date("Y-m-d");
-        $newRSVP = [
-            "id" => uniqid(),
-            "eventId" => $eventId,
-            "userId" => $userId,
-            "date" =>  $date,
-            "isGoing" => $isGoing,
-            "reminder" => $reminder
-        ];
+        $time = date("H:i:s");
         
-        $result = $db->postData($newRSVP);
+        $newMSG = [
+            "id" => uniqid(),
+            "senderId" => $senderId,
+            "calId" => $calId,
+            "date" =>  $date,
+            "time" => $time,
+            "content" => $content
+        ];
+            
+        $dbCalMsg =  new DBAccess("calendar_msg");
+        
+        // New item returned
+        $result = $dbCalMsg->postData($newMSG);
         return $result;        
             
     }
