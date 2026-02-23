@@ -9,6 +9,8 @@ require_once "GroupsController.php";
 require_once "UsersGroupsController.php";
 require_once "UsersAvailabilitiesController.php";
 require_once "EventsRSVPController.php";
+require_once "BackupDBController.php";
+require_once "RestoreDBController.php";
 
 
 function Router($requestUrl = null){   
