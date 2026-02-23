@@ -60,8 +60,8 @@ class FriendshipsService{
 
         foreach ($relations as $rel) {
             if (
-                ($rel["userId1"] == $userId1 && $rel["userId2"] == $userId2) ||
-                ($rel["userId1"] == $userId2 && $rel["userId2"] == $userId1)
+                ($rel["userId1"] == $id1 && $rel["userId2"] == $id2) ||
+                ($rel["userId1"] == $id2 && $rel["userId2"] == $id1)
             ) {
                 throw new Exception("Friend invitation already sent");
             }
