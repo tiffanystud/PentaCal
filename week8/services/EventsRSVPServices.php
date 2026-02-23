@@ -37,10 +37,10 @@ class EventsRSVPService {
         
         $eventId = $input["eventId"] ?? null;
         $userId = $input["userId"] ?? null;
-        $date = $date["date"] ?? null;
+        $isGoing = $input["isGoing"] ?? null;
         $reminder = $input["reminder"] ?? null;
 
-        if (!isset($eventId, $userId, $date, $reminder)) {
+        if (!isset($eventId, $userId, $isGoing, $reminder )) {
             return new ErrorException("Missing attributes");
         }
             
@@ -54,12 +54,15 @@ class EventsRSVPService {
             }
         }
     
+        
         // Create new RSVP
+        $date = date("Y-m-d");
         $newRSVP = [
             "id" => uniqid(),
             "eventId" => $eventId,
             "userId" => $userId,
-            "date" => $date,
+            "date" =>  $date,
+            "isGoing" => $isGoing,
             "reminder" => $reminder
         ];
         
@@ -73,15 +76,13 @@ class EventsRSVPService {
     /* --- PATCH ---- */
     public static function update($input)
     {
-        
-    // Upodetera alla så "isGoing" är med!
-
+            
         $eventId = $input["eventId"] ?? null;
         $userId = $input["userId"] ?? null;
-        $date = $date["date"] ?? null;
+        $isGoing = $input["isGoing"] ?? null;
         $reminder = $input["reminder"] ?? null;
         
-        if (!isset($eventId, $userId, $reminder)) {
+        if (!isset($eventId, $userId, $isGoing, $reminder)) {
             return new ErrorException("Missing attributes");
         }
         
@@ -91,16 +92,26 @@ class EventsRSVPService {
         foreach ($items as $currAvailability) {
             if (
                 $currAvailability["userId"] == $userId &&
-                $currAvailability["eventId"] == $eventId&&
-                $currAvailability["calId"] == $input["calId"] 
+                $currAvailability["eventId"] == $eventId
                 ) {
-                    // Chech if availability already is the same
-                    if ( $currAvailability["isAvailable"] == $input["isAvailable"] ) {
+                    // Chech if RSVP already is the same (change possible for isGoing/reminder)
+                    if ($currAvailability["isGoing"] == $input["isGoing"] &&
+                        $currAvailability["reminder"] == $input["reminder"]
+                    ) {
                         throw new Exception("No changes made");
                     }
                     
+                    // Uppdara date som "latest change" eller när RSVP är skapad?
+                    $date = date("Y-m-d");
+                    
+                    if ($currAvailability["isGoing"] !== $input["isGoing"]) {
+                        $changes = ["isGoing" => $input["isGoing"], "date" => $date];
+                    } else {
+                        $changes = ["reminder" => $input["reminder"], "date" => $date];   
+                    }
+                    
                     // Updated item
-                    return $db->patchData($currAvailability["id"], ["isAvailable" => $input["isAvailable"]]);
+                    return $db->patchData($currAvailability["id"],$changes);
             }
                 
         }
