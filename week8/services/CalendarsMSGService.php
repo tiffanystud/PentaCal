@@ -59,7 +59,6 @@ class CalendarsMSGService {
             }
         }
     
-        
         // Create new MSG
         $date = date("Y-m-d");
         $time = date("H:i:s");
@@ -70,7 +69,8 @@ class CalendarsMSGService {
             "calId" => $calId,
             "date" =>  $date,
             "time" => $time,
-            "content" => $content
+            "content" => $content,
+            "hasChanged" => false
         ];
             
         $dbCalMsg =  new DBAccess("calendar_msg");
@@ -87,46 +87,28 @@ class CalendarsMSGService {
     public static function update($input)
     {
             
-        $eventId = $input["eventId"] ?? null;
-        $userId = $input["userId"] ?? null;
-        $isGoing = $input["isGoing"] ?? null;
-        $reminder = $input["reminder"] ?? null;
+        $id = $input["id"] ?? null;
+        $content = $input["content"] ?? null;
         
-        if (!isset($eventId, $userId, $isGoing, $reminder)) {
+        if (!isset($id, $content)) {
             throw new Exception("Missing attributes");
         }
         
-        $db = new DBAccess("events_rsvp");
+        $db = new DBAccess("calendar_msg");
         $items = $db->getAll();
         
-        foreach ($items as $currAvailability) {
-            if (
-                $currAvailability["userId"] == $userId &&
-                $currAvailability["eventId"] == $eventId
-                ) {
-                    // Chech if RSVP already is the same (change possible for isGoing/reminder)
-                    if ($currAvailability["isGoing"] == $input["isGoing"] &&
-                        $currAvailability["reminder"] == $input["reminder"]
-                    ) {
-                        throw new Exception("No changes made");
-                    }
-                    
-                    // Uppdara date som "latest change" eller när RSVP är skapad?
-                    $date = date("Y-m-d");
-                    
-                    if ($currAvailability["isGoing"] !== $input["isGoing"]) {
-                        $changes = ["isGoing" => $input["isGoing"], "date" => $date];
-                    } else {
-                        $changes = ["reminder" => $input["reminder"], "date" => $date];   
-                    }
-                    
-                    // Updated item
-                    return $db->patchData($currAvailability["id"],$changes);
+        foreach ($items as $currItem) {
+            if ($currItem["id"] == $id) {
+                
+                $changes = ["content" => $content];
+
+                // Updated item
+                return $db->patchData($currItem["id"],$changes);
             }
                 
         }
                 
-        throw new Exception("RSVP not found");
+        throw new Exception("Message not found");
         
     }
 
@@ -135,27 +117,24 @@ class CalendarsMSGService {
     public static function delete($input)
     {
 
-        $eventId = $input["eventId"] ?? null;
-        $userId = $input["userId"] ?? null;
+        $id = $input["id"] ?? null;
         
-        if (!isset($eventId, $userId)) {
+        if (!isset($id)) {
             throw new Exception("Missing attributes");
         }
         
-        $db = new DBAccess("events_rsvp");
+        $db = new DBAccess("calendar_msg");
         $items = $db->getAll();
         
-        foreach($items as $currAvailability) {
+        foreach($items as $currItem) {
             if (
-                $currAvailability["eventId"] == $eventId &&
-                $currAvailability["userId"] == $userId
-                ) {
+                $currItem["eventId"] == $id ) {
                     // Returns deleted item
-                    return $db->deleteData($currAvailability["id"]);
+                    return $db->deleteData($id);
                 }
         }
     
-        throw new Exception("RSVP not found");
+        throw new Exception("Message not found");
         
     }
 
