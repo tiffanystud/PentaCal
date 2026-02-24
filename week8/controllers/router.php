@@ -136,6 +136,7 @@ function Router($requestUrl = null){
                         echo json_encode(["error" => "No method allowed"]);
                         exit();
                 }
+                break;
 
         case "private_msg": // Elias
             switch($method) {

@@ -199,7 +199,7 @@ function testPost_409()
     $expected = [
         "status" => 409,
         "body" => [
-            "error" => "User already in calendar"
+            "error" => "Relation already exists."
         ]
     ];
 
@@ -300,7 +300,7 @@ function testDelete_404(){
     $expected = [
         "status" => 404,
         "body" => [
-            "error" => "User ."
+            "error" => "User not found."
         ]
     ];
 
@@ -317,7 +317,7 @@ function testDelete_404(){
     );
 
     $result = [
-        "name" => "DELETE 200",
+        "name" => "DELETE 404",
         "method" => "DELETE",
         "endpoint" => "/users_calendars",
         "queryParams" => null,

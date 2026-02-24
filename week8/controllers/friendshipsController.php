@@ -14,7 +14,7 @@ class FriendshipsController{
                 }
                 $userId = $_GET["userId"] ?? null;
                 if (!$userId){
-                    throw new Exception("userId missing", 400);
+                    throw new Exception("User ID missing", 400);
                 }
                 // /friendships?userId=id
                 $result = FriendshipsService::getAllFriendsByUser($userId);
@@ -48,7 +48,7 @@ class FriendshipsController{
             }
         } catch (Exception $exc) {
             $code = $exc->getCode() ?:400;
-            self::json(["error" => $exc->getMessage()],$code);
+            self::json(["error" => $exc->getMessage()], $code);
             return;
         }
 

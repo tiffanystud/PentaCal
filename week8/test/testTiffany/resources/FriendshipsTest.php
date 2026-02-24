@@ -74,7 +74,8 @@ function testGet_200()
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/friendships"
+        endpoint: "/friendships",
+        data: $query
     );
 
     $result = [
@@ -214,12 +215,12 @@ function testDelete_400()
 
     $actual = runRequest(
         method: "DELETE",
-        endpoint: "/friendhips",
+        endpoint: "/friendships",
         data: $body
     );
 
     $result = [
-        "name" => "DELETE 404",
+        "name" => "DELETE 400",
         "method" => "DELETE",
         "endpoint" => "/friendships",
         "queryParams" => null,

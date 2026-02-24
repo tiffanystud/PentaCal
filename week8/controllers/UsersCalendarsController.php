@@ -22,13 +22,12 @@ class UsersCalendarsController {
                     $result = UsersCalendarsService::getAll();
                 }
 
-                http_response_code(200);
-                echo json_encode($result);
+                self::json($result, 200);
                 return;
 
             } catch (Exception $exc) {
-                http_response_code(400);
-                echo json_encode(["error" => $exc->getMessage()]);
+                $code = $exc->getCode() ?:400;
+                self::json(["error" => $exc->getMessage()],$code);
                 return;
             }
         }
@@ -42,8 +41,8 @@ class UsersCalendarsController {
                 return;
 
             } catch (Exception $exc) {
-                http_response_code(400);
-                echo json_encode(["error" => $exc->getMessage()]);
+                $code = $exc->getCode() ?:400;
+                self::json(["error" => $exc->getMessage()],$code);
                 return;
             }
         }
@@ -56,8 +55,8 @@ class UsersCalendarsController {
                 return;
 
             } catch (Exception $exc) {
-                http_response_code(400);
-                echo json_encode(["error" => $exc->getMessage()]);
+                $code = $exc->getCode() ?:400;
+                self::json(["error" => $exc->getMessage()],$code);
                 return;
             }
         }
@@ -70,10 +69,18 @@ class UsersCalendarsController {
                 return;
 
             } catch (Exception $exc) {
-                http_response_code(400);
-                echo json_encode(["error" => $exc->getMessage()]);
+                $code = $exc->getCode() ?:400;
+                self::json(["error" => $exc->getMessage()],$code);
                 return;
             }
         }
+    }
+
+    private static function json($data, $status)
+    {
+        http_response_code($status);
+        header("Content-Type: application/json");
+        echo json_encode($data);
+        exit;
     }
 }
