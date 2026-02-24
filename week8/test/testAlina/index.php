@@ -24,59 +24,42 @@ function request($method, $endpoint, $data = null)
 
 /* ================= USERS ================= */
 
-echo request("GET", "/users?id=1");
+echo request("GET", "/friendships?userId=65e10aa11a009");
 
-echo request("POST", "/users", [
-    "userName" => "Philip",
-    "pwd" => "hejhej%",
-    "email" => "philles@"
-]);
-
-echo request("PATCH", "/users", [
-    "userId" => 1,
-    "userName" => "Elias"
-]);
-
-echo request("DELETE", "/users", [
-    "userId" => 1
+echo request("POST", "/friendships?userId=65e10aa11a001", [
+    "userId1" => "65e10aa11a001",
+    "userId2" => "65e10aa11a00a"
 ]);
 
 
-/* ================= GROUPS ================= */
-
-echo request("GET", "/groups");
-
-echo request("POST", "/groups", [
-    "name" => "Group 4"
+echo request("DELETE", "/friendships?userId=65e10aa11a001", [
+    "userId1" => "65e10aa11a001",
+    "userId2" => "65e10aa11a00a"
 ]);
 
-echo request("PATCH", "/groups", [
-    "id" => 3,
-    "name" => "Test group"
-]);
-
-echo request("DELETE", "/groups", [
-    "id" => 3
+echo request("DELETE", "/friendships?userId=65e10aa11a001", [
+    "userId1" => "65e10aa11a001",
+    "userId2" => "65e10aa11a00a"
 ]);
 
 
 /* ================= USERS_GROUPS ================= */
 
-echo request("GET", "/users_groups");
+echo request("GET", "/users_calendars");
 
-echo request("POST", "/users_groups", [
+/*echo request("POST", "/users_calendars", [
     "userId" => 6,
     "groupId" => 5,
     "isAdmin" => false
 ]);
 
-echo request("PATCH", "/users_groups", [
+echo request("PATCH", "/users_calendars", [
     "id" => 3,
     "isAdmin" => true
 ]);
 
-echo request("DELETE", "/users_groups", [
+echo request("DELETE", "/users_calendars", [
     "id" => 3
 ]);
-
+*/
 ?>

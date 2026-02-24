@@ -196,4 +196,10 @@ const runTests = async function() {
     fetch("http://localhost:8000/restore_database").then((resp) => resp.text()).then((reso) => console.log(reso));
 }
 
-runTests();
+//runTests();
+
+// fetch("http://localhost:8000/events", {
+//     method: "DELETE",
+//     body: JSON.stringify({eventId: "699c6d0e23afe", calId: "65e10aa11b001"}),
+//     headers: {"Content-Type": "application/json"}
+// }).then(resp => resp.json()).then(reso => console.log(reso));

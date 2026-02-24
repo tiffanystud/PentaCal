@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . "/../services/UsersGroupsService.php";
+require_once __DIR__ . "/../services/UsersCalendarsService.php";
 
-class UsersGroupController {
+class UsersCalendarsController {
 
     public static function handle($method, $input): void {
 
@@ -10,16 +10,16 @@ class UsersGroupController {
             try {
                 $id      = $_GET["id"] ?? null;
                 $userId  = $_GET["userId"] ?? null;
-                $groupId = $_GET["groupId"] ?? null;
+                $calId = $_GET["calId"] ?? null;
 
                 if ($id) {
-                    $result = UsersGroupsService::getRelationById($id);
+                    $result = UsersCalendarsService::getRelationById($id);
                 } elseif ($userId) {
-                    $result = UsersGroupsService::getAllRelationsByUser($userId);
-                } elseif ($groupId) {
-                    $result = UsersGroupsService::getAllRelationsByGroup($groupId);
+                    $result = UsersCalendarsService::getAllRelationsByUser($userId);
+                } elseif ($calId) {
+                    $result = UsersCalendarsService::getAllRelationsByCalendar($calId);
                 } else {
-                    $result = UsersGroupsService::getAll();
+                    $result = UsersCalendarsService::getAll();
                 }
 
                 http_response_code(200);
@@ -36,7 +36,7 @@ class UsersGroupController {
 
         if ($method === "POST") {
             try {
-                $result = UsersGroupsService::addUserToGroup($input);
+                $result = UsersCalendarsService::addUserToCalendar($input);
                 http_response_code(201);
                 echo json_encode($result);
                 return;
@@ -50,7 +50,7 @@ class UsersGroupController {
 
         if ($method === "PATCH") {
             try {
-                $result = UsersGroupsService::makeUserGroupAdmin($input);
+                $result = UsersCalendarsService::makeUserCalAdmin($input);
                 http_response_code(200);
                 echo json_encode($result);
                 return;
@@ -64,7 +64,7 @@ class UsersGroupController {
 
         if ($method === "DELETE") {
             try {
-                $result = UsersGroupsService::removeUserFromGroup($input);
+                $result = UsersCalendarsService::removeUserFromCal($input);
                 http_response_code(200);
                 echo json_encode($result);
                 return;

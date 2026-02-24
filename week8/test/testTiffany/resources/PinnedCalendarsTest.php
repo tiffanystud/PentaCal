@@ -60,30 +60,29 @@ function runRequest($method, $endpoint, $data = null)
 
 
 // 200
-function testCalendarGet_200()
+function testPinnedCalendarGet_200()
 {
     $expected = [
         "status" => 200,
         "body" => [
             [
                 "id" => "ID",
-                "creatorId" => "ID",
-                "name" => "STRING",
-                "type" => "string"
+                "userId" => "ID",
+                "calId" => "STRING"
             ]
         ]
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/calendars",
+        endpoint: "/users_pinned_calendars",
         data: null
     );
 
     return [
         "name" => "GET 200",
         "method" => "GET",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => null,
         "requestBody" => null,
         "expected" => $expected,
@@ -95,61 +94,60 @@ function testCalendarGet_200()
 
 
 // 200 QUERY
-function testCalendarGetQuery_200()
+function testPinnedCalendarGetQuery_200()
 {
     $expected = [
         "status" => 200,
-        "body" => [
-            "id" => "ID",
-            "creatorId" => "ID",
-            "name" => "STRING",
-            "type" => "string"
-        ]
+        "body" =>  [
+                "id" => "ID",
+                "userId" => "ID",
+                "calId" => "STRING"
+            ]
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/calendars?id=65e10aa11b004",
+        endpoint: "/users_pinned_calendars?id=65e10aa11e003",
         data: null
     );
 
     return [
         "name" => "GETQUERY 200",
         "method" => "GET",
-        "endpoint" => "/calendars",
-        "queryParams" => ["id" => "65e10aa11b004"],
+        "endpoint" => "/users_pinned_calendars",
+        "queryParams" => ["id" => "65e10aa11e003"],
         "requestBody" => null,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Fetches calendar for user"
+        "info" => "Fetches pinned calendar for user"
     ];
 }
 
 // 404 query
-function testCalendarGetQuery_404()
+function testPinnedCalendarGetQuery_404()
 {
     $expected = [
         "status" => 404,
         "body" => [
-            "error" => "No calendars found by id"
+            "error" => "No pinned calendar found for user"
         ]
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/calendars?id",
+        endpoint: "/users_pinned_calendars?id",
         data: null
     );
 
     return [
         "name" => "GETQUERY 404",
         "method" => "GET",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => ["id"],
         "requestBody" => null,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Gives error for user"
+        "info" => "Gives error for pinned calendar"
     ];
 }
 
@@ -157,32 +155,32 @@ function testCalendarGetQuery_404()
 
 
 // 404
-function testCalendarGet_404()
+function testPinnedCalendarGet_404()
 {
     $expected = [
         "status" => 404,
         "body" => [
             [
-              "error" => "No calendars found"
+              "error" => "No pinned calendars found"
             ]
         ]
     ];
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/calendars",
+        endpoint: "/users_pinned_calendars",
         data: null
     );
 
     return [
         "name" => "GET 404",
         "method" => "GET",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => null,
         "requestBody" => null,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Fetches all calendars"
+        "info" => "Cant find pinned calendars for user"
     ];
 }
 
@@ -191,34 +189,31 @@ function testCalendarGet_404()
 
 //POST//
 // 201
-function testCalendarPost_201()
+function testPinnedCalendarPost_201()
 {
     $expected = [
         "status" => 201,
         "body" => [
-              "id" => "ID",
-              "creatorId" => "ID",
-              "name" => "STRING",
-              "type" => "STRING"
-            ]
+            "userId" => "ID",
+            "calId" => "STRING"
+        ]
     ];
 
     $body = [
-        "creatorId" => "2",
-        "name" => "testGroup",
-        "type" => "public"
+        "userId" => "2",
+        "calId" => "3"
     ];
 
     $actual = runRequest(
         method: "POST",
-        endpoint: "/calendars",
+        endpoint: "/users_pinned_calendars",
         data: $body
     );
 
     return [
         "name" => "POST 201",
         "method" => "POST",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => null,
         "requestBody" => $body,
         "expected" => $expected,
@@ -230,30 +225,29 @@ function testCalendarPost_201()
 
 
 // 400
-function testCalendarPost_400()
+function testPinnedCalendarPost_400()
 {
     $expected = [
         "status" => 400,
         "body" => [
-             "error" => "Attributes missing"
+            "error" => "Attributes missing"
         ]
     ];
 
     $body = [
-        "name" => "testGroup",
-        "type" => "public"
+        "calId" => "3"
     ];
 
     $actual = runRequest(
         method: "POST",
-        endpoint: "/calendars",
+        endpoint: "/users_pinned_calendars",
         data: $body
     );
 
     return [
         "name" => "POST 400",
         "method" => "POST",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => null,
         "requestBody" => $body,
         "expected" => $expected,
@@ -263,144 +257,71 @@ function testCalendarPost_400()
 }
 
 
-// Kolla denna koden i service
-// 409
-function testCalendarPost_409()
-{
-    $expected = [
-        "status" => 409,
-        "body" => [
-            "error" => "User is already in group with same name"
-        ]
-    ];
+// // Kolla denna koden i service
+// // 409
+// function testCalendarPost_409()
+// {
+//     $expected = [
+//         "status" => 409,
+//         "body" => [
+//             "error" => "User is already in group with same name"
+//         ]
+//     ];
 
-    $body = [
-        "name" => "testGroup",
-        "type" => "public"
-    ];
+//     $body = [
+//         "name" => "testGroup",
+//         "type" => "public"
+//     ];
 
-    $actual = runRequest(
-        method: "POST",
-        endpoint: "/calendars",
-        data: $body
-    );
+//     $actual = runRequest(
+//         method: "POST",
+//         endpoint: "/calendars",
+//         data: $body
+//     );
 
-    return [
-        "name" => "POST 409",
-        "method" => "POST",
-        "endpoint" => "/calendars",
-        "queryParams" => null,
-        "requestBody" => $body,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => ""
-    ];
-}
+//     return [
+//         "name" => "POST 409",
+//         "method" => "POST",
+//         "endpoint" => "/calendars",
+//         "queryParams" => null,
+//         "requestBody" => $body,
+//         "expected" => $expected,
+//         "actual" => $actual,
+//         "info" => ""
+//     ];
+// }
 
-
-
-//PATCH//
-
-// 200
-function testCalendarPatch_200()
-{
-    $expected = [
-        "status" => 200,
-        "body" => [
-            "id" => "ID",
-            "creatorId" => "ID",
-            "name" => "STRING",
-            "type" => "STRING"
-        ]
-    ];
-
-    $body = [
-        "id" => "65e10aa11b003",
-        "name" => "changedNameTest",
-    ];
-
-    $actual = runRequest(
-        method: "PATCH",
-        endpoint: "/calendars",
-        data: $body
-    );
-
-    return [
-        "name" => "PATCH 200",
-        "method" => "PATCH",
-        "endpoint" => "/calendars",
-        "queryParams" => null,
-        "requestBody" => $body,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => "Sends "
-    ];
-}
-
-
-// 400
-function testCalendarPatch_400()
-{
-    $expected = [
-        "status" => 400,
-        "body" => [
-           "error" => "Id missing"
-        ]
-    ];
-
-    $body = [
-        "name" => "changedNameTest",
-    ];
-
-    $actual = runRequest(
-        method: "PATCH",
-        endpoint: "/calendars",
-        data: $body
-    );
-
-    return [
-        "name" => "PATCH 400",
-        "method" => "PATCH",
-        "endpoint" => "/calendars",
-        "queryParams" => null,
-        "requestBody" => $body,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => "Sends "
-    ];
-}
 
 
 //DELETE//
 
 //200
 
-function testCalendarDelete_200()
+function testPinnedCalendarDelete_200()
 {
     $expected = [
         "status" => 200,
         "body" => [
             "id" => "ID",
-            "creatorId" => "ID",
-            "name" => "STRING",
-            "type" => "STRING"
+            "userId" => "ID",
+            "calId" => "STRING"
         ]
     ];
 
     $body = [
-        "id" => "65e10aa11b003"
+        "id" => "65e10aa11e003"
     ];
 
     $actual = runRequest(
         method: "DELETE",
-        endpoint: "/calendars",
+        endpoint: "/users_pinned_calendars",
         data: $body
     );
 
     return [
         "name" => "DELETE 200",
         "method" => "DELETE",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => null,
         "requestBody" => $body,
         "expected" => $expected,
@@ -411,7 +332,7 @@ function testCalendarDelete_200()
 
 //400
 
-function testCalendarDelete_400()
+function testPinnedCalendarDelete_400()
 {
     $expected = [
         "status" => 400,
@@ -426,14 +347,14 @@ function testCalendarDelete_400()
 
     $actual = runRequest(
         method: "DELETE",
-        endpoint: "/calendars",
+        endpoint: "/users_pinned_calendars",
         data: $body
     );
 
     return [
         "name" => "DELETE 400",
         "method" => "DELETE",
-        "endpoint" => "/calendars",
+        "endpoint" => "/users_pinned_calendars",
         "queryParams" => null,
         "requestBody" => $body,
         "expected" => $expected,
@@ -455,23 +376,19 @@ function testCalendarDelete_400()
 function runTests()
 {
     return [
-        testCalendarGet_200(),
-        testCalendarGet_404(),
+        testPinnedCalendarGet_200(),
+        testPinnedCalendarGet_404(),
         // testCalendarGet_400(),
 
-        testCalendarGetQuery_200(),
-        testCalendarGetQuery_404(),
+        testPinnedCalendarGetQuery_200(),
+        testPinnedCalendarGetQuery_404(),
 
-        testCalendarPost_201(),
-        testCalendarPost_400(),
+        testPinnedCalendarPost_201(),
+        testPinnedCalendarPost_400(),
         // testCalendarPost_409(),
 
-        testCalendarPatch_200(),
-        testCalendarPatch_400(),
-        // testCalendarPatch_404(),
-
-        testCalendarDelete_200(),
-        testCalendarDelete_400(),
+        testPinnedCalendarDelete_200(),
+        testPinnedCalendarDelete_400(),
         // testCalendarDelete_404()
     ];
 }
