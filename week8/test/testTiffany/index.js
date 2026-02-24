@@ -280,7 +280,7 @@ async function runAllTests() {
         "/restore_database"
     )
 
-  /*   // Private MSG
+     // Private MSG
     await runRequest(
         "POST",
         "/backup_database"
@@ -404,7 +404,6 @@ async function runAllTests() {
         "POST",
          "/restore_database"
     );
-     */
     
     
 
