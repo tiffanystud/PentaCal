@@ -1,7 +1,7 @@
 <?php
 
 function GETTest($path) {
-    $req = curl_init("http://localhost:8001/events");
+    $req = curl_init("http://localhost:8000/$path");
 
     curl_setopt($req, CURLOPT_RETURNTRANSFER, true);
 
@@ -15,4 +15,8 @@ function GETTest($path) {
     echo "$resp, $status";
 }
 
-$GET = ["events", "events?calId=65e10aa11b001", "events?eventId=65e10aa11c001"];
+$GET = ["events", "events?calId=65e10aa11b001", "events?eventId=65e10aa11c001", "events?eventId=65e10aa11c"];
+
+foreach($GET as $path) {
+    GETTest($path);
+}
