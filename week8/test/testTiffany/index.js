@@ -350,6 +350,20 @@ async function runAllTests() {
         "POST",
          "/restore_database"
     );
+
+    // Events
+    await runRequest(
+        "POST", 
+        "/backup_database"
+    );
+    await loadTestsForResource(
+        "events",
+        "/resources/EventsTest.php"
+    );
+    await runRequest(
+        "POST",
+         "/restore_database"
+    );
     
     
     
