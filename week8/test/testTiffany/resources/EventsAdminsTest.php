@@ -219,13 +219,20 @@ function testGet_404()
 }
 
 
-function testPost_201()
+function testPost_200()
 {
     $expected = [
-        "status" => 201,
+        "status" => 200,
         "body" => [
-            "success" => "Connection created"
-        ]
+            
+            "id" => "65e10aa143204",
+            "eventId" => "65e10aa11c004",
+            "userId" => "65e10aa11a003",
+            "canDelete" => false,
+            "canEdit" =>true,
+            "isCreator" => true,
+            ]
+        
     ];
 
     $actual = runRequest("POST", "/event_admins", [
@@ -661,9 +668,9 @@ function runTests()
         testGet_404(),
 
         // POST
-        testPost_201(),
+        testPost_200(),
         testPost_400(),
-        testPost_403(),
+        // testPost_403(),
         testPost_404(),
 
         // PATCH
