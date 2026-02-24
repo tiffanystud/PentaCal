@@ -80,10 +80,11 @@ async function test() {
     console.log(resource);
 
     //Test 7
-    req = new Request("http://localhost:8000/users?id=65e10aa11a009", {
+    req = new Request("http://localhost:8000/users", {
         headers: { "Content-type": "application/json" },
         method: "PATCH",
         body: JSON.stringify({
+            id:"65e10aa11a009",
             name: "Elias Norrheden(Ändrat namn)",
             pwd: "123(Ändrat)"
         }) 
@@ -108,10 +109,11 @@ async function test() {
     console.log(resource);
 
     //Test 9
-    req = new Request("http://localhost:8000/users?id=65e10aa11aasd009", {
+    req = new Request("http://localhost:8000/users", {
         headers: { "Content-type": "application/json" },
         method: "PATCH",
         body: JSON.stringify({
+            id: "65e10aa11aasd009",
             name: "Elias Norrheden(Ändrat namn)",
             pwd: "123(Ändrat)"
         }) 
@@ -122,10 +124,11 @@ async function test() {
     console.log(resource);
 
     //Test 10
-    req = new Request("http://localhost:8000/users?id=65e10aa11a009", {
+    req = new Request("http://localhost:8000/users", {
         headers: { "Content-type": "application/json" },
         method: "DELETE",
         body: JSON.stringify({
+            id: "65e10aa11a009",
             email: "ivan@example.com",
             pwd: "123(Ändrat)"
         }) 
@@ -136,11 +139,12 @@ async function test() {
     console.log(resource);
 
     //Test 11
-    req = new Request("http://localhost:8000/users?id=65e10aa11a009", {
+    req = new Request("http://localhost:8000/users", {
         headers: { "Content-type": "application/json" },
         method: "DELETE",
         body: JSON.stringify({
-            email: "ivan@example.com",
+            id: "65e10aa11a009",
+            email: "ivan@example.com"
         }) 
     });
     response = await fetch(req); 
@@ -149,10 +153,11 @@ async function test() {
     console.log(resource);
 
     //Test 12
-    req = new Request("http://localhost:8000/users?id=65e10aa11a008", {
+    req = new Request("http://localhost:8000/users", {
         headers: { "Content-type": "application/json" },
         method: "DELETE",
         body: JSON.stringify({
+            id: "65e10aa11a005",
             email: "heidi@example.com",
             pwd: "pwdasd9"
         }) 
