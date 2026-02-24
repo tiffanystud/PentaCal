@@ -218,11 +218,11 @@ function compareResults(expected, actual) {
 async function runAllTests() {
 
     /* -- Resources -- */
-    
-  
+
+
     // Events Admins  (EJ KLAR)
     await runRequest(
-        "POST", 
+        "POST",
         "/backup_database"
     );
     await loadTestsForResource(
@@ -234,7 +234,7 @@ async function runAllTests() {
         "/restore_database"
     )
 
-  /*   // Private MSG
+    //   /*   // Private MSG
     await runRequest(
         "POST",
         "/backup_database"
@@ -338,7 +338,7 @@ async function runAllTests() {
 
     // Events
     await runRequest(
-        "POST", 
+        "POST",
         "/backup_database"
     );
     await loadTestsForResource(
@@ -347,11 +347,10 @@ async function runAllTests() {
     );
     await runRequest(
         "POST",
-         "/restore_database"
+        "/restore_database"
     );
-     */
-    
-    
+
+
 
 }
 
