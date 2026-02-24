@@ -417,8 +417,7 @@ function testPatch_400()
 
     $actual = runRequest("PATCH", "/event_admins", [
         "eventId" => "65e10aa11c004",
-        "userId" => "65e10aa11a003",
-        "canEdit" => true
+        "userId" => "65e10aa11a003"
     ]);
 
     return [
