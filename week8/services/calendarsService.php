@@ -82,9 +82,9 @@ class CalendarsService{
                 break;
             }
         }
-
+        
         if($checkCal){
-            $db->deleteData($input["id"]);
+            return $db->deleteData($input["id"]);
         } else {
             throw new Exception("No calendar exists to delete");
         }

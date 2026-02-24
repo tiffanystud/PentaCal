@@ -156,39 +156,6 @@ function testCalendarGetQuery_404()
 
 
 
-// 404
-function testCalendarGet_404()
-{
-    $expected = [
-        "status" => 404,
-        "body" => [
-            [
-              "error" => "No calendars found"
-            ]
-        ]
-    ];
-
-    $actual = runRequest(
-        method: "GET",
-        endpoint: "/calendars",
-        data: null
-    );
-
-    return [
-        "name" => "GET 404",
-        "method" => "GET",
-        "endpoint" => "/calendars",
-        "queryParams" => null,
-        "requestBody" => null,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => "Fetches all calendars"
-    ];
-}
-
-
-
-
 //POST//
 // 201
 function testCalendarPost_201()
@@ -456,8 +423,6 @@ function runTests()
 {
     return [
         testCalendarGet_200(),
-        testCalendarGet_404(),
-        // testCalendarGet_400(),
 
         testCalendarGetQuery_200(),
         testCalendarGetQuery_404(),

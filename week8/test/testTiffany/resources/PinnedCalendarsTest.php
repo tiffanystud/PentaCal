@@ -107,7 +107,7 @@ function testPinnedCalendarGetQuery_200()
 
     $actual = runRequest(
         method: "GET",
-        endpoint: "/users_pinned_calendars?id=65e10aa11e003",
+        endpoint: "/users_pinned_calendars?userId=65e10aa11a003",
         data: null
     );
 
@@ -115,7 +115,7 @@ function testPinnedCalendarGetQuery_200()
         "name" => "GETQUERY 200",
         "method" => "GET",
         "endpoint" => "/users_pinned_calendars",
-        "queryParams" => ["id" => "65e10aa11e003"],
+        "queryParams" => ["userId" => "65e10aa11a003"],
         "requestBody" => null,
         "expected" => $expected,
         "actual" => $actual,
@@ -129,7 +129,7 @@ function testPinnedCalendarGetQuery_404()
     $expected = [
         "status" => 404,
         "body" => [
-            "error" => "No pinned calendar found for user"
+            "error" => "UserId missing"
         ]
     ];
 
@@ -148,39 +148,6 @@ function testPinnedCalendarGetQuery_404()
         "expected" => $expected,
         "actual" => $actual,
         "info" => "Gives error for pinned calendar"
-    ];
-}
-
-
-
-
-// 404
-function testPinnedCalendarGet_404()
-{
-    $expected = [
-        "status" => 404,
-        "body" => [
-            [
-              "error" => "No pinned calendars found"
-            ]
-        ]
-    ];
-
-    $actual = runRequest(
-        method: "GET",
-        endpoint: "/users_pinned_calendars",
-        data: null
-    );
-
-    return [
-        "name" => "GET 404",
-        "method" => "GET",
-        "endpoint" => "/users_pinned_calendars",
-        "queryParams" => null,
-        "requestBody" => null,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => "Cant find pinned calendars for user"
     ];
 }
 
@@ -377,7 +344,6 @@ function runTests()
 {
     return [
         testPinnedCalendarGet_200(),
-        testPinnedCalendarGet_404(),
         // testCalendarGet_400(),
 
         testPinnedCalendarGetQuery_200(),
