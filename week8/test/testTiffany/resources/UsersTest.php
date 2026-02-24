@@ -282,13 +282,15 @@ function testUsersPatch_200()
 
 
     $body = [
+        "id" => "65e10aa11a006",
         "name" => "Updated Name",
         "pwd" => "newpass"
+
     ];
 
     $actual = runRequest(
         method: "PATCH",
-        endpoint: "/users?id=65e10aa11a006",
+        endpoint: "/users",
         data: array_merge($body)
     );
 
@@ -313,25 +315,21 @@ function testUsersPatch_404()
         ]
     ];
 
-    $query = [
-        "id" => "000000000000"
-    ];
-
     $body = [
+        "id" => "000000000000",
         "name" => "New Name"
     ];
 
     $actual = runRequest(
         method: "PATCH",
         endpoint: "/users?id=65e10aa11hhyba006",
-        data: array_merge($query, $body)
+        data: array_merge($body)
     );
 
     return [
         "name" => "PATCH 404",
         "method" => "PATCH",
         "endpoint" => "/users",
-        "queryParams" => $query,
         "requestBody" => $body,
         "expected" => $expected,
         "actual" => $actual,
@@ -353,8 +351,9 @@ function testUsersDelete_200()
     ];
 
     $body = [
-        "email" => "frank@example.com",
-        "pwd" => "pwd6"
+        "id" => "65e10aa11a005",
+        "email" => "eve@example.com",
+        "pwd" => "pwd5"
     ];
 
     $actual = runRequest(
