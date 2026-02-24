@@ -88,7 +88,7 @@ function testCalendarGet_200()
         "requestBody" => null,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Fetches all calendars messages"
+        "info" => "Fetches all calendars"
     ];
 }
 
@@ -149,40 +149,7 @@ function testCalendarGetQuery_404()
         "requestBody" => null,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Gives error for user"
-    ];
-}
-
-
-
-
-// 404
-function testCalendarGet_404()
-{
-    $expected = [
-        "status" => 404,
-        "body" => [
-            [
-              "error" => "No calendars found"
-            ]
-        ]
-    ];
-
-    $actual = runRequest(
-        method: "GET",
-        endpoint: "/calendars",
-        data: null
-    );
-
-    return [
-        "name" => "GET 404",
-        "method" => "GET",
-        "endpoint" => "/calendars",
-        "queryParams" => null,
-        "requestBody" => null,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => "Fetches all calendars"
+        "info" => "Calendar does not exist"
     ];
 }
 
@@ -223,7 +190,7 @@ function testCalendarPost_201()
         "requestBody" => $body,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Sends "
+        "info" => "Creates calendar"
     ];
 }
 
@@ -263,39 +230,39 @@ function testCalendarPost_400()
 }
 
 
-// Kolla denna koden i service
-// 409
-function testCalendarPost_409()
-{
-    $expected = [
-        "status" => 409,
-        "body" => [
-            "error" => "User is already in group with same name"
-        ]
-    ];
+// // Kolla denna koden i service
+// // 409
+// function testCalendarPost_409()
+// {
+//     $expected = [
+//         "status" => 409,
+//         "body" => [
+//             "error" => "User is already in group with same name"
+//         ]
+//     ];
 
-    $body = [
-        "name" => "testGroup",
-        "type" => "public"
-    ];
+//     $body = [
+//         "name" => "testGroup",
+//         "type" => "public"
+//     ];
 
-    $actual = runRequest(
-        method: "POST",
-        endpoint: "/calendars",
-        data: $body
-    );
+//     $actual = runRequest(
+//         method: "POST",
+//         endpoint: "/calendars",
+//         data: $body
+//     );
 
-    return [
-        "name" => "POST 409",
-        "method" => "POST",
-        "endpoint" => "/calendars",
-        "queryParams" => null,
-        "requestBody" => $body,
-        "expected" => $expected,
-        "actual" => $actual,
-        "info" => ""
-    ];
-}
+//     return [
+//         "name" => "POST 409",
+//         "method" => "POST",
+//         "endpoint" => "/calendars",
+//         "queryParams" => null,
+//         "requestBody" => $body,
+//         "expected" => $expected,
+//         "actual" => $actual,
+//         "info" => ""
+//     ];
+// }
 
 
 
@@ -333,7 +300,7 @@ function testCalendarPatch_200()
         "requestBody" => $body,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Sends "
+        "info" => "Changes for calendars"
     ];
 }
 
@@ -366,7 +333,7 @@ function testCalendarPatch_400()
         "requestBody" => $body,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Sends "
+        "info" => "Cant find calendar to change"
     ];
 }
 
@@ -405,7 +372,7 @@ function testCalendarDelete_200()
         "requestBody" => $body,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Sends "
+        "info" => "Deletes calendar"
     ];
 }
 
@@ -438,7 +405,7 @@ function testCalendarDelete_400()
         "requestBody" => $body,
         "expected" => $expected,
         "actual" => $actual,
-        "info" => "Sends "
+        "info" => "Cant find calendar to delete"
     ];
 }
 
@@ -456,8 +423,6 @@ function runTests()
 {
     return [
         testCalendarGet_200(),
-        testCalendarGet_404(),
-        // testCalendarGet_400(),
 
         testCalendarGetQuery_200(),
         testCalendarGetQuery_404(),

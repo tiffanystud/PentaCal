@@ -198,8 +198,10 @@ const runTests = async function() {
 
 //runTests();
 
-fetch("http://localhost:8000/users?id=1", {
-    method: "DELETE",
-    body: JSON.stringify({email: "frank@example.com", pwd: "pwd6"}),
-    headers: {"Content-Type": "application/json"}
+fetch("http://localhost:8000/event_admins?eventId=65e10aa11c002", {
+    method: "GET"
+}).then(resp => resp.json()).then(reso => console.log(reso));
+
+fetch("http://localhost:8000/event_admins?userId=65e10aa11a002", {
+    method: "GET"
 }).then(resp => resp.json()).then(reso => console.log(reso));

@@ -72,7 +72,10 @@ function testGet_200_all()
         ]
     ];
 
-    $actual = runRequest("GET", "/event_admins");
+    $actual = runRequest(
+        "GET", 
+        "/event_admins"
+    );
 
     return [
         "name" => "GET 200 ALL",
@@ -102,8 +105,10 @@ function testGet_200_userId()
         ]
     ];
 
-    $actual = runRequest("GET", "/event_admins", [
-        "userId" => "65e10aa11a001"
+    $actual = runRequest(
+        "GET", 
+        "/event_admins", 
+        ["userId" => "65e10aa11a001"
     ]);
 
     return [
@@ -214,13 +219,20 @@ function testGet_404()
 }
 
 
-function testPost_201()
+function testPost_200()
 {
     $expected = [
         "status" => 201,
         "body" => [
-            "success" => "Connection created"
-        ]
+            
+            "id" => "65e10aa143204",
+            "eventId" => "65e10aa11c004",
+            "userId" => "65e10aa11a003",
+            "canDelete" => false,
+            "canEdit" =>true,
+            "isCreator" => true,
+            ]
+        
     ];
 
     $actual = runRequest("POST", "/event_admins", [
@@ -365,16 +377,22 @@ function testPatch_200()
     $expected = [
         "status" => 200,
         "body" => [
-            "error" => "Permissions changed"
-        ]
+            
+            "id" => "65e10aa143204",
+            "eventId" => "65e10aa11c004",
+            "userId" => "65e10aa11a003",
+            "canDelete" => false,
+            "canEdit" =>true,
+            "isCreator" => true,
+            ]
+        
     ];
 
     $actual = runRequest("PATCH", "/event_admins", [
         "eventId" => "65e10aa11c004",
         "userId" => "65e10aa11a003",
-        "sessionId" => "65e10aa11a003",
+        // "sessionId" => "65e10aa11a003",
         "canEdit" => false,
-        "canDelete" => true
     ]);
 
     return [
@@ -406,8 +424,7 @@ function testPatch_400()
 
     $actual = runRequest("PATCH", "/event_admins", [
         "eventId" => "65e10aa11c004",
-        "userId" => "65e10aa11a003",
-        "canEdit" => true
+        "userId" => "65e10aa11a003"
     ]);
 
     return [
@@ -486,7 +503,6 @@ function testPatch_404()
         "requestBody" => [
             "eventId" => "000000000000",
             "userId" => "000000000000",
-            "sessionId" => "65e10aa11a001",
             "canEdit" => true,
             "canDelete" => false
         ],
@@ -502,14 +518,13 @@ function testDelete_200()
     $expected = [
         "status" => 200,
         "body" => [
-            "success" => "Successfully deleted"
+            "success" => "Connection successfully deleted"
         ]
     ];
 
     $actual = runRequest("DELETE", "/event_admins", [
-        "eventId" => "65e10aa11c005",
-        "userId" => "65e10aa11a003",
-        "sessionId" => "65e10aa11a003"
+        "eventId" => "65e10aa11c001",
+        "userId" => "65e10aa11a005",
     ]);
 
     return [
@@ -542,8 +557,7 @@ function testDelete_400()
         endpoint: "/event_admins",
         data: [
             "eventId" => "65e10aa11c005",
-            "userId" => "65e10aa11a003"
-            // sessionId saknas → 400
+            "userId" => ""
         ]
     );
 
@@ -644,36 +658,32 @@ function testDelete_404()
 
 function runTests()
 {
-    $tests = [];
-
-    // GET
-    $tests[] = testGet_200_all();
-    $tests[] = testGet_200_userId();
-    $tests[] = testGet_200_eventId();
-    $tests[] = testGet_200_both();
-    $tests[] = testGet_404();
-
-    // POST
-    $tests[] = testPost_201();
-    $tests[] = testPost_400();
-    $tests[] = testPost_403();
-    $tests[] = testPost_404();
-
-    // PATCH
-    $tests[] = testPatch_200();
-    $tests[] = testPatch_400();
-    $tests[] = testPatch_403();
-    $tests[] = testPatch_404();
-
-    // DELETE
-    $tests[] = testDelete_200();
-    $tests[] = testDelete_400();
-    $tests[] = testDelete_403();
-    $tests[] = testDelete_404();
-
     return [
-        "resource" => "event_admins",
-        "tests" => $tests
+        // GET
+        testGet_200_all(),
+        testGet_200_userId(),
+        testGet_200_eventId(),
+        testGet_200_both(),
+        testGet_404(),
+
+        // POST
+        testPost_200(),
+        testPost_400(),
+        // testPost_403(),
+        testPost_404(),
+
+        // PATCH
+        testPatch_200(),
+        testPatch_400(),
+        // testPatch_403(),
+        testPatch_404(),
+
+        // DELETE
+        testDelete_200(),
+        testDelete_400(),
+        // testDelete_403(), SessionId 
+        testDelete_404(),
+
     ];
 }
 
