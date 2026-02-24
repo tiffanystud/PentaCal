@@ -30,15 +30,136 @@
             "userId": "65e10aa11a003",
             "canDelete": false,
             "canEdit": true,
-            "isCreator": true
+            "isCreator": true,
+            "canEdir": true
         },
         {
-            "id": "65e10aa143205",
-            "eventId": "65e10aa11c005",
-            "userId": "65e10aa11a003",
-            "canDelete": false,
+            "id": "699d7cbc6c7c8",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
             "canEdit": false,
-            "isCreator": true
+            "isCreator": false
+        },
+        {
+            "id": "699d7cbc6d1d7",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7cce13a60",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7cce14249",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7d0d4a8bc",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7d0d4ae70",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7d0e446e7",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7d0e44f14",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7d600f13e",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7d600fbb1",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7dbd601eb",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7dbd60c24",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7e4d79cae",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7e4d7a571",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7e68bed01",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7e68bf600",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
         }
     ]
 }

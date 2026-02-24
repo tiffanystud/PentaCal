@@ -221,7 +221,27 @@ async function runAllTests() {
 
 
     /* -- Resources -- */
-
+    
+    
+    
+    // Events Admins 
+    await runRequest(
+        "POST", 
+        "/backup_database"
+    );
+    await loadTestsForResource(
+        "event_admins",
+        "/resources/EventsAdminsTest.php"
+    );
+        
+    await runRequest(
+        "POST",
+        "/restore_database"
+    ); 
+    
+    
+    
+    
     /* -- Rollback start -- */
     await runRequest(
         "POST",
