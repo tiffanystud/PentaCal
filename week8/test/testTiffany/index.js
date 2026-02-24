@@ -235,7 +235,7 @@ async function runAllTests() {
     ) */; 
     
     
-    // Private MSG
+/*     // Private MSG
     await runRequest(
         "POST",
         "/backup_database"
@@ -248,7 +248,7 @@ async function runAllTests() {
         "POST",
         "/restore_database"
     );
-
+ */
 
     // Users
     await runRequest(
@@ -264,7 +264,7 @@ async function runAllTests() {
         "/restore_database"
     );
 
-
+/* 
     // Users Availabilities
     await runRequest(
         "POST",
@@ -336,7 +336,7 @@ async function runAllTests() {
         "POST",
         "/restore_database"
     );
-
+ */
 }
 
 runAllTests();

@@ -1,6 +1,5 @@
 <?php
 
-error_log("---------In EventsRSVPTest.php. - row 3");
 function runRequest($method, $endpoint, $data = null)
 {
 
@@ -349,7 +348,7 @@ function testUsersDelete_200()
     $expected = [
         "status" => 200,
         "body" => [
-            "message" => "user deleted"
+            "message" => "User succesfully deleted"
         ]
     ];
 
@@ -361,7 +360,7 @@ function testUsersDelete_200()
     $actual = runRequest(
         method: "DELETE",
         endpoint: "/users?id=65e10aa11a006",
-        data: array_merge($body)
+        data: $body
     );
 
     return [

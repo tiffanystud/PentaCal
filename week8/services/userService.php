@@ -54,10 +54,27 @@
         public static function deleteUser($id, $data) {
             $db = new DBAccess("users");
             $result = $db->findById($id);
+            error_log("-------------------------------------");
+            error_log("-------------------------------------");
+            
+            var_dump($result);
+            
+            error_log($result["email"]);
+            // PWD Null??
+            error_log($result["pwd"]);
+            error_log($result["name"]);
+            error_log("-------------------------------------");
+            error_log("-------------------------------------");
+            
             if ($result === null) {
                 return ["error" => "User not found"];
             }
-            if ($result["email"] === $data["email"] && $result["pwd"] === $data["pwd"]) {
+            
+            
+            if (
+                $result["email"] == $data["email"] && 
+                $result["pwd"] == $data["pwd"]
+            ) {
                 $deleteResult = $db->deleteData($id);
                 return ["message" => "User succesfully deleted"];
             } else {
