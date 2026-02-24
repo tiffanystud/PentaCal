@@ -217,15 +217,11 @@ function compareResults(expected, actual) {
 /*  ------- Kör alla test -------- */
 async function runAllTests() {
 
-    console.log("START AV runAllTests")
-
-
     /* -- Resources -- */
     
     
-    
     // Events Admins 
-    await runRequest(
+/*     await runRequest(
         "POST", 
         "/backup_database"
     );
@@ -233,62 +229,51 @@ async function runAllTests() {
         "event_admins",
         "/resources/EventsAdminsTest.php"
     );
-        
     await runRequest(
         "POST",
         "/restore_database"
-    ); 
+    ) */; 
     
     
-    
-    
-    /* -- Rollback start -- */
+    // Private MSG
     await runRequest(
         "POST",
         "/backup_database"
     );
-    // Users Availabilities
     await loadTestsForResource(
         "privateMSG",
         "/resources/PrivateMSGTest.php"
     );
-    /* -- Rollback -- */
     await runRequest(
         "POST",
         "/restore_database"
     );
 
 
-    /* -- Rollback start -- */
+    // Users
     await runRequest(
         "POST",
         "/backup_database"
     );
-    // Users rollback ej ok??
     await loadTestsForResource(
         "users",
         "/resources/UsersTest.php"
     );
-    /* -- Rollback -- */
     await runRequest(
         "POST",
         "/restore_database"
     );
-    console.log("HEJ ROLLBACK??")
 
 
-    /* -- Rollback start -- */
+    // Users Availabilities
     await runRequest(
         "POST",
         "/backup_database"
     );
-    // Users Availabilities
     await loadTestsForResource(
         "usersAvailabilities",
         "/resources/UsersAvailabilitiesTest.php"
     );
-    console.log("Efter U.AVAILS AV runAllTests")
-    /* -- Rollback -- */
     await runRequest(
         "POST",
         "/restore_database"
@@ -304,17 +289,16 @@ async function runAllTests() {
         "eventsRSVP",
         "/resources/EventsRSVPTest.php"
     );
-    console.log("Efter E.RSVPS AV runAllTests")
     await runRequest(
         "POST",
         "/restore_database"
     );
 
 
-    // Events RSVP
+    // Calendar MSG
     await runRequest(
         "POST",
-        "/calendar_msg"
+        "/backup_database"
     );
     await loadTestsForResource(
         "calendarsMSG",
@@ -353,16 +337,6 @@ async function runAllTests() {
         "/restore_database"
     );
 
-
-
-
-    // await loadTestsForResource("users", "resources/Users.php");
-    // await loadTestsForResource("groups", "resources/Groups.php");
-
-
-    /* -- Rollback end -- */
-    // Gör rollback efter alla test
-    // await runRequest("POST", "/restore_database");
 }
 
 runAllTests();

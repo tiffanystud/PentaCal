@@ -160,6 +160,22 @@
             "canDelete": true,
             "canEdit": false,
             "isCreator": false
+        },
+        {
+            "id": "699d7ee80d396",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c006",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
+        },
+        {
+            "id": "699d7ee80dc1d",
+            "userId": "65e10aa11a005",
+            "eventId": "65e10aa11c001",
+            "canDelete": true,
+            "canEdit": false,
+            "isCreator": false
         }
     ]
 }
