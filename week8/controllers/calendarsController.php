@@ -42,8 +42,10 @@ class CalendarsController{
                 } else {
                     return self::sendResponse(CalendarsService::calendarsPost($input), 201);
                 }
-            } catch(Exception $error){
+            } catch(Invalid $error){
                 return self::sendResponse(["error" => $error->getMessage()], 400);
+            } catch(AlreadyInGroup $error){
+                return self::sendResponse(["error" => $error->getMessage()], 409);
             }
 
         }
