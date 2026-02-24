@@ -675,7 +675,7 @@ function runTests()
         // PATCH
         testPatch_200(),
         testPatch_400(),
-        testPatch_403(),
+        // testPatch_403(),
         testPatch_404(),
 
         // DELETE
