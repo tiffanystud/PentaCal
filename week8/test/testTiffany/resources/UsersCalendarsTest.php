@@ -336,6 +336,107 @@ function testPost_409()
 
 };
 
+function testPatch_200()
+{
+    $expected = [
+        "status" => 200,
+        "body" => [
+            "message" => "Admin status changed!"
+        ]
+    ];
+
+    $body = [
+        "userId" => "65e10aa11a001",
+        "calId" => "65e10aa11b003"
+    ];
+
+    $actual = runRequest(
+        method: "PATCH",
+        endpoint: "/users_calendars",
+        data: $body
+    );
+
+    $result = [
+        "name" => "PATCH 200",
+        "method" => "PATCH",
+        "endpoint" => "/users_calendars",
+        "queryParams" => null,
+        "requestBody" => $body,
+        "expected" => $expected,
+        "actual" => $actual,
+        "info" => "User admin status changed."
+    ];
+
+    return $result;
+}
+
+function testPatch_400()
+{
+    $expected = [
+        "status" => 400,
+        "body" => [
+            "error" => "User ID missing."
+        ]
+    ];
+
+    $body = [
+        "calId" => "65e10aa11b003"
+    ];
+
+    $actual = runRequest(
+        method: "PATCH",
+        endpoint: "/users_calendars",
+        data: $body
+    );
+
+    $result = [
+        "name" => "PATCH 400",
+        "method" => "PATCH",
+        "endpoint" => "/users_calendars",
+        "queryParams" => null,
+        "requestBody" => $body,
+        "expected" => $expected,
+        "actual" => $actual,
+        "info" => "User ID missing."
+    ];
+
+    return $result;
+}
+
+function testPatch_404()
+{
+    $expected = [
+        "status" => 404,
+        "body" => [
+            "error" => "Calendar not found."
+        ]
+    ];
+
+    $body = [
+        "userId" => "65e10aa11a001",
+        "calId" => "65e003"
+    ];
+
+    $actual = runRequest(
+        method: "PATCH",
+        endpoint: "/users_calendars",
+        data: $body
+    );
+
+    $result = [
+        "name" => "PATCH 404",
+        "method" => "PATCH",
+        "endpoint" => "/users_calendars",
+        "queryParams" => null,
+        "requestBody" => $body,
+        "expected" => $expected,
+        "actual" => $actual,
+        "info" => "Calendar not found."
+    ];
+
+    return $result;
+}
+
 function testDelete_200()
 {
     $expected = [
@@ -459,6 +560,10 @@ function runTests()
     $tests[] = testPost_404();
     $tests[] = testPost_409();    
 
+    //PATCH
+    $tests[] = testPatch_200();
+    $tests[] = testPatch_400();
+    $tests[] = testPatch_404();
 
     // DELETE
     $tests[] = testDelete_200();

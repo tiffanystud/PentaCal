@@ -29,7 +29,7 @@ class UsersCalendarsService {
         // Validate calendar exists
         $dbCals = new DBAccess("calendars");
         if (!$dbCals->findById($calId)) {
-            throw new Exception("Calendar not found.");
+            throw new Exception("Calendar not found.", 404);
         }
 
         $db = new DBAccess("users_calendars");
@@ -182,22 +182,34 @@ class UsersCalendarsService {
     //  Requires: id (relation id), adminId? Denna inte klar.
     public static function makeUserCalAdmin($input)
     {
-        if (!isset($input["id"]))      throw new Exception("Relation ID missing.");
-        if (!isset($input["adminId"])) throw new Exception("Admin ID missing.");
+        if (!isset($input["userId"])) throw new Exception("User ID missing.");
+        if (!isset($input["calId"])) throw new Exception("Calendar ID missing.");
 
-        $relationId = $input["id"];
-        $adminId    = $input["adminId"];
+        $userId = $input["userId"];
+        $calId    = $input["calId"];
 
         $dbUG = new DBAccess("users_calendars");
+        $dbU = new DBAccess("users");
 
-        $relation = $dbUG->findById($relationId);
-        if (!$relation) {
-            throw new Exception("Relation not found.");
+        $userExists = $dbU->findById($userId);
+        if (!$userExists){
+            throw new Exception("User not found.", 404);
         }
 
-        $relations = self::getAllRelationsByCalId($relation["calId"]);
+
+        $relations = self::getAllRelationsByCalId($calId);
+
+        foreach ($relations as $rel) {
+            if ($rel["userId"] == $userId) {
+                $dbUG->patchData($rel["id"], ["isAdmin" => true]);
+                return ["message" => "Admin status changed!"];
+            }
+        }
+
+        throw new Exception("User not in calendar.");
 
         // is admin admin?
+        /*
         $adminIsAdmin = false;
         foreach ($relations as $rel) {
             if ($rel["userID"] == $adminId && $rel["isAdmin"] === true) {
@@ -205,12 +217,12 @@ class UsersCalendarsService {
                 break;
             }
         }
+        
         if (!$adminIsAdmin) {
             throw new Exception("Only admin can change admin status.");
         }
-
         // Only allowed change: isAdmin = true
-        return $dbUG->patchData($relationId, ["isAdmin" => true]);
+        */
     }
 }
 
