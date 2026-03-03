@@ -37,6 +37,7 @@ class EventsService {
         $type = $input["type"] ?? null;
         $name = $input["name"] ?? null;
         $date =  $input["date"] ?? null;
+        $time = $input["time"] ?? null;
         $desc = $input["description"] ?? null;
         $location = $input["location"] ?? null;
         $conf = $input["needsConfirmation"] ?? null;
@@ -44,7 +45,7 @@ class EventsService {
         $tags = $input["tags"] ?? null;
         $calId = $input["calId"] ?? null;
 
-        if (!$type || !$name || !$location || $conf === null || !$calId || !$date) {
+        if (!$type || !$name || !$location || $conf === null || !$calId || !$date || !$time) {
             throw new Exception("Missing attributes");
         }
 
@@ -66,6 +67,7 @@ class EventsService {
             "type" => $type,
             "name" => $name,
             "date" => $date,
+            "time" => $time,
             "description" => $desc,
             "location" => $location,
             "needsConfirmation" => $conf,
@@ -86,6 +88,7 @@ class EventsService {
         $type = $input["type"] ?? null;
         $name = $input["name"] ?? null;
         $date = $input["date"] ?? null;
+        $time = $input["time"] ?? null;
         $desc = $input["description"] ?? null;
         $location = $input["location"] ?? null;
         $conf = $input["needsConfirmation"] ?? null;
@@ -110,6 +113,7 @@ class EventsService {
             "name" => $name,
             "date" => $date,
             "description" => $desc,
+            "time" => $time,
             "location" => $location,
             "needsConfirmation" => $conf,
             "participationLimit" => $pLimit,
