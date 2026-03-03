@@ -17,15 +17,13 @@ class Calendar extends HTMLElement {
         <p>Events:</p>
         <div class="events"></div>
         `;
-        this.style.backgroundColor = "yellow";
-        this.style.padding = "10px";
-        this.style.borderRadius = "10px";
-        this.style.display = "block";
+        this.events = this.events.sort((a, b) => new Date(a.date) - new Date(b.date));
         for (let event of this.events) {
             let div = document.createElement("div");
             div.classList.add("event");
             div.innerHTML = `
             <h4>${event.name}</h4>
+            <p>Date: ${event.date}</p>
             <p>Description: ${event.description}</p>
             <p>Location: ${event.location}</p>
             `;
@@ -34,10 +32,44 @@ class Calendar extends HTMLElement {
     }
 }
 
+function driver() {
+    usrName.value = "";
+    pwd.value = "";
+}
+
 customElements.define("calendar-box", Calendar);
 
 store.subscribe("log", (state) => {
   console.log("State changed:", state);
+});
+
+store.subscribe("logOut", (state) => {
+    logOut.style.display = "none";
+    document.querySelector("#status").textContent = "Successfully logged out!";
+    document.querySelector("#status").style.display = "block";
+    setTimeout(() => {
+        document.querySelector("#status").style.display = "none";
+    }, 2000);
+    document.querySelector("#logged-in").style.display = "none";
+    document.querySelector("#cals").innerHTML = "";
+    document.querySelector("#top-info").textContent = "Welcome to Cal. Please log in.";
+});
+
+store.subscribe("displayCals", async (state) => {
+    if (!store.getState().isLoggedIn) {
+        return false;
+    }
+
+    for (let cal of state.cals) {
+        let div = document.createElement("calendar-box");
+        div.data = cal;
+        let resp = await fetch(`http://localhost:8000/events?calId=${cal.id}`);
+        let reso = await resp.json();
+        div.events = reso;
+        document.querySelector("#cals").appendChild(div);
+    }
+
+    console.log("Calendars spawned");
 });
 
 if (store.getState().darkMode) {
@@ -57,8 +89,6 @@ darkMode.addEventListener("click", () => {
 logIn.addEventListener("click", async () => {
     let resp = await fetch("http://localhost:8000/users");
     let reso = await resp.json();
-    
-    let userFound = false;
     for (let user of reso) {
         document.querySelector("#status").style.display = "none";
 
@@ -67,43 +97,38 @@ logIn.addEventListener("click", async () => {
             let usersCalsReso = await usersCalsResp.json();
             let calsResp = await fetch(`http://localhost:8000/calendars`);
             let calsReso = await calsResp.json();
+            let cals = [];
             for (let userCal of usersCalsReso) {
                 for (let cal of calsReso) {
                     if (userCal.calId === cal.id) {
-                        store.getState().cals.push(cal);
+                        cals.push(cal);
                     }
                 }
             }
-            store.setState({usrName: user.name, pwd: user.pwd, isLoggedIn: true, darkMode: store.getState().darkMode, cals: store.getState().cals}, ["log"]);
+            store.setState({usrName: user.name, pwd: user.pwd, isLoggedIn: true, darkMode: store.getState().darkMode, cals: cals}, ["log", "displayCals"]);
             logOut.style.display = "inline";
             userFound = true;
+            document.querySelector("#top-info").textContent = `Welcome ${store.getState().usrName}!`;
+            usrName.value = "";
+            pwd.value = "";
             break;
         }
     }
-    if (!userFound) {
-        document.querySelector("#status").textContent = "Incorrect username or password, try again"; 
-        return;
-    }
 
     if (store.getState().isLoggedIn) {
-        document.querySelector("div").style.display = "block";
-    }
-
-    for (let cal of store.getState().cals) {
-        let div = document.createElement("calendar-box");
-        div.data = cal;
-        let resp = await fetch(`http://localhost:8000/events?calId=${cal.id}`);
-        let reso = await resp.json();
-        div.events = reso;
-        document.querySelector("#cals").appendChild(div);
+        document.querySelector("#logged-in").style.display = "block";
+        setTimeout(() => {
+            document.querySelector("#logged-in").style.display = "none";
+        }, 2000);
+    } else {
+        document.querySelector("#status").textContent = "Incorrect username or password, try again"; 
+        document.querySelector("#status").style.display = "block"; 
+        return;
     }
 });
 
 logOut.addEventListener("click", () => {
-    logOut.style.display = "none";
-    document.querySelector("#status").textContent = "Successfully logged out!";
-    document.querySelector("#status").style.display = "block";
-    document.querySelector("div").style.display = "none";
-    document.querySelector("#cals").innerHTML = "";
-    store.setState({ usrName: null, pwd: null, isLoggedIn: false, darkMode: store.getState().darkMode, cals: []}, ["log"]);
+    store.setState({ usrName: null, pwd: null, isLoggedIn: false, darkMode: store.getState().darkMode, cals: []}, ["log", "logOut"]);
 });
+
+driver();
