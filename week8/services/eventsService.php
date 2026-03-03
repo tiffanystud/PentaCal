@@ -36,6 +36,7 @@ class EventsService {
         // $userId = $input["userId"] ?? null; för kontroll om behörighet
         $type = $input["type"] ?? null;
         $name = $input["name"] ?? null;
+        $date =  $input["date"] ?? null;
         $desc = $input["description"] ?? null;
         $location = $input["location"] ?? null;
         $conf = $input["needsConfirmation"] ?? null;
@@ -43,7 +44,7 @@ class EventsService {
         $tags = $input["tags"] ?? null;
         $calId = $input["calId"] ?? null;
 
-        if (!$type || !$name || !$location || $conf === null || !$calId) {
+        if (!$type || !$name || !$location || $conf === null || !$calId || !$date) {
             throw new Exception("Missing attributes");
         }
 
@@ -64,6 +65,7 @@ class EventsService {
             "id" => uniqid(),
             "type" => $type,
             "name" => $name,
+            "date" => $date,
             "description" => $desc,
             "location" => $location,
             "needsConfirmation" => $conf,
@@ -83,6 +85,7 @@ class EventsService {
         $calId = $input["calId"] ?? null;
         $type = $input["type"] ?? null;
         $name = $input["name"] ?? null;
+        $date = $input["date"] ?? null;
         $desc = $input["description"] ?? null;
         $location = $input["location"] ?? null;
         $conf = $input["needsConfirmation"] ?? null;
@@ -105,6 +108,7 @@ class EventsService {
         $patchAttributes = [
             "type" => $type,
             "name" => $name,
+            "date" => $date,
             "description" => $desc,
             "location" => $location,
             "needsConfirmation" => $conf,
