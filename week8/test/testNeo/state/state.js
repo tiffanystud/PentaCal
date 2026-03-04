@@ -1,3 +1,46 @@
+class Store {
+    static lastState;
+    static state;
+    static listeners = {};
+
+    constructor(data) {
+        this.usrName = data.usrName;
+        this.pwd = data.pwd;
+        this.isLoggedIn = data.isLoggedIn;
+        this.darkMode = data.darkMode;
+        this.cals = data.cals;
+
+        Store.state = this;
+    }
+
+    getLastState() {
+        return Store.lastState;
+    }
+
+    getState() {
+        return Store.state;
+    }
+
+    setState(state, funcs = []) {
+        Store.lastState = Store.state;
+        Store.state = state;
+        if (funcs.length !== 0) {
+            funcs.forEach((x) => {
+                Store.listeners[x](Store.state);
+            });
+        } else {
+            for (let key in Store.listeners) {
+                Store.listeners[key](Store.state);
+            }
+        }
+    }
+
+    subscribe(name, listener) {
+        Store.listeners[name] = listener;
+    } 
+}
+
+
 const logIn = document.querySelector("#log-in");
 const darkMode = document.querySelector("#dark-mode");
 const logOut =  document.querySelector("#log-out");
