@@ -1,5 +1,3 @@
-// GENERELL TEST-FETCHER 
-
 async function runTest({ url, method = "GET", body = null, targetId }) {
     
     const card = document.querySelector(`#${targetId}`);
@@ -43,7 +41,7 @@ function getFriendships() {
         targetId: "getFriendships"
     });
 }
-
+/*
 function postFriendship() {
     return runTest({
         url: "http://localhost:8000/friendships",
@@ -67,12 +65,12 @@ function deleteFriendship() {
         targetId: "deleteFriendship"
     });
 }
-
+*/
 
 
 
 /* ----- RESOURCE 2 (users_calendars etc) ------- */
-
+/*
 function getUsersCalendars() {
     return runTest({
         url: "http://localhost:8000/users_calendars",
@@ -185,15 +183,14 @@ function deleteUsersCalNotFound(){
 
 }
 
-
-
-
-    
+*/
 
 
 /* ---- RUN TESTS ---- */
 async function runFunctions() {
     getFriendships();
+
+    /*
     postFriendship();
     deleteFriendship();
     getUsersCalendars();
@@ -205,10 +202,9 @@ async function runFunctions() {
     deleteUsersCalMissing()
     deleteUsersCalNotFound()
 
-
+*/
 
     // RESOURCE 2
 
 }
 
-runFunctions();
