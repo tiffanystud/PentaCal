@@ -1,10 +1,12 @@
-import displayHome from "../views/home/homeView.js";
-const routes = { // Navbaren
+import displayHome from "../views/home/home.js";
+import groupsView from "../views/groupsView/groupsView.js";
+
+const routes = {
     "/home": () => {
       displayHome();
     },
     "/home/groupsView": () => {
-
+      groupsView();
     }
 };
 
