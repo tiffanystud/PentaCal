@@ -18,7 +18,7 @@ class Store {
         if (!Store.listeners[eventName]) Store.listeners[eventName] = [];
         Store.listeners[eventName].push(listener);
     }
-    notify() {
-        Store.listeners.forEach(listener => listener(this.state));
+    notify(eventName) {
+        Store.listeners[eventName].forEach(listener => listener(this.state));
     }
 }
