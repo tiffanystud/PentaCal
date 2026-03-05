@@ -26,7 +26,6 @@ function Router($requestUrl = null){
         $requestUrl = $_SERVER["REQUEST_URI"] ?? "";
     }
 
-    
     $urlPath = parse_url($requestUrl, PHP_URL_PATH);
     $path = ltrim($urlPath, "/");
 
@@ -52,6 +51,8 @@ function Router($requestUrl = null){
                     CalendarsController::handle($method, $input);
                     break;
             }
+            break;
+            
         case "calendar_msg": 
             switch ($method) {
                case "GET": 

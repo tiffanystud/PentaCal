@@ -1,6 +1,5 @@
 <?php
 
-
 function runRequest($method, $endpoint, $data = null)
 {
     
