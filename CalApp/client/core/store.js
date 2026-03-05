@@ -12,7 +12,9 @@ class Store {
     setState(newState) {
         this.lastState = this.state;
         this.state = newState;
-        this.notify();
+    }
+    set state(value) {
+        throw new Error("Not allowed");
     }
     subscribe(eventName, listener) {
         if (!Store.listeners[eventName]) Store.listeners[eventName] = [];
