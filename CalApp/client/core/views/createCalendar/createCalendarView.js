@@ -2,21 +2,48 @@
 
 
 export class CreateCalendarView {
-    
     constructor(root) {
         this.root = root;
     }
-    
+
     render() {
-        // HTML
+        this.root.innerHTML = `
+            <h2>Create new calendar</h2>
+
+            <app-input
+                label="Calendar name"
+                placeholder="Enter name"
+                width="100%"
+                id="calName"
+            ></app-input>
+
+            <app-input
+                label="Description"
+                placeholder="Enter description"
+                width="100%"
+                id="calDesc"
+            ></app-input>
+
+            <button id="createBtn">Create</button>
+        `;
+
+        this.addListeners();
     }
-    
+
     addListeners() {
-        // Eventlisteners och senare pubsub
+        const btn = this.root.querySelector("#createBtn");
+
+        btn.addEventListener("click", () => {
+            const name = this.root.querySelector("#calName").getValue();
+            const desc = this.root.querySelector("#calDesc").getValue();
+
+            console.log("Name:", name);
+            console.log("Desc:", desc);
+
+            // Här kommer pubsub senare
+        });
     }
-} 
-
-
+}
 
 
 
