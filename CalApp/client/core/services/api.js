@@ -12,7 +12,8 @@ export async function apiRequest( {entity, method, body = null} ) {
         options.body = JSON.stringify(body);
     }
     
-    const response = await fetch("../../../api/controllers/router.php"); 
+    // ex. "/calendars", { method: "POST", headers: { headers: "Cont.."} }
+    const response = await fetch(`/${entity}`, options); 
     const data = await response.json();
     
     if (!response) {
