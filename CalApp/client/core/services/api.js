@@ -5,18 +5,19 @@ export async function apiRequest( {entity, method, body = null} ) {
     
     const options = {
         method: method.toUpperCase(),
-        headers: { "Content-Type:": "application/json"}        
+        headers: { "Content-Type": "application/json"}       
     };
     
     if (body) {
         options.body = JSON.stringify(body);
     }
     
+    const BASE_URL = "http://localhost:8000";
     // ex. "/calendars", { method: "POST", headers: { headers: "Cont.."} }
-    const response = await fetch(`/${entity}`, options); 
+    const response = await fetch(`${BASE_URL}/${entity}`, options);
     const data = await response.json();
     
-    if (!response) {
+    if (!response.ok) {
         throw new Error(data.error || "Unknown API error");
     }
     

@@ -1,7 +1,7 @@
 // Tiffny
 
 import { PubSub } from "../../store/pubsub.js";
-import { storeObj } from "../../store/store.js";
+import { Store } from "../../store/store.js";
 import { EVENTS } from "../../store/events.js";
 
 export class CreateCalendarView {
@@ -51,6 +51,8 @@ export class CreateCalendarView {
         
         createBtn.addEventListener("click", () => {
             
+            console.log("CLCK")
+            
             const nameInputContainer = this.root.querySelector("#calName").getValue();
             const descInputContainer = this.root.querySelector("#calDesc").getValue();
             
@@ -62,16 +64,18 @@ export class CreateCalendarView {
             }
             
             // Listener?
+            
             PubSub.publish(EVENTS.REQUEST.SENT.CALENDARS.POST, payload);
             
-            // PubSub ... payload
+            // Pubsub ... payload
             
         });
     }
     
     // Lyssna på förändringar i store
     subscribeToStore() {
-        storeObj.subscribe("calendarsUpdated", () => {
+        
+        Store.subscribe("calendarsUpdated", () => {
             
             // Utveckla store
             console.log("Created Calendar")
