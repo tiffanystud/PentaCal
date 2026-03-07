@@ -11,6 +11,7 @@ export class CreateCalendarView {
     }
 
     render() {
+        
         this.root.innerHTML = `
             <h2>Create new calendar</h2>
 
@@ -30,7 +31,8 @@ export class CreateCalendarView {
 
             <button id="createBtn">Create</button>
         `;
-
+        
+        // DOM mst skapas först
         this.addListeners();
     }
 
@@ -38,20 +40,36 @@ export class CreateCalendarView {
         
         const createBtn = this.root.querySelector("#createBtn");
 
+        /* 
+            {
+                "id": "65e10aa11b002",
+                "creatorId": "65e10aa11a002",
+                "name": "Studiegrupp",
+                "type": "private"
+            }
+        */
+        
         createBtn.addEventListener("click", () => {
+            
             const nameInputContainer = this.root.querySelector("#calName").getValue();
             const descInputContainer = this.root.querySelector("#calDesc").getValue();
             
+            // Mockdata
             const payload = {
-                creatorId: "",
-                description: "",
-                type: ""
+                creatorId: "65e10aa11a002",
+                name: "Studiegrupp",
+                type: "private"
             }
             
+            // Listener?
+            PubSub.publish(EVENTS.REQUEST.SENT.CALENDARS.POST, payload);
+            
             // PubSub ... payload
+            
         });
     }
     
+    // Lyssna på förändringar i store
     subscribeToStore() {
         storeObj.subscribe("calendarsUpdated", () => {
             
