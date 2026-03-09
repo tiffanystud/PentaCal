@@ -22,10 +22,14 @@ export class Store {
     }
     
     setState(newState) {
+        
+        // Neka fel format
         if (typeof newState !== "object" || Array.isArray(newState)) {
             return false;
         }
+        
         this.lastState = this.state;
+        // target, source (shallow merge?)
         this.state = Object.assign(this.state, newState);
     }
     
@@ -38,6 +42,7 @@ export class Store {
         Store.allListeners[eventName].push(listener);
     }
     
+    // skicka event
     notify(eventName) {
         Store.allListeners[eventName].forEach(listener => listener(this.state));
     }
