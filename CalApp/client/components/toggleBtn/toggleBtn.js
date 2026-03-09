@@ -11,8 +11,8 @@ export class ToggleBtn extends HTMLElement {
             <div class="containier">
             
                 <div class="text-container">
-                    <h3 class="header-text">Header text</h3>
-                    <p class="info-text">Info text (change on click if needed)</p>
+                    <h3 class="component-text header-text">Header text</h3>
+                    <p class=" component-text info-text">Info text (change on click if needed)</p>
                 </div>
                 
                 <div class="button-container">

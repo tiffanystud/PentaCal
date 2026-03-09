@@ -2,8 +2,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 40px;
-    background-color: crimson;
+    padding: 10px;
+    background-color: lightgray;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .text-container {
@@ -12,10 +16,20 @@
 
 .button-container {
     background-color: darkorange;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 .info-text {
     background-color: chartreuse;
+}
+
+.header-text {
+    margin-bottom: 0;
+}
+.component-text {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .switch {
@@ -25,12 +39,14 @@
   height: 34px;
 }
 
+/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
+/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -69,6 +85,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
