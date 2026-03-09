@@ -1,18 +1,16 @@
 
 // import displayHome from "../views/home/home.js";
 import {CreateCalendarView} from "../views/createCalendar/createCalendarView.js"; 
+import groupsView from "../views/groupsView/groupsView.js";
 
 
 const routes = {
-/*     "/": () => {
+    "/": () => {
       displayHome();
     },
-    "/home": () => {
-      displayHome();
-    },
-    "/home/groupsView": () => {
+    "groupsView": () => {
       groupsView();
-    }, */
+    },
     "/createNewCalendar": () => {
         const view = new CreateCalendarView(document.querySelector("#app"));
         view.render();
@@ -33,9 +31,6 @@ export function UrlRouter() {
         // routes["/"]();
     }
 }
-
-// Kör routern en gång direkt när filen läses in
-UrlRouter();
 
 // Lyssnar på framåt och tillbaka 
 window.addEventListener("popstate", UrlRouter);
