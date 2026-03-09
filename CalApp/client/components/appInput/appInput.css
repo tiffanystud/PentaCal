@@ -1,0 +1,33 @@
+
+:host {
+    display: block;
+    width: 100%;
+}
+
+.label-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    display: block;
+    font-weight: bold;
+    font-size: larger;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    background-color: lightgrey;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.input:focus {
+    border-color: #007aff;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
