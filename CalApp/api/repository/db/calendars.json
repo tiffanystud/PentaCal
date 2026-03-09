@@ -29,6 +29,12 @@
             "creatorId": "3",
             "name": "LatestTestgroup",
             "type": "public"
+        },
+        {
+            "id": "69ac867f767b5",
+            "creatorId": "65e10aa11a062",
+            "name": "Studiegrupp",
+            "type": "private"
         }
     ]
 }

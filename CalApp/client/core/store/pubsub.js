@@ -36,3 +36,5 @@ export class Pubsub {
     }
 
 }
+
+export const PubSub = new Pubsub();
