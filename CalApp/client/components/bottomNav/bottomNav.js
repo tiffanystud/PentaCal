@@ -1,4 +1,10 @@
 
+import { EVENTS } from "../../core/store/events.js"
+import { Store } from "../../core/store/store.js"
+import { PubSub } from "../../core/store/pubsub.js"
+
+
+
 export class BottomNav extends HTMLElement { 
     
         constructor() {
@@ -36,8 +42,41 @@ export class BottomNav extends HTMLElement {
                 </button>
                 
             </div>
-        `
+            `;
+        }
+        
+        connectedCallback(){
+            
+            const buttons = this.shadowRoot.querySelectorAll(".nav-btn");
+            
+            // Lägg till eventlisteners
+            buttons.forEach(currBtn => {
+                currBtn.addEventListener("click", () => {
+                    
+                    // Rensa active på alla icons
+                    buttons.forEach(btn => btn.classList.remove("activeBtn"))
+                    
+                    currBtn.classList.add("activeBtn");
+                    
+                    // "home", "users", "add" ... etc
+                    const currPage = currBtn.classList[1];
+                    
+                    // Sätt page till vad man trycker på
+                    Store.setState({
+                        data: {
+                            activePage: page
+                        }
+                    });
+                    
+                    // se över
+                    Store.notify(EVENTS.STORE.UPDATED)
+                    
+                })
+            })
+            
         }
 }
 
-customElements.define("toggle-btn", ToggleBtn);
+
+
+customElements.define("bottom-nav", BottomNav);
