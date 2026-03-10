@@ -9,7 +9,7 @@ class MyCalLandingView extends HTMLElement {
     render() {
         this.innerHTML = `
             <week-days></week-days>
-            <h3>Upcoming Events</h3>
+            <h5>Upcoming Events</h5>
             <event-cards></event-cards>
         `;
     }
