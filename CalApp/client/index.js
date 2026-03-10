@@ -1,15 +1,14 @@
-
-import {handleRouter} from "./core/router/router.js";
-
-// comps
-import "./components/appInput/appInput.js";
-import "./components/toggleBtn/toggleBtn.js";
+import { handleRouter } from "./core/router/router.js";
 
 // services
 import { initCalendarService } from "./core/services/calendarsService.js";
 
-// Kör routern första gången
-handleRouter("home");
-window.addEventListener("urlchange", () => handleRouter(window.location.pathname)); //callback
+
+handleRouter(window.location.pathname);
+
+// back/forward support
+window.addEventListener("popstate", () => {
+    handleRouter(window.location.pathname);
+});
 
 initCalendarService();

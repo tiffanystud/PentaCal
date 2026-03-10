@@ -1,23 +1,21 @@
 
-import {myGroupView} from "../views/myGroupView/myGroupView.js";
 
 export function handleRouter(pathName) {
-    console.log(pathName)
     let segments = pathName.split("/").filter(Boolean);
-    console.log(segments)
-    let path = "";
-    if(segments[0])
-    if(segments[0] === "home" && segments[1] === "myGroupView") { // /home/myGroupView
-        console.log("myGroupView")
-        myGroupView();
-    } else if(segments[0] === "home" && segments[1] === "myCalView") { // /home/myCalView
-        console.log("myCalView")
-        //Do something
-    } else if(segments[0] === "home") { // home
-        console.log("home page")
-        //Do something
+    console.log(`ROUTER: ${segments}`);
+
+    if (segments[0] === "client") {
+        segments.splice(0, 1);
+    }
+
+    if (segments[0] === "home" && segments[1] === "myGroupView") {
+        console.log("myGroupView");
+    } else if (segments[0] === "home" && segments[1] === "myCalView") {
+        console.log("myCalView");
+    } else if (segments[0] === "home") {
+        console.log("home page");
     } else {
-        console.log("404: Page not found")
+        console.log("404: Page not found");
     }
 }
 
