@@ -1,4 +1,4 @@
-class GroupDescription extends HTMLElement {
+export class GroupDescription extends HTMLElement {
 
     constructor() {
         super();
@@ -37,3 +37,5 @@ class GroupDescription extends HTMLElement {
 
 
 }
+
+customElements.define("group-description", GroupDescription);

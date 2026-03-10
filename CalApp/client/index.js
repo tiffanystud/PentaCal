@@ -1,5 +1,5 @@
 
-import UrlRouter from "./core/router/router.js";
+import { UrlRouter } from "./core/router/router.js";
 
 // comps
 import "./components/appInput/appInput.js";

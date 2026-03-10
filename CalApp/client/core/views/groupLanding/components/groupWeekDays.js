@@ -1,4 +1,4 @@
-class GroupWeekDays extends HTMLElement {
+export class GroupWeekDays extends HTMLElement {
 
     constructor() {
         super();
@@ -66,3 +66,5 @@ class GroupWeekDays extends HTMLElement {
     }
 
 }
+
+customElements.define("week-days", GroupWeekDays);

@@ -1,7 +1,8 @@
 
 // import displayHome from "../views/home/home.js";
-import {CreateCalendarView} from "../views/createCalendar/createCalendarView.js"; 
-import {CreateNotificationsView} from "../views/notifications/notifications.js";
+import { CreateCalendarView } from "../views/createCalendar/createCalendarView.js";
+import { CreateNotificationsView } from "../views/notifications/notifications.js";
+import { createGroupLandingView } from "../views/groupLanding/groupLanding.js";
 
 
 const routes = {
@@ -18,6 +19,9 @@ const routes = {
     "/notifications": () => {
         const view = new CreateNotificationsView(document.querySelector("#app"));
         view.render();
+    },
+    "/groupLandingView": () => {
+        createGroupLandingView();
     }
 };
 
