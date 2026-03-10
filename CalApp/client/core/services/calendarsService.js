@@ -43,82 +43,83 @@ export function initCalendarService() {
 
         }
 
+    })
 
-        // catch event: "request:sent:calendars:post"
-        PubSub.subscribe(EVENTS.REQUEST.SENT.CALENDARS.POST, async function (payload) {
+    // catch event: "request:sent:calendars:post"
+    PubSub.subscribe(EVENTS.REQUEST.SENT.CALENDARS.POST, async function (payload) {
 
-            console.log("EVENT RECEIVED", payload);
+        console.log("EVENT RECEIVED", payload);
 
-            try {
+        try {
 
-                // Skicka request data och payload till api.js
-                const response = await apiRequest({
-                    entity: "calendars",
-                    method: "POST",
-                    body: payload
-                });
+            // Skicka request data och payload till api.js
+            const response = await apiRequest({
+                entity: "calendars",
+                method: "POST",
+                body: payload
+            });
 
-                // Publish att response och resource är recieved 
-                PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.POST, response)
-                PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.POST, response)
+            // Publish att response och resource är recieved 
+            PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.POST, response)
+            PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.POST, response)
 
-                // Se över store objektet
-                const currCals = Store.getState().data.cals;
-                const newCals = [...currCals, response];
+            // Se över store objektet
+            const currCals = Store.getState().data.cals;
+            const newCals = [...currCals, response];
 
-                // Uppdatera state
-                Store.setState({
-                    data: {
-                        ...Store.getState().data,
-                        cals: newCals
-                    }
-                });
+            // Uppdatera state
+            Store.setState({
+                data: {
+                    ...Store.getState().data,
+                    cals: newCals
+                }
+            });
 
-                // Efterr setSStatte alltid notis på vad som hänt
-                Store.notify("calendarsUpdated");
+            // Efterr setSStatte alltid notis på vad som hänt
+            Store.notify("calendarsUpdated");
 
-            } catch {
+        } catch {
 
-                // console.log
-
-            }
-
-        })
-
-        PubSub.subscribe(EVENTS.REQUEST.SENT.CALENDARSEVENTS.GET, async function (payload) {
-
-            console.log("EVENT RECEIVED", payload);
-
-            try {
-
-                // Skicka request data och payload till api.js
-                const response = await apiRequest("/events");
-
-                // Publish att response och resource är recieved 
-                PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARSEVENTS.GET, response)
-                PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARSEVENTS.GET, response)
-
-                // Se över store objektet
-                const currEvents = Store.getState().data.cals;
-                const newEvents = [...currEvents, response];
-
-                // Uppdatera state
-                Store.setState({
-                    data: {
-                        ...Store.getState().data,
-                        events: newEvents
-                    }
-                });
-
-                // Efterr setSStatte alltid notis på vad som hänt
-                Store.notify("eventsUpdated");
-
-            } catch {
-
-                // console.log
-
-            }
-
+            // console.log
 
         }
+
+    })
+
+    PubSub.subscribe(EVENTS.REQUEST.SENT.CALENDARSEVENTS.GET, async function (payload) {
+
+        console.log("EVENT RECEIVED", payload);
+
+        try {
+
+            // Skicka request data och payload till api.js
+            const response = await apiRequest("/events");
+
+            // Publish att response och resource är recieved 
+            PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARSEVENTS.GET, response)
+            PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARSEVENTS.GET, response)
+
+            // Se över store objektet
+            const currEvents = Store.getState().data.cals;
+            const newEvents = [...currEvents, response];
+
+            // Uppdatera state
+            Store.setState({
+                data: {
+                    ...Store.getState().data,
+                    events: newEvents
+                }
+            });
+
+            // Efterr setSStatte alltid notis på vad som hänt
+            Store.notify("eventsUpdated");
+
+        } catch {
+
+            // console.log
+
+        }
+
+    })
+
 }
