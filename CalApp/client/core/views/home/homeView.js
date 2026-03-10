@@ -43,3 +43,5 @@ export class HomeView extends HTMLElement{
     }
 
 }
+
+customElements.define("home-view", HomeView)
