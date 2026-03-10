@@ -3,11 +3,11 @@
     display: none;
 }
 
-.nav-btn.active .icon-dark {
+.nav-btn.activeBtn .icon-dark {
     display: none;
 }
 
-.nav-btn.active .icon-light {
+.nav-btn.activeBtn .icon-light {
     display: inline;
 }
 

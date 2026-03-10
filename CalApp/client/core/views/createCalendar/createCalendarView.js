@@ -1,4 +1,3 @@
-// Tiffny
 
 import { PubSub } from "../../store/pubsub.js";
 import { Store } from "../../store/store.js";
@@ -37,9 +36,10 @@ export class CreateCalendarView {
                 active-header-text="Make calendar public"
                 active-info-text="Calendar is now set to public and will be available to all users"
             ></toggle-btn>
-
-        
+            
             <button id="createBtn">Create</button>
+            
+            <bottom-nav> </bottom-nav>
         `;
         
         // DOM mst skapas först
@@ -91,65 +91,3 @@ export class CreateCalendarView {
     }
     
 }
-
-
-
-
-
-
-
-
-
-/* 
-
-    Varje view bestämmer vilka events som är relevanta för viewns komponenter. Komponenterna kopplas ej till store själva. 
-    store.subscribe("groupsUppdated"), () => {
-        this.groupListComponent.update(store.getState().data.groups);
-    }
-    
-    store.subscribe("groupsUppdated"), () => {
-        this.groupListComponent.update();
-    }
-   
-    -- 
-    
-    Komponent: 
-
-    update(groups) {
-        this.groups = groups;
-        this.render;
-    }
-*/
-
-/* 
-
-
-
- render() {
-        
-        this.root.innerHTML = `
-            <h2>Create new calendar</h2>
-
-            <app-input
-                label="Calendar name"
-                placeholder="Enter name"
-                width="100%"
-                id="calName"
-            ></app-input>
-
-            <app-input
-                label="Description"
-                placeholder="Enter description"
-                width="100%"
-                id="calDesc"
-            ></app-input>
-
-            <button id="createBtn">Create</button>
-        `;
-        
-        // DOM mst skapas först
-        this.addListeners();
-    }
-
-
-*/

@@ -7,9 +7,9 @@ export const state = {
         email: "Elias@mau.se"
     },
 
-    // pages: {
-    //     currentPage: "",
-    // },
+    pages: {
+         currentPage: "",
+    },
 
     userData: {
         cals: [{
