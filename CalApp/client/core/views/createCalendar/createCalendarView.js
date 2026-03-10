@@ -13,27 +13,32 @@ export class CreateCalendarView {
     render() {
         
         this.root.innerHTML = `
+            <link rel="stylesheet" href="/CalApp/client/core/views/createCalendar/createCalendarView.css">
             <h2>Create new calendar</h2>
 
-            <toggle-btn
-                
-            ></toggle-btn>
-
-                    
             <app-input
                 label="Calendar name"
                 placeholder="Enter name"
                 width="100%"
                 id="calName"
             ></app-input>
-
+            
             <app-input
                 label="Description"
-                placeholder="Enter description"
+                placeholder="Enter description of the group"
                 width="100%"
+                height="100px"
                 id="calDesc"
             ></app-input>
+            
+            <toggle-btn
+                inactive-header-text="Make calendar public"
+                inactive-info-text="If privare only members will be able to see calendar"
+                active-header-text="Make calendar public"
+                active-info-text="Calendar is now set to public and will be available to all users"
+            ></toggle-btn>
 
+        
             <button id="createBtn">Create</button>
         `;
         
@@ -55,9 +60,7 @@ export class CreateCalendarView {
         */
         
         createBtn.addEventListener("click", () => {
-            
-            console.log("CLCK")
-            
+                        
             const nameInputContainer = this.root.querySelector("#calName").getValue();
             const descInputContainer = this.root.querySelector("#calDesc").getValue();
             

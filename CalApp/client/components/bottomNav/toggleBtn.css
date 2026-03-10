@@ -2,15 +2,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: none;
+    padding: 10px;
+    background-color: lightgray;
     border-radius: 8px;
-    border: 0px solid #ccc;
+    border: 1px solid #ccc;
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 5px;
 }
+
 
 .button-container {
     display: flex;
@@ -26,16 +25,20 @@
 
 .header-text {
     color: rgb(57, 57, 57);
-    font-size: large;
     margin-top: 3px;
     margin-bottom: 5px;
+}
+
+
+.component-text {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 30px;
-  height: 17px;
+  width: 60px;
+  height: 34px;
 }
 
 /* Hide default HTML checkbox */
@@ -61,10 +64,10 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 13px;
-  width: 13px;
-  left: 2px;
-  bottom: 2px;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -81,7 +84,7 @@ input:focus + .slider {
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
-  transform: translateX(13px);
+  transform: translateX(26px);
 }
 
 /* Rounded sliders */

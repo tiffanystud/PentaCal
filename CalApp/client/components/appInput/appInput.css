@@ -21,12 +21,15 @@
 
 .input {
     width: 100%;
-    padding: 12px;
-    font-size: 1rem;
+    height: 100%;
+    padding: 10px;
+    font-size: small;
     border-radius: 8px;
     background-color: lightgrey;
     border: 1px solid #ccc;
     box-sizing: border-box;
+    text-align:start;
+    justify-self: flex-start;
 }
 
 .input:focus {

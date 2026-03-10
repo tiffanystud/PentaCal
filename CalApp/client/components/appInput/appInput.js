@@ -30,6 +30,22 @@ export class AppInput extends HTMLElement {
         if (widthAttribute) {
             this.style.width = widthAttribute;
         }
+    
+        // Om view själv vill styra height
+        const heightAttribute = this.getAttribute("height");
+        if (heightAttribute) {
+            const container = this.shadowRoot.querySelector(".label-input-container");
+
+            // Sätt till textattri om height, för att kunna styra höjd
+            const textarea = document.createElement("textarea");
+            textarea.classList.add("input");
+            textarea.placeholder = this.getAttribute("placeholder") || "";
+            textarea.style.height = heightAttribute;
+
+            const oldInput = this.shadowRoot.querySelector("input");
+            container.replaceChild(textarea, oldInput);
+        }
+
     }
     
      // Komponentens "public API" 
