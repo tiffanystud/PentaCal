@@ -21,7 +21,7 @@
 
 import { CreateNotificationsView } from "../views/notifications/notifications.js";
 import { createGroupLandingView } from "../views/groupLanding/groupLanding.js";
-
+import { LoginView } from "../views/login/loginView.js";
 
 
 
@@ -46,6 +46,10 @@ const routes = {
     },
     "groupLandingView": () => {
         createGroupLandingView();
+    },
+    "loginView": () => {
+        const view = new LoginView(document.querySelector("#app"));
+        view.render();
     }
 };
 
