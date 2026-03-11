@@ -16,6 +16,9 @@ export class LandingButton extends HTMLElement{
             :host{
                 display:inline-block;
             }
+            :host([active]) button{
+                background:white;
+            }
             button {
                 height: 54px;
                 width: 170px;

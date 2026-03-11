@@ -40,15 +40,23 @@ export class HomeView extends HTMLElement{
             }
         </style>
         <div id="btn-container">
-            <landing-button label="My Calendar" ${this.currentView === "my-calendar" ? "active" : ""}></landing-button>
-            <landing-button label="My Groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
+            <landing-button label="My Calendar" view="my-calendar" ${this.currentView === "my-calendar" ? "active" : ""}></landing-button>
+            <landing-button label="My Groups" view="my-groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
         </div>
         <div class="view">
         ${view}
         </div>
         `;
-        this.shadowRoot.getElementById("my-cal").addEventListener("click", () => this.switchView("my-calendar"));
-        this.shadowRoot.getElementById("my-groups").addEventListener("click", () => this.switchView("my-groups"));
+        this.shadowRoot
+          .querySelectorAll("landing-button")
+          .forEach(btn => {
+        
+            btn.addEventListener("click", () => {
+                const view = btn.getAttribute("view");
+                this.switchView(view);
+            });
+        
+        });
     }
 
 }
