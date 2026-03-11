@@ -15,4 +15,4 @@ UrlRouter();
 // });
 
 initCalendarService();
-initNotificationsService();
+//initNotificationsService();
