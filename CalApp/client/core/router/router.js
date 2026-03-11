@@ -1,63 +1,62 @@
-export function handleRouter(pathName) {
-    let segments = pathName.split("/").filter(Boolean);
+// export function handleRouter(pathName) {
+//     let segments = pathName.split("/").filter(Boolean);
 
-    if (segments[0] === "client") {
-        segments.splice(0, 1);
-    }
-    console.log(`ROUTER: ${segments}`);
-
-
-    if (segments[0] === "home" && segments[1] === "myGroupView") {
-        console.log("myGroupView");
-    } else if (segments[0] === "home" && segments[1] === "myCalView") {
-        console.log("myCalView");
-    } else if (segments[0] === "home") {
-        console.log("home page");
-    } else {
-        console.log("404: Page not found");
-    }
-}
+//     if (segments[0] === "client") {
+//         segments.splice(0, 1);
+//     }
+//     console.log(`ROUTER: ${segments}`);
 
 
+//     if (segments[0] === "home" && segments[1] === "myGroupView") {
+//         console.log("myGroupView");
+//     } else if (segments[0] === "home" && segments[1] === "myCalView") {
+//         console.log("myCalView");
+//     } else if (segments[0] === "home") {
+//         console.log("home page");
+//     } else {
+//         console.log("404: Page not found");
+//     }
+// }
 
 
-
-
+import { CreateNotificationsView } from "../views/notifications/notifications.js";
+import { createGroupLandingView } from "../views/groupLanding/groupLanding.js";
 
 
 
-/*
+
 const routes = {
     "/CalApp/index.html": () => {
         console.log("/CalApp/index.html page");
     },
-    "/": () => {
+    "": () => {
         console.log("/ page");
     },
-    "/groupsView": () => {
+    "groupsView": () => {
         console.log("/groupsView page");
         groupsView();
     },
-    "/createNewCalendar": () => {
+    "createNewCalendar": () => {
         const view = new CreateCalendarView(document.querySelector("#app"));
         view.render();
     },
-    "/notifications": () => {
+    "notifications": () => {
         const view = new CreateNotificationsView(document.querySelector("#app"));
         view.render();
     },
-    "/groupLandingView": () => {
+    "groupLandingView": () => {
         createGroupLandingView();
     }
 };
-  
+
 export function UrlRouter() {
-    const path = window.location.pathname;
+    const pathName = window.location.pathname;
+    const path = pathName.split("/").pop();
     if (routes[path]) {
-      routes[path]();
+        routes[path]();
     } else {
-      console.warn("No route found:", path);
+        console.warn("No route found:", path);
     }
 }
 
-*/
+
