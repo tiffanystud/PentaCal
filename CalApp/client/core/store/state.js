@@ -19,6 +19,7 @@ export const state = {
             type: "public"
         }],
 
+
         events: {
             id: 1,
             date: "2026-03-05",
@@ -26,7 +27,8 @@ export const state = {
             name: "Inflyttningsfest",
             description: "Inflyttningsfest hos Elias",
             location: "Västra hamnen",
-            calId: 1
+            calId: 1,
+            groupId:1
         },
 
         friends: [{

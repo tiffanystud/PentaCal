@@ -21,6 +21,7 @@
 
 import { CreateNotificationsView } from "../views/notifications/notifications.js";
 import { createGroupLandingView } from "../views/groupLanding/groupLanding.js";
+import { HomeView } from "../views/home/homeView.js";
 
 
 
@@ -30,11 +31,13 @@ const routes = {
         console.log("/CalApp/index.html page");
     },
     "": () => {
-        console.log("/ page");
+        const app = document.querySelector("#app")
+        const view = new HomeView();
+        app.replaceChildren(view);
     },
     "groupsView": () => {
         console.log("/groupsView page");
-        groupsView();
+        myGroupView();
     },
     "createNewCalendar": () => {
         const view = new CreateCalendarView(document.querySelector("#app"));

@@ -1,3 +1,8 @@
+import { store } from "../../store/store.js";
+import { PubSub } from "../../store/pubsub.js";
+import { EVENTS } from "../../store/events.js";
+import {LandingButton} from "./components/button.js";
+
 export class HomeView extends HTMLElement{
     constructor(){
         super();
@@ -5,6 +10,7 @@ export class HomeView extends HTMLElement{
         this.currentView = "my-calendar";
     }
     connectedCallback(){
+        console.log("homeview mounted")
         this.render()
     }
 
@@ -19,6 +25,9 @@ export class HomeView extends HTMLElement{
 
         this.shadowRoot.innerHTML = `
         <style>
+            :host{
+                display: block;
+            }
             #btn-container{
                 width: 350px;
                 height: 80px;
@@ -31,15 +40,23 @@ export class HomeView extends HTMLElement{
             }
         </style>
         <div id="btn-container">
-            <landing-button id="my-cal" ${this.currentView === "my-calendar" ? "active" : ""}></landing-button>
-            <landing-button id="my-groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
+            <landing-button label="My Calendar" view="my-calendar" ${this.currentView === "my-calendar" ? "active" : ""}></landing-button>
+            <landing-button label="My Groups" view="my-groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
         </div>
         <div class="view">
         ${view}
         </div>
         `;
-        this.shadowRoot.getElementById("my-cal").addEventListener("click", () => this.switchView("my-calendar"));
-        this.shadowRoot.getElementById("my-groups").addEventListener("click", () => this.switchView("my-groups"));
+        this.shadowRoot
+          .querySelectorAll("landing-button")
+          .forEach(btn => {
+        
+            btn.addEventListener("click", () => {
+                const view = btn.getAttribute("view");
+                this.switchView(view);
+            });
+        
+        });
     }
 
 }

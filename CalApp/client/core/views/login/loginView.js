@@ -1,4 +1,4 @@
-export class HomeView extends HTMLElement{
+export class LoginView extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: "open"});
