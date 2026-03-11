@@ -37,7 +37,7 @@ const routes = {
     },
     "groupsView": () => {
         console.log("/groupsView page");
-        groupsView();
+        myGroupView();
     },
     "createNewCalendar": () => {
         const view = new CreateCalendarView(document.querySelector("#app"));
