@@ -1,9 +1,8 @@
 import { store } from "../../store/store.js";
 import { PubSub } from "../../store/pubsub.js";
 import { EVENTS } from "../../store/events.js";
-import { LandingButton } from "./components/button.js";
+import {LandingButton} from "./components/button.js";
 import { MyCalLandingView } from "./components/myCalLandingView.js";
-import { GroupLandingView } from "../groupLanding/components/groupLanding2.js";
 
 export class HomeView extends HTMLElement{
     constructor(){
@@ -23,7 +22,7 @@ export class HomeView extends HTMLElement{
     render(){
         const view = this.currentView === "my-calendar"
         ? "<my-calendar></my-calendar>"
-        : `<my-groups></my-groups>`;
+        : "<my-groups></my-groups>"
 
         this.shadowRoot.innerHTML = `
         <style>

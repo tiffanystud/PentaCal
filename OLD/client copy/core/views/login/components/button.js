@@ -1,4 +1,6 @@
-export class LandingButton extends HTMLElement{
+
+
+class LandingButton extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: "open"});
@@ -10,15 +12,10 @@ export class LandingButton extends HTMLElement{
 
     render(){
         //if (!this.shadowRoot) return;
-        const label = this.getAttribute("label" || "Button");
+        const btnId = this.getAttribute("id");
+        const label = btnId === "my-cal" ? "My Calendar" : "My Groups";
         this.shadowRoot.innerHTML = `
          <style>
-            :host{
-                display:inline-block;
-            }
-            :host([active]) button{
-                background:white;
-            }
             button {
                 height: 54px;
                 width: 170px;

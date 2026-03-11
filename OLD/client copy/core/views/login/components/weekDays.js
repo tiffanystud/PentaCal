@@ -1,15 +1,14 @@
-export class WeekDays extends HTMLElement{
+class WeekDays extends HTMLElement{
     constructor(){
         super();
-        this.attachShadow({mode: "open"});
     };
     connectedCallback(){
         this.render();
     };
     getCurrWeek(){
         let today = new Date();
+
         const monday = new Date(today);
-        const day = monday.getDay();
         const diff = monday.getDate() - day + (day === 0 ? -6 : 1);
         monday.setDate(diff + 0 * 7);
 
@@ -31,11 +30,7 @@ export class WeekDays extends HTMLElement{
 
     style(){
         return `
-        :host{
-            display: inline-block;
-
-        }
-        #week{
+        #week {
             box-sizing: border-box;
             margin: 0;
             height: 72px;
@@ -43,43 +38,44 @@ export class WeekDays extends HTMLElement{
             display: flex;
             justify-content: space-around;
             align-items: center;
-}
+        }
         .day-cell{
             margin:0;
             font-size: 12px;
-            height: 40px;
-            padding: 4px;
+            height: 45px;
             display:flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             gap: 8px;
         }
         .day-cell p{
             margin: 0;
         }
-        #today{
-            padding: 0 4px;
-            border-radius: 4px;
-            background-color: #9ccea9;
-            border: 1px solid #84b291;
+        .today{
+            background-color = "blue";
         }
         `;
 
     }
 
     render(){
-        let html = ``;
-        let weekdays = this.getCurrWeek();
+        let weekCal = document.createElement("div");
+        weekCal.id = "week";
+        let weekdays = getDays();
         for (let day of weekdays){
-            if(day.isToday){
-                html += `<div class="day-cell" id="today"><p>${day.label}</p><p>${day.date}</p></div>`;
-            } else{
-                html += `<div class="day-cell"><p>${day.label}</p><p>${day.date}</p></div>`;
+            let div = document.createElement("div");
+            div.classList.add("day-cell");
+            if (day.isToday) {
+                div.classList.add("today");
             }
+            div.innerHTML = `
+            <p>${day.label}</p>
+            <p>${day.date}</p>
+            `;
+            weekCal.appendChild(day);
         }
-        this.shadowRoot.innerHTML = `<style>${this.style()}</style><div id="week">${html}</div>`;
+        return weekCal;
     };
 }
 
-customElements.define("week-chart", WeekDays);
+customElements.define("week-days");

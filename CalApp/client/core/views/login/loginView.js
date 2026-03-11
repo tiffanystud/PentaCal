@@ -5,6 +5,8 @@ import "./components/userNameInput.js"
 
 export class LoginView extends HTMLElement {
     constructor(app) {
+export class LoginView extends HTMLElement{
+    constructor(){
         super();
         this.app = app;
         this.currentView = "login";

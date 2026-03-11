@@ -1,66 +1,54 @@
-// export function handleRouter(pathName) {
-//     let segments = pathName.split("/").filter(Boolean);
+import { store } from "../store/store.js";
 
-//     if (segments[0] === "client") {
-//         segments.splice(0, 1);
-//     }
-//     console.log(`ROUTER: ${segments}`);
+// Andra förslag på lösning av router? 
 
+function resolveRoute(path) {
+    const cleanPath = path.split("?")[0];
 
-//     if (segments[0] === "home" && segments[1] === "myGroupView") {
-//         console.log("myGroupView");
-//     } else if (segments[0] === "home" && segments[1] === "myCalView") {
-//         console.log("myCalView");
-//     } else if (segments[0] === "home") {
-//         console.log("home page");
-//     } else {
-//         console.log("404: Page not found");
-//     }
-// }
-
-
-import { CreateNotificationsView } from "../views/notifications/notifications.js";
-import { createGroupLandingView } from "../views/groupLanding/groupLanding.js";
-import { LoginView } from "../views/login/loginView.js";
-
-
-
-const routes = {
-    "/CalApp/index.html": () => {
-        console.log("/CalApp/index.html page");
-    },
-    "": () => {
-        console.log("/ page");
-    },
-    "groupsView": () => {
-        console.log("/groupsView page");
-        groupsView();
-    },
-    "createNewCalendar": () => {
-        const view = new CreateCalendarView(document.querySelector("#app"));
-        view.render();
-    },
-    "notifications": () => {
-        const view = new CreateNotificationsView(document.querySelector("#app"));
-        view.render();
-    },
-    "groupLandingView": () => {
-        createGroupLandingView();
-    },
-    "loginView": () => {
-        const view = new LoginView(document.querySelector("#app"));
-        view.render();
+    // Dynamisk route: /events/event/3 -> kom på bättre lösning
+    if (cleanPath.startsWith("/events/event/")) {
+        const id = cleanPath.split("/").pop();
+        store.setState({
+            currentPage: "eventDetails",
+            params: { id }
+        });
+        store.notify("pageChanged");
+        return;
     }
-};
 
-export function UrlRouter() {
-    const pathName = window.location.pathname;
-    const path = pathName.split("/").pop();
-    if (routes[path]) {
-        routes[path]();
-    } else {
-        console.warn("No route found:", path);
+    switch (cleanPath) {
+        case "/":
+            store.setState({ currentPage: "home" });
+            break;
+
+        case "/about":
+            store.setState({ currentPage: "about" });
+            break;
+
+        case "/calendar":
+            store.setState({ currentPage: "calendar" });
+            break;
+
+        default:
+            store.setState({ currentPage: "notfound" });
+            break;
     }
+
+    store.notify("pageChanged");
 }
 
+export const Router = {
+    navigate(path) {
+        history.pushState({}, "", path);
+        resolveRoute(path);
+    },
+
+    init() {
+        resolveRoute(window.location.pathname);
+
+        window.addEventListener("popstate", () => {
+            resolveRoute(window.location.pathname);
+        });
+    }
+};
 
