@@ -1,6 +1,7 @@
 import { store } from "../../store/store.js";
 import { PubSub } from "../../store/pubsub.js";
 import { EVENTS } from "../../store/events.js";
+import {LandingButton} from "./components/button.js";
 
 export class HomeView extends HTMLElement{
     constructor(){
@@ -9,6 +10,7 @@ export class HomeView extends HTMLElement{
         this.currentView = "my-calendar";
     }
     connectedCallback(){
+        console.log("homeview mounted")
         this.render()
     }
 
@@ -23,6 +25,9 @@ export class HomeView extends HTMLElement{
 
         this.shadowRoot.innerHTML = `
         <style>
+            :host{
+                display: block;
+            }
             #btn-container{
                 width: 350px;
                 height: 80px;
@@ -35,8 +40,8 @@ export class HomeView extends HTMLElement{
             }
         </style>
         <div id="btn-container">
-            <landing-button id="my-cal" ${this.currentView === "my-calendar" ? "active" : ""}></landing-button>
-            <landing-button id="my-groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
+            <landing-button label="My Calendar" ${this.currentView === "my-calendar" ? "active" : ""}></landing-button>
+            <landing-button label="My Groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
         </div>
         <div class="view">
         ${view}
