@@ -18,6 +18,7 @@ require_once "RestoreDBController.php";
 require_once "CalendarsController.php";
 require_once "PinnedCalendarsController.php";
 require_once "FriendshipsController.php";
+require_once "NotificationsController.php";
 
 
 function Router($requestUrl = null){   
@@ -251,6 +252,19 @@ function Router($requestUrl = null){
             CorsMiddleware::handle();
             RestoreDBController::handle();
             break;
+
+        case "notifications":
+            switch($method) {
+                case "GET":
+                    CorsMiddleware::handle();
+                    NotificationsController::handle($method, $input);
+                    break;
+                default:
+                    CorsMiddleware::handle();
+                    JsonMiddleware::handle();
+                    NotificationsController::handle($method, $input);
+                    break;
+            }
             
         default:
             http_response_code(404); 
