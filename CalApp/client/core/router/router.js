@@ -1,13 +1,11 @@
-
-import { CreateNotificationsView } from "../views/notifications/notifications.js";
-import { createGroupLandingView } from "../views/groupLanding/groupLanding.js";
-import { HomeView } from "../views/home/homeView.js";
 import { store } from "../store/store.js";
+
+// Andra förslag på lösning av router? 
 
 function resolveRoute(path) {
     const cleanPath = path.split("?")[0];
 
-    // Dynamisk route: /events/event/3
+    // Dynamisk route: /events/event/3 -> kom på bättre lösning
     if (cleanPath.startsWith("/events/event/")) {
         const id = cleanPath.split("/").pop();
         store.setState({
