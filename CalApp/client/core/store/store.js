@@ -1,15 +1,5 @@
-<<<<<<< Updated upstream
-/* 
-    Stöd vid utveckling: 
-
-    store.js - vid api response
-    - Uppdatera store, ex.: store.notify("eventsUppdated");
-    - notify vid state change (ej som PubSub är vid events)
-*/
-=======
 import state from "./state.js"
 
->>>>>>> Stashed changes
 
 export class Store {
     
@@ -51,12 +41,11 @@ export class Store {
     notify(eventName) {
         Store.allListeners[eventName].forEach(listener => listener(this.state));
     }
-<<<<<<< Updated upstream
+
 }
-=======
-}
+
+
 
 export const store = new Store({
     state
 });
->>>>>>> Stashed changes
