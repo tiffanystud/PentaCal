@@ -1,8 +1,7 @@
-import { WeekDays } from "./weekDays.js";
+import "./eventCard.js"
 
-export class MyCalLandingView extends HTMLElement {
-
-    constructor() {
+export class GroupLandingView extends HTMLElement{
+    constructor(){
         super();
         this.attachShadow({mode: "open"});
         this.render();
@@ -15,11 +14,10 @@ export class MyCalLandingView extends HTMLElement {
                     display: block;
                 }
             </style>
-            <week-chart></week-chart>
-            <h5>Upcoming Events</h5>
             <event-cards></event-cards>
         `;
     }
+
 }
 
-customElements.define("my-calendar", MyCalLandingView);
+customElements.define("my-groups", GroupLandingView);
