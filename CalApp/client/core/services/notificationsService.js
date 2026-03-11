@@ -47,6 +47,5 @@ export function initNotificationsService() {
         }
     })
 
-    console.log(store.getState());
     PubSub.publish(EVENTS.REQUEST.SENT.EVENTS.GET);
 }
