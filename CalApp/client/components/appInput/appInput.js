@@ -1,4 +1,5 @@
 
+// Ha bara globala eventlisteners som ej krockar med view specifika. Håll modulärt 
 export class AppInput extends HTMLElement {
     
     constructor() {
