@@ -1,5 +1,5 @@
 // ROUTER
-import { Router } from "./router/router.js";
+import { Router } from "./core/router/router.js"
 
 // GLOBAL COMPONENTS
 import "./components/appInput/appInput.js"; 
@@ -8,8 +8,8 @@ import "./components/toggleBtn/toggleBtn.js";
 
 
 // SERVICES. (views i renderApp.js)
-import "../services/calendarService.js";
-import "../services/calendarService.js";
+//import "../services/calendarService.js";
+import "./core/services/calendarService.js";
 
 
 
