@@ -5,6 +5,7 @@ import { store } from "../store/store.js";
 function resolveRoute(path) {
     const cleanPath = path.split("?")[0];
 
+    let view; 
     // Dynamisk route: /events/event/3 -> kom på bättre lösning
     if (cleanPath.startsWith("/events/event/")) {
         const id = cleanPath.split("/").pop();
@@ -15,8 +16,13 @@ function resolveRoute(path) {
         store.notify("pageChanged");
         return;
     }
+    
+    // Gör lösning ovan så detta fungerar
+    view = path[1];
+    store.setState({ currentPage: view });
 
-    switch (cleanPath) {
+    
+/*     switch (cleanPath) {
         case "/":
             store.setState({ currentPage: "home" });
             break;
@@ -28,9 +34,9 @@ function resolveRoute(path) {
         default:
             store.setState({ currentPage: "notfound" });
             break;
-    }
+    } */
 
-    store.notify("pageChanged");
+
 }
 
 export const Router = {

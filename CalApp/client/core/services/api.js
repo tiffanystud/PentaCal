@@ -1,5 +1,8 @@
 // API-calls
 // Här görs alla fetch från client
+// Alla som använder denna funktionen ska wrappa fetchen med try/catch
+
+
 
 export async function apiRequest( {entity, method, body = null} ) {
     
@@ -14,13 +17,30 @@ export async function apiRequest( {entity, method, body = null} ) {
     
     const BASE_URL = "http://localhost:8000";
     // ex. "/calendars", { method: "POST", headers: { headers: "Cont.."} }
-    const response = await fetch(`${BASE_URL}/${entity}`, options);
-    const data = await response.json();
     
+    let response;
+    
+    try {
+        response = await fetch(`${BASE_URL}/${entity}`, options);
+        
+    } catch (err) {
+        // Ge komponenten det den behöver för att förstå men inte stanna upp
+        PubSub.publish("Network::Error");
+        
+    }
     if (!response.ok) {
-        throw new Error(data.error || "Unknown API error");
+        // Om vi hanterar fel så här, utan att komponenten som skickade fetch, så stannar flödet direkt. Komponenten kommer ej få "fel"
+        // Komponenten måste ha en try/catch vid varje apiRequest
+        // throw new Error(data.error || "Unknown API error");
+        throw new Error(response);
     }
     
+    const data = await response.json();
+    
+    
     // Om ej data då
+    // Uppdarera så denna funktion returnera något som alla kan lösa och förstår (response?)
+    
+    // Status måste alltid returnera en (= tom) body + status
     return data; 
 }
