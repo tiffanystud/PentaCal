@@ -2,6 +2,7 @@ import { UrlRouter } from "./core/router/router.js";
 
 // services
 import { initCalendarService } from "./core/services/calendarsService.js";
+import { initNotificationsService } from "./core/services/notificationsService.js";
 
 
 
@@ -15,4 +16,4 @@ UrlRouter();
 // });
 
 initCalendarService();
-//initNotificationsService();
+initNotificationsService();

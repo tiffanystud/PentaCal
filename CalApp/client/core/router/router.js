@@ -44,7 +44,7 @@ const routes = {
         view.render();
     },
     "notifications": () => {
-        const view = new CreateNotificationsView(document.querySelector("#app"));
+        const view = new CreateNotificationsView(document.querySelector("#app"), document.body);
         view.render();
     },
     "groupLandingView": () => {

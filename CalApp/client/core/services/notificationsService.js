@@ -3,12 +3,12 @@ import { PubSub } from "../store/pubsub.js";
 import { store } from "../store/store.js";
 import { EVENTS } from "../store/events.js";
 
-export function initNotificationsService() {
+export async function initNotificationsService() {
     PubSub.subscribe(EVENTS.REQUEST.SENT.EVENTS.GET, async (payload) => {
 
         try {
             const resource = await apiRequest({
-                entity: "events?eventId=65e10aa11c001",
+                entity: "events",
                 method: "GET",
             });
 
@@ -16,22 +16,25 @@ export function initNotificationsService() {
             // PubSub.publish(EVENTS.RESOURCE.RECEIVED.EVENTS.GET);
             
             if (!store.getState().data.notis) {
-                console.log("test");
                 store.setState({
                     data: {
                         ...store.getState().data,
-                        notis: [resource]
+                        notis: resource
                     }
                 });
             } else {
+                let newNotis = [...store.getState.data.notis];
+                for (let reso of resource) {
+                    newNotis.push(reso);
+                }
                 store.setState({
                     data: {
                         ...store.getState().data,
-                        notis: [...store.getState.data.notis, resource]
+                        notis: newNotis
                     }
                 });
             }
-
+            console.log(store.getState());
             // let currentNotifications = store.getState().data.notis;
             // let newNotis = [...currentNotifications, resource];
 
@@ -49,3 +52,6 @@ export function initNotificationsService() {
 
     PubSub.publish(EVENTS.REQUEST.SENT.EVENTS.GET);
 }
+
+console.log("Noti service loaded");
+console.log(store.getState());

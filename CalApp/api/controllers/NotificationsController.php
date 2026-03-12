@@ -45,7 +45,24 @@ class NotificationsController {
                     return;
                 }
             }
-        }
+        } else if ($method === "DELETE") {
+            try {
+                self::createResp(NotificationsService::deleteNoti($input), 200);
+                return;
+            } catch (Exception $e) {
+                $msg = $e->getMessage();
+                if ($msg === "Missing attributes") {
+                    self::createResp(["error" => $msg], 400);
+                    return;
+                } else if ($msg === "Unauthorized") {
+                    self::createResp(["error" => $msg], 403);
+                    return;
+                } else if ($msg === "Not found") {
+                    self::createResp(["error" => $msg], 404);
+                    return;
+                }
+            }
+        } 
     }
 
     public static function createResp($resp, $code) {
