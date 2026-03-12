@@ -1,24 +1,14 @@
 import { store } from "../../store/store.js";
 import { PubSub } from "../../store/pubsub.js";
 import { EVENTS } from "../../store/events.js";
-import { LandingButton } from "./components/button.js";
+import {LandingButton} from "./components/button.js";
 import { MyCalLandingView } from "./components/myCalLandingView.js";
-import { GroupLandingView } from "../groupLanding/components/groupLanding2.js";
 
 export class HomeView extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: "open"});
         this.currentView = "my-calendar";
-        store.subscribe("pageChanged", () => {
-            if (store.pages.currentPage === "home") {
-                this.render();
-            }
-            if (store.pages.currentPage === "my-groups"){
-                this.currentView = "my-groups";
-                this.render();
-            }
-        });
     }
     connectedCallback(){
         console.log("homeview mounted")
@@ -32,7 +22,7 @@ export class HomeView extends HTMLElement{
     render(){
         const view = this.currentView === "my-calendar"
         ? "<my-calendar></my-calendar>"
-        : `<my-groups></my-groups>`;
+        : "<my-groups></my-groups>"
 
         this.shadowRoot.innerHTML = `
         <style>
