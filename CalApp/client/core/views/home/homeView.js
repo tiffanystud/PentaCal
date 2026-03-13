@@ -16,7 +16,7 @@ export class HomeView extends HTMLElement{
             }
             if (window.location.pathname === "CalApp/client/home/my-groups"){
                 this.currentView = "my-groups";
-                this.render();
+                this.render(this.currentView);
             }
         });
     }
@@ -30,8 +30,8 @@ export class HomeView extends HTMLElement{
         this.currentView = view;
         this.render()
     }
-    render(){
-        const view = this.currentView === "my-calendar"
+    render(currentView = "my-calendar"){
+        const component = currentView === "my-calendar"
         ? "<my-calendar></my-calendar>"
         : `<my-groups></my-groups>`;
 
@@ -56,7 +56,7 @@ export class HomeView extends HTMLElement{
             <landing-button label="My Groups" view="my-groups" ${this.currentView === "my-groups" ? "active" : ""}></landing-button>
         </div>
         <div class="view">
-        ${view}
+        ${component}
         </div>
         `;
         this.shadowRoot

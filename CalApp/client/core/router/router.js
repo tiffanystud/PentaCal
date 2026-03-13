@@ -18,12 +18,14 @@ function resolveRoute(path) {
         store.notify("pageChanged");
         return;
     }
-    console.log("resolve2")
     // Gör lösning ovan så detta fungerar
     
-    view = pathSplit[2];
-    console.log(view);
+    view = pathSplit[3];
+    if (!view){
+        view = "home";
+    }
     renderApp(view);
+    
 }
 
 export const Router = {

@@ -5,23 +5,20 @@ import { renderHome } from "./home/homeViewTest.js";
 
 
 // Kör som en callback för eventet "pageChanged" i store
-export function renderApp() {
-    
-    const { currentPage, params } = store.getState();
-
-    switch (currentPage) {
+export function renderApp(view) {
+    switch (view) {
         case "home":
             renderHome();
             break;
 
-//        case "calendar":
-//            renderCalendar();
-//            break;
-//
-  //      case "events":
-  //          renderEvents(params);
-  //          break;
-//
+        case "calendar":
+            renderCalendar();
+            break;
+
+      case "events":
+          renderEvents(params);
+          break;
+
         default:
             document.querySelector("#app").innerHTML = "<h1>404</h1>";
     }
