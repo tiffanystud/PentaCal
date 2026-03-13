@@ -8,7 +8,7 @@ class NotificationsController {
                 $notiId = $input["notiId"] ?? null;
 
                 if ($userId && $notiId) {
-                    self::createResp(NotificationsService::getWithParams($notiId, $userId), 200);
+                    self::createResp(["error" => "Both parameters set, use users_notifications endpoint"], 400);
                     return;
                 } else if ($userId) {
                     self::createResp(NotificationsService::getWithParams(null, $userId), 200);
