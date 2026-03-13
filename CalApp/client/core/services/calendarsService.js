@@ -34,8 +34,6 @@ export function initCalendarService() {
                 }
             });
 
-            // Efterr setSStatte alltid notis på vad som hänt
-            Store.notify("calendarsUpdated");
 
         } catch {
 
@@ -75,8 +73,6 @@ export function initCalendarService() {
                 }
             });
 
-            // Efterr setSStatte alltid notis på vad som hänt
-            Store.notify("calendarsUpdated");
 
         } catch {
 
@@ -110,9 +106,6 @@ export function initCalendarService() {
                     events: newEvents
                 }
             });
-
-            // Efterr setSStatte alltid notis på vad som hänt
-            Store.notify("eventsUpdated");
 
         } catch {
 
