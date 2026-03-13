@@ -1,3 +1,7 @@
+.titleElem {
+    margin-bottom: 2px;
+}
+
 .members-container {
     display: flex;
     flex-direction: row;
@@ -20,6 +24,10 @@
     background-color: rgb(179, 179, 179);
     text-align: center;
     border: 2px solid rgb(45, 45, 45);
+}
+
+.add-member-btn:hover {
+    cursor: pointer;
 }
 
 .member-add-margin {
