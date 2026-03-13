@@ -11,10 +11,11 @@ export class HomeView extends HTMLElement{
         this.attachShadow({mode: "open"});
         this.currentView = "my-calendar";
         pubSub.subscribe("pageChanged", () => {
-            if (window.location.pathname === "CalApp/client/home" || "CalApp/client/") {
+            if (window.location.pathname === "/CalApp/client/home" || "CalApp/client/") {
+                this.currentView = "my-calendar";
                 this.render();
             }
-            if (window.location.pathname === "CalApp/client/home/my-groups"){
+            if (window.location.pathname === "/CalApp/client/home/my-groups"){
                 this.currentView = "my-groups";
                 this.render(this.currentView);
             }
@@ -26,14 +27,16 @@ export class HomeView extends HTMLElement{
     }
 
     switchView(view){
-        view === "my-calendar" ? window.location.assign("/") : window.location.assign("/home/my-groups");
+        view === "my-groups" ? history.pushState({}, "", "/CalApp/client/home/my-groups"): history.pushState({}, "", "/CalApp/client/");
         this.currentView = view;
-        this.render()
+        pubSub.publish("pageChanged");
+        this.render();
     }
-    render(currentView = "my-calendar"){
-        const component = currentView === "my-calendar"
+    render(){
+        const component = this.currentView === "my-calendar"
         ? "<my-calendar></my-calendar>"
         : `<my-groups></my-groups>`;
+        this.shadowRoot.innerHTML = "";
 
         this.shadowRoot.innerHTML = `
         <style>

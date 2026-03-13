@@ -9,7 +9,6 @@ export class MyCalLandingView extends HTMLElement {
     }
 
     render() {
-        console.log("tjena")
         this.shadowRoot.innerHTML = `
             <style>
                 :host{

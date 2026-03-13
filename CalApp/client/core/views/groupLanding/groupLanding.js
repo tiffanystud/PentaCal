@@ -4,6 +4,7 @@ import "./components/groupWeekDays.js";
 
 
 export function createGroupLandingView() {
+    console.log("hej!");
 
     let app = document.querySelector("#app");
 
@@ -13,4 +14,4 @@ export function createGroupLandingView() {
         `;
 }
 
-
+customElements.define("my-groups", createGroupLandingView);
