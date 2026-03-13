@@ -7,7 +7,7 @@
     flex-direction: row;
 }
 
-.added-members {
+.added-members-container {
     display: flex;
 }
 
