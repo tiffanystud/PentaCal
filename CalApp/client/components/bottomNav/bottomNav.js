@@ -56,8 +56,12 @@ export class BottomNav extends HTMLElement {
                     currBtn.classList.add("activeBtn");
                     
                     // "home", "users", "add" ... etc
-                    const currPage = currBtn.classList[1];
+                    const currPage = currBtn.classList[1]; 
                     
+                    PubSub.publish("change:page", {
+                        page: currPage
+                    });
+
                     // Sätt page till vad man trycker på
 /*                     store.setState({
                         data: {
@@ -76,7 +80,4 @@ export class BottomNav extends HTMLElement {
             
         }
 }
-
-
-
 customElements.define("bottom-nav", BottomNav);

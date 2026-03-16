@@ -4,25 +4,31 @@ import { PubSub } from "../store/pubsub.js";
 // ROUTERN PUBLICERAR ETT EVENT, MED URL OCH VYN SUBSCRIBAR PÅ EVENTET SOM SEDAN GER URL ELLER PARAMS OCH RENDERAR
 export class TestRouter {
     constructor(url) {
-        this.url = url.split("/").filter(Boolean);
-        this.mainPath = this.url[0];
-        this.subPath = this.url[1];
+        this.path = url; // sträng
+        this.urlParts = url.split("/").filter(Boolean);
 
-        // Change:view är eventet som alla vyer lyssnar på via subscribe, om url matchar när vyn subscribar, så renderar den
+        this.mainPath = this.urlParts[0];
+        this.subPath = this.urlParts[1];
+
         PubSub.publish("change:view", {
-            url: this.url,
+            url: this.path, //sträng
             mainPath: this.mainPath,
-            subPath: this.subPath,
-        })
+            subPath: this.subPath
+        });
+
+
+        
 
     }
 
     navigate(path) {
+        console.log("Navigate func")
         history.pushState({}, "", path);
         new TestRouter(path);
     }
 
     init() {
+        console.log("Init func")
         window.addEventListener("popstate", () => {
             new TestRouter(window.location.pathname);
         });
