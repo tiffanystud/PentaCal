@@ -1,4 +1,7 @@
-import { PubSub } from "../../core/store/pubsub.js";
+
+import { EVENTS } from "/core/store/events.js"
+import { store } from "/core/store/store.js"
+
 export class BottomNav extends HTMLElement { 
     
         constructor() {

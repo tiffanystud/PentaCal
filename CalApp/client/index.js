@@ -20,6 +20,7 @@ app.innerHTML = `<create-event></create-event`
 
 import "./core/views/groupLanding/groupLanding.js";
 import "./core/views/home/homeView.js";
+import "./core/views/notifications/notifications.js";
 
 export const test = new Router(window.location.href);
 
