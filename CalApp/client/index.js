@@ -18,7 +18,7 @@ import { Router } from "./core/router/router.js"
 import "./core/views/groupLanding/groupLanding.js";
 import "./core/views/home/homeView.js";
 
-export const test = new Router(window.location.pathname);
+export const test = new Router(window.location.href);
 
 test.init();
 

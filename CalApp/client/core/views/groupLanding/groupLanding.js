@@ -16,11 +16,23 @@ class CreateGroupLandingView {
                 console.log("wrong");
                 return;
             }
-            if (route.subPath != "groupcalendar") {
-                console.log("wrong");
+            if (!route.url.searchParams.has("id")) {
                 return;
             }
+
+            // if (route.subPath != "groupcalendar") {
+            //     console.log("wrong");
+            //     return;
+            // }
+
             console.log("created")
+
+            let params = route.url.searchParams;
+            let cal = state.userData.cals.find(cal => cal.id == params.get("id"));
+            let newState = state.currentContext.currentCal = cal;
+            store.setState(newState);
+            store.notify(eventName);
+
             this.render();
         })
     }
