@@ -1,6 +1,4 @@
 import { PubSub } from "../../store/pubsub.js";
-//comp
-import {BottomNav} from "../../../components/bottomNav/bottomNav.js";
 
 export class CreateEvent extends HTMLElement {
     constructor() {
@@ -49,14 +47,6 @@ export class CreateEvent extends HTMLElement {
                 <input>
 
                 <button>Create Event</button>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
-                <h1>oqdmqpdmqm<h1>
 
             </div>
             <bottom-nav></bottom-nav>
@@ -83,8 +73,9 @@ export class CreateEvent extends HTMLElement {
             overflow-y: auto; /* Aktivera vertikal scrollning */
         }
         button {
-            height: 50px;
+            padding: 15px;
             width: 150px;
+            margin: 25px 0; 
         }
         `;
     }

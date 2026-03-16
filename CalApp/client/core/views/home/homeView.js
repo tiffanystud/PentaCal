@@ -15,14 +15,16 @@ export class HomeView extends HTMLElement{
         this.sub();
     }
     sub() {
-        PubSub.subscribe("change:view", route => {
-            if (route.mainPath !== "/") {
-                console.log("wrong");
-                return;
+        PubSub.subscribe("change:view", (data) => {
+            if (data.url === "/home") {
+                this.render();
             }
-            console.log("created")
-            this.render();
         })
+        PubSub.subscribe("change:page", (data) => {
+            if(data.page === "home"){ //bottom Nav
+                this.render();
+            }
+        });
     }
 
     render(){
