@@ -8,40 +8,53 @@ export class GroupWeekDays extends HTMLElement {
         // Här ska den subscriba till alla events
     }
 
+    weekDays(dayName) {
+        let date = new Date();
+        const array = ["Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"];
+
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] == dayName) {
+                return date.getDate() + i;
+            } o
+
+        }
+
+    }
+
     html() {
-        const event = state.userData.events
-        const date = new Date();
-        const weekDays = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+        // const event = state.userData.events
+        // const date = new Date();
+
 
         return `
         <div id="weekDaysOuter">
-            div id="Monday">
+            <div id="Monday">
                 <p>Mån</p>
-                <p></p>
+                <p>${this.weekDays("Måndag")}</p>
             </div>
             <div id="Tuesday">
                 <p>Tis</p>
-                <p></p>
+                <p>${this.weekDays("Tisdag")}</p>
             </div>
             <div id="Wednesday">
                 <p>Ons</p>
-                <p></p>
+                <p>${this.weekDays("Onsdag")}</p>
             </div>
             <div id="Thursday">
                 <p>Tors</p>
-                <p></p>
+                <p>${this.weekDays("Torsdag")}</p>
             </div>
             <div id="Friday">
                 <p>Fre</p>
-                <p></p>
+                <p>${this.weekDays("Fredag")}</p>
             </div>
             <div id="Saturday">
                 <p>Lör</p>
-                <p></p>
+                <p>${this.weekDays("Lördag")}</p>
             </div>
             <div id="Sunday">
                 <p>Sön</p>
-                <p></p>
+                <p>${this.weekDays("Söndag")}</p>
             </div>
         </div>
         `;

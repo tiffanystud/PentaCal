@@ -29,6 +29,7 @@ class CreateGroupLandingView {
         this.app.innerHTML = `
             <h1>Hejhejhejhejhejhejhejhej</h1>
             <event-cards></event-cards>
+            <week-days></week-days>
         `;
     }
 
