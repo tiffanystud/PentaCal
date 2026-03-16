@@ -16,7 +16,6 @@ export function userGroupsService() {
             });
 
             PubSub.publish(EVENTS.RESPONSE.RECEIVED.USERGROUPS.POST, response);
-            PubSub.publish(EVENTS.RESOURCE.RECEIVED.USERGROUPS.POST, response);
 
             // Uppdatera store om OK
             const curr = Store.getState().data.usergroups || [];
