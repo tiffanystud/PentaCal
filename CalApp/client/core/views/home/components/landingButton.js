@@ -10,7 +10,7 @@ export class LandingButton extends HTMLElement{
 
     render(){
         //if (!this.shadowRoot) return;
-        const label = this.getAttribute("label" || "Button");
+        const label = this.getAttribute("label") || "Button";
         this.shadowRoot.innerHTML = `
          <style>
             :host{

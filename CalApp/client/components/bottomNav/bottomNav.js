@@ -1,6 +1,6 @@
 
-import { EVENTS } from "/CalApp/client/core/store/events.js"
-import { store } from "/CalApp/client/core/store/store.js"
+import { EVENTS } from "../../core/store/events.js"
+import { store } from "../../core/store/store.js"
 
 export class BottomNav extends HTMLElement { 
     
@@ -9,33 +9,33 @@ export class BottomNav extends HTMLElement {
         this.attachShadow({ mode: "open" });
         
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="/CalApp/client/components/bottomNav/bottomNav.css">
+            <link rel="stylesheet" href="/../../components/bottomNav/bottomNav.css">
 
             <div class="button-container">
                 
                 <button class="nav-btn home">
-                    <img class="icon-dark" src="/CalApp/client/assets/icons/home-dark.png">
-                    <img class="icon-light" src="/CalApp/client/assets/icons/home-light.png">
+                    <img class="icon-dark" src="/../../assets/icons/home-dark.png">
+                    <img class="icon-light" src="/../../assets/icons/home-light.png">
                 </button>
                 
                 <button class="nav-btn users">
-                    <img class="icon-dark" src="/CalApp/client/assets/icons/users-dark.png">
-                    <img class="icon-light" src="/CalApp/client/assets/icons/users-light.png">
+                    <img class="icon-dark" src="/../../assets/icons/users-dark.png">
+                    <img class="icon-light" src="../../assets/icons/users-light.png">
                 </button>
                 
                 <button class="nav-btn add">
-                    <img class="icon-dark" src="/CalApp/client/assets/icons/add-dark.png">
-                    <img class="icon-light" src="/CalApp/client/assets/icons/add-light.png">
+                    <img class="icon-dark" src="/../../assets/icons/add-dark.png">
+                    <img class="icon-light" src="/../../assets/icons/add-light.png">
                 </button>
                 
                 <button class="nav-btn notiflications">
-                    <img class="icon-dark" src="/CalApp/client/assets/icons/send-dark.png">
-                    <img class="icon-light" src="/CalApp/client/assets/icons/send-light.png">
+                    <img class="icon-dark" src="/../../assets/icons/send-dark.png">
+                    <img class="icon-light" src="/../../assets/icons/send-light.png">
                 </button>
                 
                 <button class="nav-btn profile">
-                    <img class="icon-dark" src="/CalApp/client/assets/icons/profile-dark.png">
-                    <img class="icon-light" src="/CalApp/client/assets/icons/profile-light.png">
+                    <img class="icon-dark" src="/../../assets/icons/profile-dark.png">
+                    <img class="icon-light" src="/../../assets/icons/profile-light.png">
                 </button>
                 
             </div>
