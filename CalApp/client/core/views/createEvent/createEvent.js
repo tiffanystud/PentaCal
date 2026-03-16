@@ -20,6 +20,8 @@ export class CreateEvent extends HTMLElement {
 
     html() {
         return `
+        
+        <div class="content">
             <h1>Create Event</h1>
             <div class="container">
                 <h3>Event name</h3>
@@ -47,29 +49,46 @@ export class CreateEvent extends HTMLElement {
                 <input>
 
                 <button>Create Event</button>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+                <h1>oqdmqpdmqm<h1>
+
             </div>
+            <bottom-nav></bottom-nav>
+        </div>
+    
             
             
         `
     }
     style() {
         return `
-            h1 {
-                text-align:center;
-            }
-            .container {
-                display:flex;
-                flex-direction:column;
-            }
-            button {
-                height: 50px;
-                width:150px;
-            }
-            
-        `
+        h1 {
+            text-align: center;
+        }
+        .content {
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Gör att den tar upp all tillgänglig plats */
+            overflow-y: auto; /* Aktivera vertikal scrollning */
+        }
+        button {
+            height: 50px;
+            width: 150px;
+        }
+        `;
     }
     render() {
-        console.log("createEventClass")
         let app = document.getElementById("app");
         let content = this.shadowRoot.innerHTML = `
             <style>

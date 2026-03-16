@@ -1,7 +1,4 @@
-
-import { EVENTS } from "/CalApp/client/core/store/events.js"
-import { store } from "/CalApp/client/core/store/store.js"
-
+import { PubSub } from "../../core/store/pubsub.js";
 export class BottomNav extends HTMLElement { 
     
         constructor() {
@@ -9,7 +6,33 @@ export class BottomNav extends HTMLElement {
         this.attachShadow({ mode: "open" });
         
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="/CalApp/client/components/bottomNav/bottomNav.css">
+            <style>
+                .icon-light {
+                    display: none;
+                }
+                .nav-btn.activeBtn .icon-dark {
+                    display: none;
+                }
+                .nav-btn.activeBtn .icon-light {
+                    display: inline;
+                }
+                .button-container {
+                    border-top: 1px solid gray;
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-around;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    box-sizing: border-box;
+                }
+                .nav-btn {
+                    background: none;
+                    border: none;
+                }
+                .nav-btn:hover {
+                    cursor: pointer;
+                }
+            </style>
 
             <div class="button-container">
                 
