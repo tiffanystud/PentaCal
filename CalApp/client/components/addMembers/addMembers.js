@@ -5,8 +5,8 @@ import { PubSub } from "../../core/store/pubsub.js";
 
     A. Initialiseras med:
         <add-members
-            titleElem = "Add Admins">   -> Syns i UI
-            userListName = "admins">   -> Används för att skapa calendar (se B)
+            titleElem="Add Admins">   -> Syns i UI
+            userListName="admins">   -> Används för att skapa calendar (se B)
         </add-members>
 
     B. Förväntar sig att skicka värde när: 
