@@ -2,6 +2,7 @@
 import { PubSub } from "../../store/pubsub.js";
 import { Store } from "../../store/store.js";
 import { EVENTS } from "../../store/events.js";
+import { calendarService } from "../../services/calendarsService.js";
 
 export class CreateCalendarView {
     
@@ -13,6 +14,7 @@ export class CreateCalendarView {
         
         this.root.innerHTML = `
             <link rel="stylesheet" href="/CalApp/client/core/views/createCalendar/createCalendarView.css">
+            
             <h2>Create new calendar</h2>
 
             <app-input
@@ -29,17 +31,22 @@ export class CreateCalendarView {
                 height="100px"
                 id="calDesc"
             ></app-input>
-            
+        
             <toggle-btn
                 inactive-header-text="Make calendar public"
-                inactive-info-text="If privare only members will be able to see calendar"
+                inactive-info-text="If set to private only invited members will be able to see calendar"
                 active-header-text="Make calendar public"
                 active-info-text="Calendar is now set to public and will be available to all users"
             ></toggle-btn>
             
+            <search-users-modal></search-users-modal>
+
+            <add-members titleElem="Add Admins" userListName="admins"></add-members>
+            <add-members titleElem="Add Members" userListName="members"></add-members>
+
+            
             <button id="createBtn">Create</button>
             
-            <bottom-nav> </bottom-nav>
         `;
         
         // DOM mst skapas först
@@ -48,28 +55,32 @@ export class CreateCalendarView {
 
     addListeners() {
         
-        
         // + Lägg till ev "view specifika" eventListeners på globala komponenter 
         
         const createBtn = this.root.querySelector("#createBtn");
         
         createBtn.addEventListener("click", () => {
-                        
-            const nameInputContainer = this.root.querySelector("#calName").getValue();
-            const descInputContainer = this.root.querySelector("#calDesc").getValue();
+            
+            // Membership (in calendar)
+            const admins = document.querySelector('add-members[userListName="admins"]').getValue();
+            const members = document.querySelector('add-members[userListName="members"]').getValue();
+            
+            let value = "private";
+            
+            const groupType = document.querySelector.querySelector("inactive-header-text");
+            if (groupType) {
+                value = "public"
+            }
             
             // Mockdata
             const payload = {
-                creatorId: "65e10aa11a062",
-                name: "Studiegrupp",
-                type: "private"
+                calendarPayload: calendarPayload,
+                membershipPayload: membershipPayload
             }
             
             // Listener?
             
             PubSub.publish(EVENTS.REQUEST.SENT.CALENDARS.POST, payload);
-            
-            // Pubsub ... payload
             
         });
     }

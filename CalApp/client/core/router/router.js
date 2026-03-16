@@ -2,64 +2,32 @@ import { PubSub } from "../store/pubsub.js";
 import { store } from "../store/store.js";
 import { CreateNotificationsView } from "../views/notifications/notifications.js";
 
-// Andra förslag på lösning av router? 
+// ROUTERN PUBLICERAR ETT EVENT, MED URL OCH VYN SUBSCRIBAR PÅ EVENTET SOM SEDAN GER URL ELLER PARAMS OCH RENDERAR
+export class Router {
+    constructor(url) {
+        this.url = url.split("/").filter(Boolean);
+        this.mainPath = this.url[0];
+        this.subPath = this.url[1];
 
-function resolveRoute(path) {
-    console.log("resolveRoute runs");
-    const cleanPath = path.split("?")[0];
+        // Change:view är eventet som alla vyer lyssnar på via subscribe, om url matchar när vyn subscribar, så renderar den
+        PubSub.publish("change:view", {
+            url: this.url,
+            mainPath: this.mainPath,
+            subPath: this.subPath,
+        })
 
-    let view; 
-    // Dynamisk route: /events/event/3 -> kom på bättre lösning
-    if (cleanPath.startsWith("/events/event/")) {
-        const id = cleanPath.split("/").pop();
-        store.setState({
-            currentPage: "eventDetails",
-            params: { id }
-        });
-        store.notify("pageChanged");
-        return;
     }
-    
-    // Gör lösning ovan så detta fungerar
-    view = path[1];
-    store.setState({ currentPage: view });
 
-    
-    switch (cleanPath) {
-        case "/":
-            store.setState({ currentPage: "home" });
-            break;
+    navigate(path) {
+        history.pushState({}, "", path);
+        new Router(path);
+    }
 
-        case "/calendar":
-            store.setState({ currentPage: "calendar" });
-            break;
-
-        case "/notifications":
-            let notiView = new CreateNotificationsView(document.querySelector("#app"));
-            PubSub.publish("pageChanged", "notifications");
-            break;
-
-        default:
-            store.setState({ currentPage: "notfound" });
-            break;
-    } 
+    init() {
+        window.addEventListener("popstate", () => {
+            new Router(window.location.pathname);
+        });
+    }
 
 
 }
-
-export const Router = {
-    
-    navigate(path) {
-        history.pushState({}, "", path);
-        resolveRoute(path);
-    },
-
-    init() {
-        resolveRoute(window.location.pathname);
-
-        window.addEventListener("popstate", () => {
-            resolveRoute(window.location.pathname);
-        });
-    }
-};
-
