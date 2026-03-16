@@ -1,7 +1,31 @@
 
 import { PubSub } from "../../core/store/pubsub.js";
 
-// Ha bara globala eventlisteners som ej krockar med view specifika. Håll modulärt 
+/* Komponent struktur
+
+    A. Initialiseras med:
+        <add-members
+            titleElem = "Add Admins">   -> Syns i UI
+            userListName = "admins">   -> Används för att skapa calendar (se B)
+        </add-members>
+
+    B. Förväntar sig att skicka värde när: 
+        - En knapp i viewn (t.ex. #createBtn) hämtar värdena och skicka dem vidare.
+            ..eventList."click".. => {
+                document.querySelector('add-members[userListName="admins"]').getValue();
+            }"   
+    
+    C. Varje view:
+        - Hämta komponentens värde via getValue()
+        - Skicka vidare data (ex. via PubSub > API)
+
+    D. Komponenten:
+        - Öppna SearchModal via PubSub
+        - Ta emot valda users via PubSub
+        - getValue() som ger public API
+        
+*/
+
 export class AddMembers extends HTMLElement {
     
     allMembers = [];
