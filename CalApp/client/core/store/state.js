@@ -8,7 +8,7 @@ export const state = {
     },
 
     pages: {
-         currentPage: "",
+        currentPage: "",
     },
 
     userData: {

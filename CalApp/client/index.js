@@ -12,6 +12,9 @@ import { Router } from "./core/router/router.js"
 // import "../services/calendarService.js";
 // import "./core/services/calendarService.js";
 
+import "./core/views/createEvent/createEvent.js";
+let app = document.getElementById("app");
+app.innerHTML = `<create-event></create-event`
 
 // ROUTER
 
