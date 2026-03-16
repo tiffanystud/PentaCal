@@ -15,7 +15,6 @@ export class Router {
             mainPath: this.mainPath,
             subPath: this.subPath,
         })
-
     }
 
     navigate(path) {

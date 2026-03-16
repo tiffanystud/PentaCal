@@ -16,6 +16,7 @@ import { Router } from "./core/router/router.js"
 // ROUTER
 
 import "./core/views/groupLanding/groupLanding.js";
+import "./core/views/notifications/notifications.js";
 
 let test = new Router(window.location.pathname);
 
