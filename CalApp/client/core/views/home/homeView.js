@@ -38,7 +38,7 @@ export class HomeView extends HTMLElement{
         </style>
         <landing-button-container>
             <landing-button label="My Calendar" view="home" active></landing-button>
-            <landing-button label="My Groups" view="event"></landing-button>
+            <landing-button label="My Groups" view="groupcalendar"></landing-button>
         </landing-button-container>
         <my-calendar></my-calendar>
         <bottom-nav></bottom-nav>
