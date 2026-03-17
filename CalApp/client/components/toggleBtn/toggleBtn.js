@@ -144,7 +144,7 @@ export class ToggleBtn extends HTMLElement {
 
     // Public API
     getValue() {
-        return this.checkbox.checked ? "public" : "private";
+        return this.checkbox.checked ? "inActive" : "active";
     }
 }
 

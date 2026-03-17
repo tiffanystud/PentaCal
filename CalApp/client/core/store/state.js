@@ -83,7 +83,9 @@ export const state = {
             date: "2026-03-05",
             isAvailable: true,
             calId: 1
-        }]
+        }],
+
+        notis: []
     }
 
 }

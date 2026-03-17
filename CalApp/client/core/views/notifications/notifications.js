@@ -34,11 +34,12 @@ export class CreateNotificationsView {
             method: "GET"
         });
 
-        store.setState({notis: notifications});
+        store.setState({userData: { notis: notifications }});
 
         this.root.innerHTML = "<h1>Notifications</h1> <button id='mark-read'>Mark all as read</button><button id='delete-all'>Delete all notifications</button>";
-        console.log(store.getState().notis);
-        for (let noti of store.getState().notis) {
+        console.log(store.getState());
+        console.log(store.getState().userData.notis);
+        for (let noti of store.getState().userData.notis) {
             let notiCard = document.createElement("notification-card");
             notiCard.data = noti;
             this.root.appendChild(notiCard);
