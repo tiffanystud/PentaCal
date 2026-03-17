@@ -48,31 +48,10 @@ export class CreateNotificationsView {
         //Hämtar "notifikationerna" när render körs. Vet inte om detta är rätt tänkt, men det funkar.
         //Annars blev effekten oftast att state inte hunnit uppdaterats när redner kördes, så
         //store.getState().notis var bara en tom array [] (loopen kördes inte).
-        let notifications = await apiRequest({
-            entity: "events",
-            method: "GET"
-        });
-
-        store.setState({userData: { notis: notifications }});
-
-        this.root.innerHTML = "<h1>Notifications</h1> <button id='mark-read'>Mark all as read</button><button id='delete-all'>Delete all notifications</button>";
-        console.log(store.getState());
-        console.log(store.getState().userData.notis);
-        for (let noti of store.getState().userData.notis) {
-            let notiCard = document.createElement("notification-card");
-            notiCard.data = noti;
-            this.root.appendChild(notiCard);
-        }
-
-        document.querySelector("#mark-read").addEventListener("click", () => {
-            console.log("//Skicka request att markera alla som lästa");
-        });
-
-        document.querySelector("#delete-all").addEventListener("click", () => {
-            //Skicka request att ta bort alla notifikationer. Om request går bra gör:
-            let notis = document.querySelectorAll("notification-card");
-            notis.forEach((x) => {
-                this.root.removeChild(x);
+        try {
+            let notifications = await apiRequest({
+                entity: "events",
+                method: "GET"
             });
 
             notifications = notifications.sort((a, b) => a.time.localeCompare(b.time));
