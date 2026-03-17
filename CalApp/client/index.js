@@ -19,7 +19,7 @@ import "./core/services/userGroupsService.js";
 // VIEWS
 import "./core/views/home/homeView.js";
 import "./core/views/createEvent/createEvent.js";
-import "./core/views/createCalendar/createCalendarView.js";
+import "./core/views/createGroup/createGroupView.js";
 import "./core/views/groupLanding/groupLanding.js";
 import "./core/views/notifications/notifications.js";
 

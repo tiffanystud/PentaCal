@@ -6,14 +6,27 @@ import { EVENTS } from "../../store/events.js";
 
 export class CreateCalendarView {
     
-    constructor(root) {
-        this.root = root;
+    constructor() {
+        this.app = document.querySelector("#app");
+        this.subs();
     }
 
+    subs() {
+        console.log("SUBSCRIBE IN CALS")
+        PubSub.subscribe("change:view", (data) => {
+            if (data.mainPath == "createGroup") {
+                this.render();
+            }
+            if (data.mainPath == "home/createGroup") {
+                this.render();
+            }
+        })
+    }
+    
     render() {
         
-        this.root.innerHTML = `
-            <link rel="stylesheet" href="/CalApp/client/core/views/createCalendar/createCalendarView.css">
+        this.app.innerHTML = `
+            <link rel="stylesheet" href="/core/views/createGroup/createGroupView.css">
             
             <h2>Create new calendar</h2>
 
@@ -43,7 +56,6 @@ export class CreateCalendarView {
 
             <add-members titleElem="Add Admins" userListName="admins"></add-members>
             <add-members titleElem="Add Members" userListName="members"></add-members>
-
             
             <button id="createBtn">Create</button>
             
@@ -57,7 +69,7 @@ export class CreateCalendarView {
         
         // + Lägg till ev "view specifika" eventListeners på globala komponenter 
         
-        const createBtn = this.root.querySelector("#createBtn");
+        const createBtn = this.app.querySelector("#createBtn");
         
         createBtn.addEventListener("click", () => {
             
@@ -96,3 +108,5 @@ export class CreateCalendarView {
     }
     
 }
+
+new CreateCalendarView();
