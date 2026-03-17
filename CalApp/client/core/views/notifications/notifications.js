@@ -23,39 +23,63 @@ export class CreateNotificationsView {
                 this.render();
             }
         });
+
+        PubSub.subscribe("Network:Error", () => {
+            this.errorMsg("network");
+        });
+    }
+
+    errorMsg(type, error) {
+        console.log(error);
+        // if (type === "network") {
+        //     this.root.innerHTML = `
+        //     <p>Network error, server unreachable</p>
+        //     `
+        // } else {
+        //     this.root.innerHTML = `
+        //     <p>
+        //     `
+        // }
     }
 
     async render() {
         //Hämtar "notifikationerna" när render körs. Vet inte om detta är rätt tänkt, men det funkar.
         //Annars blev effekten oftast att state inte hunnit uppdaterats när redner kördes, så
         //store.getState().notis var bara en tom array [] (loopen kördes inte).
-        let notifications = await apiRequest({
-            entity: "events",
-            method: "GET"
-        });
-
-        store.setState({notis: notifications});
-
-        this.root.innerHTML = "<h1>Notifications</h1> <button id='mark-read'>Mark all as read</button><button id='delete-all'>Delete all notifications</button>";
-        console.log(store.getState().notis);
-        for (let noti of store.getState().notis) {
-            let notiCard = document.createElement("notification-card");
-            notiCard.data = noti;
-            this.root.appendChild(notiCard);
-        }
-
-        document.querySelector("#mark-read").addEventListener("click", () => {
-            console.log("//Skicka request att markera alla som lästa");
-        });
-
-        document.querySelector("#delete-all").addEventListener("click", () => {
-            //Skicka request att ta bort alla notifikationer. Om request går bra gör:
-            let notis = document.querySelectorAll("notification-card");
-            notis.forEach((x) => {
-                this.root.removeChild(x);
+        try {
+            let notifications = await apiRequest({
+                entity: "events?eventId=2",
+                method: "GET"
             });
-            this.root.innerHTML += "<p>No notifications to view!</p>";
-        });
+
+            notifications = notifications.sort((a, b) => a.time.localeCompare(b.time));
+            notifications = notifications.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            store.setState({notis: notifications});
+
+            this.root.innerHTML = "<h1>Notifications</h1> <button id='mark-read'>Mark all as read</button><button id='delete-all'>Delete all notifications</button>";
+            console.log(store.getState().notis);
+            for (let noti of store.getState().notis) {
+                let notiCard = document.createElement("notification-card");
+                notiCard.data = noti;
+                this.root.appendChild(notiCard);
+            }
+
+            document.querySelector("#mark-read").addEventListener("click", () => {
+                console.log("//Skicka request att markera alla som lästa");
+            });
+
+            document.querySelector("#delete-all").addEventListener("click", () => {
+                //Skicka request att ta bort alla notifikationer. Om request går bra gör:
+                let notis = document.querySelectorAll("notification-card");
+                notis.forEach((x) => {
+                    this.root.removeChild(x);
+                });
+                this.root.innerHTML += "<p>No notifications to view!</p>";
+            });
+        } catch (e) {
+            this.errorMsg("other", e);
+        } 
     }
 
     subscribeToStore() {
