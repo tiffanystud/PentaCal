@@ -13,6 +13,7 @@ export const state = {
 
     currentContext: {
         currentCal: {},
+        currentEvents: []
     },
 
     userData: {
@@ -33,7 +34,7 @@ export const state = {
             }
         ],
 
-        events: {
+        events: [{
             id: 1,
             date: "2026-03-05",
             type: "AW",
@@ -42,7 +43,7 @@ export const state = {
             location: "Västra hamnen",
             calId: 1,
             groupId: 1
-        },
+        }],
 
         friends: [{
             id: 1,
@@ -82,7 +83,9 @@ export const state = {
             date: "2026-03-05",
             isAvailable: true,
             calId: 1
-        }]
+        }],
+
+        notis: []
     }
 
 }

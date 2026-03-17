@@ -1,6 +1,6 @@
 
 import { PubSub } from "../../store/pubsub.js";
-import { Store } from "../../store/store.js";
+import { store } from "../../store/store.js";
 import { EVENTS } from "../../store/events.js";
 // import { CalendarService } from "../../services/calendarsService.js";
 
@@ -74,28 +74,53 @@ export class CreateCalendarView {
     }
 
     addListeners() {
-        
+    
         // + Lägg till ev "view specifika" eventListeners på globala komponenter 
         
         const createBtn = this.app.querySelector("#createBtn");
         
         createBtn.addEventListener("click", () => {
+            const state = store.getState();
+            console.log("HEJSANSTATE" + state);
             
+            
+            
+            
+                       let state = store.getState();
+            let params = route.url.searchParams;
+            let cal = state.userData.cals.find(cal => cal.id == params.get("id"));
+            if (cal.id != params.get("id")) {
+                return;
+            }
+            // Calendars
+            const creatorId = state.isLoggedIn.id;
+            const toggleStatus =  document.querySelector("toggle-btn").getValue()
+            let groupType; 
+            if (toggleStatus == "active") {
+                groupType = "public"
+            } else {
+                groupType = "private"
+            }
+
             // Membership (in calendar)
             const admins = document.querySelector('add-members[userListName="admins"]').getValue();
             const members = document.querySelector('add-members[userListName="members"]').getValue();
             
-            console.log("HEEEEEEEJ" + admins);
-            let value = "private";
             
-            const groupType = document.querySelector("inactive-header-text");
-            if (groupType) {
-                value = "public"
+            
+            console.log("BSBDKJDNLDLWKDN" + creatorId)
+            
+            const calendar = {
+                admins: admins
+            }
+            
+            const membership = {
+                members: members
             }
             
             const payload = {
-                calendarPayload: calendarPayload,
-                membershipPayload: membershipPayload
+                calendarPayload: calendar,
+                membershipPayload: membership
             }
             
             // Listener?

@@ -2,11 +2,8 @@ import "./components/eventCard.js";
 import "./components/groupDescription.js";
 import "./components/groupWeekDays.js";
 import { PubSub } from "../../store/pubsub.js"
-import { state } from "../../store/state.js";
-import { Store } from "../../store/store.js";
+import { store } from "../../store/store.js";
 
-
-let store = new Store(state);
 
 class CreateGroupLandingView {
 
@@ -32,15 +29,22 @@ class CreateGroupLandingView {
 
             console.log("created")
 
+            // VI måste göra en instans först av store, då det är en klass, så gör det!
             let state = store.getState();
             let params = route.url.searchParams;
             let cal = state.userData.cals.find(cal => cal.id == params.get("id"));
             if (cal.id != params.get("id")) {
                 return;
             }
-            let newState = state.currentContext.currentCal = cal;
-            store.setState(newState);
+            let calEvents = state.userData.events.filter(events => events.calId == cal.id);
 
+            store.setState({
+                currentContext: {
+                    currentCal: cal,
+                    currentEvents: calEvents
+                }
+            }, "calendar:events", { calEvents: calEvents });
+            console.log(store.getState())
 
             this.render();
         })
