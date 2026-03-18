@@ -125,10 +125,13 @@ export class AddMembers extends HTMLElement {
         const userIsMember = this.allMembers.some(currMember => currMember.id == user.id);
         
         if (userIsMember) {
-            // Remove membership if existing member
+            
+            // Remove membership if member in array already
             this.allMembers = this.allMembers.filter(currMember => currMember.id !== user.id);
         } else {
-            // Add user
+            
+            // Add user and give bg-color
+            if (!user.color) user.color = this.randomColor()
             this.allMembers.push(user);
         }
         
@@ -137,32 +140,40 @@ export class AddMembers extends HTMLElement {
     
     // Create DOM elems
     renderMembers() {
-        
+
         this.membersContainer.innerHTML = "";
-        
+
         // Limit to max 15 displayed users 
         const visibleMembers = this.allMembers.slice(0, 15);
-        
+
         visibleMembers.forEach((currMember, index) => {
-            
+
             const newDiv = document.createElement("div");
-            
-            // Basic styling for all cirkles (inc. add btn)
             newDiv.classList.add("member-cirkle");
-            
-            // First cirkle no negative margin (styling)
+
             if (index == 0) {
+                // First cirkle no negative margin (styling)
                 newDiv.classList.add("member-no-margin");
             } else {
                 newDiv.classList.add("member-add-margin");
             }
-            
-            // Give random BG COLOR
-            newDiv.style.backgroundColor = this.randomColor();
+
+            // Använd sparad färg
+            newDiv.style.backgroundColor = currMember.color;
+
+            // Sätt initialer
+            const initials = currMember.name
+                .split(" ")
+                .map(part => part[0])
+                .join("")
+                .toUpperCase();
+
+            newDiv.textContent = initials;
 
             this.membersContainer.appendChild(newDiv);
         });
     }
+
     
     // Give BG colors to renderMembers
     randomColor() {
