@@ -4,6 +4,7 @@ import { store } from "../../store/store.js";
 import { EVENTS } from "../../store/events.js";
 import { NotificationCard } from "./components/notification-card.js";
 import { RegularButton } from "../../../components/regularButton/regularButton.js";
+import { BottomNav } from "../../../components/bottomNav/bottomNav.js";
 
 customElements.define("notification-card", NotificationCard);
 customElements.define("regular-button", RegularButton);
@@ -12,7 +13,7 @@ export class CreateNotificationsView {
     constructor(root) {
         this.root = root;
         PubSub.subscribe("change:view", (data) => {
-            if (data.mainPath === "notifications") {
+            if (data.mainPath === "home" && data.subPath === "notifications") {
                 //Testade att koppla samman notify och publish men fungerade inte när man 
                 //skrev /notifications direkt in i URL:en och render() metoden kördes 6 gånger
                 //för någon anledning
@@ -74,6 +75,8 @@ export class CreateNotificationsView {
                 notiCard.data = noti;
                 this.root.appendChild(notiCard);
             }
+
+            this.root.appendChild(document.createElement("bottom-nav"));
 
             document.querySelector("#mark-read").addEventListener("click", () => {
                 console.log("//Skicka request att markera alla som lästa");
