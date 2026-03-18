@@ -10,7 +10,6 @@ export function userGroupsService() {
 
     // POST /user_calendars
     PubSub.subscribe(EVENTS.REQUEST.SENT.USERGROUPS.POST, async function (payload) {
-    console.log("USERGROUPS PAYLOAD:", JSON.stringify(payload, null, 2));
 
         try {
 

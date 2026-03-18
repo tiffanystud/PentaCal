@@ -12,7 +12,6 @@ export class CreateCalendarView {
     }
 
     subs() {
-        console.log("SUBSCRIBE IN CALS")
 
         PubSub.subscribe("change:view", (data) => {
             if (data.mainPath == "createGroup") {
@@ -21,7 +20,7 @@ export class CreateCalendarView {
             if (data.mainPath == "home/createGroup") {
                 this.render();
             }
-            if (data.mainPath == "home/createGroup") {
+            if (data.mainPath == "calendars/createGroup") {
                 this.render();
             }
         })
@@ -84,39 +83,15 @@ export class CreateCalendarView {
         createBtn.addEventListener("click", () => {
 
             const state = store.getState();
-            
-            // Calendars
-            const creatorId = state.isLoggedIn.id;
             const toggleStatus = document.querySelector("toggle-btn").getValue()
             const groupNameInput = document.querySelector('app-input[label="Calendar Name"]');
 
             // Calendar
             const currGroupName = groupNameInput.getValue() || "Group";
             const currCreatorId = state.isLoggedIn.id;
-            let currGroupType;
-            if (toggleStatus == "active") {
-                currGroupType = "private"
-            } else {
-                currGroupType = "public"
-            }
+            const currGroupType = toggleStatus === "active" ? "private" : "public";
 
-            // Membership (in calendar)
-            const admins = document.querySelector('add-members[userListName="admins"]').getValue();
-            const members = document.querySelector('add-members[userListName="members"]').getValue();
-
-
-
-            console.log("BSBDKJDNLDLWKDN" + creatorId)
-
-            const calendar = {
-                admins: admins
-            }
-
-            const membership = {
-                members: members
-            }
-
-            // Membership / userGroups
+            // Memberships / userGroups
             const addedAdmins = document.querySelector('add-members[userListName="admins"]').getValue();
             const addedMembers = document.querySelector('add-members[userListName="members"]').getValue();
 
@@ -135,8 +110,7 @@ export class CreateCalendarView {
 
             }
 
-            // Listener?
-
+            // PUBLISH LISTENER (SENT)
             PubSub.publish(EVENTS.REQUEST.SENT.CALENDARS.POST, payload);
 
         });
