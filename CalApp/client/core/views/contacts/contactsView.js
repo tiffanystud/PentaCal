@@ -29,19 +29,21 @@ export class ContactsView extends HTMLElement{
 
         });
     }
-    render(){
+    async render(){
         const params = new URLSearchParams(location.search);
+        console.log(location.pathname);
         const isGroupContext =
-            location.pathname.startsWith("/groups") &&
+//            location.pathname.startsWith("home/groups") &&
             params.has("id");
         const groupId = params.get("id");
         let context = "My Contacts";
         if (isGroupContext){
             try {
-                context = apiRequest({
+                const group = await apiRequest({
                     entity: `calendars?id=${groupId}`,
                     method: "GET"
                 })
+                context = group.name;
 
             } catch(err){
                 return err;
