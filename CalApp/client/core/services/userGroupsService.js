@@ -7,10 +7,14 @@ console.log("UG service loaded");
 
 export function userGroupsService() {
 
+    // Just for rollback functionality
+    const newCalendar = []
+    
     // POST /user_calendars
     PubSub.subscribe(EVENTS.REQUEST.SENT.USERGROUPS.POST, async function (payload) {
 
         try {
+
 
             const response = await apiRequest({
                 entity: "users_calendars",
@@ -22,6 +26,11 @@ export function userGroupsService() {
             PubSub.publish(EVENTS.RESPONSE.RECEIVED.USERGROUPS.POST, response);
 
             // Uppdatera store om OK
+            newCalendar.push({
+    /*             payload.calId, 
+                payload.userId */
+            })
+            
             const curr = store.getState().userData.usergroups || [];
             const updatedUG = [...curr, response];
 

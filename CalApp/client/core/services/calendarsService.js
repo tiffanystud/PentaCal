@@ -50,19 +50,76 @@ export function CalendarService() {
 
         const calendarPayload = payload.calendarPayload;
         const membershipPayload = payload.membershipPayload;
-
         const admins = membershipPayload.admins;
         const members = membershipPayload.members;
-
+        
+        let hasNonCreatorUser = false;
+        
         try {
+            
             const response = await apiRequest({
                 entity: "calendars",
                 method: "POST",
                 body: calendarPayload
             });
-
             
-            // If ok (trigga // POST /calendars (received)
+            const calendarId = response.id;
+            const creatorId = response.creatorId;
+            let creatorIsAdmin = false;
+            
+            for (const a of admins) {
+                if (a.id === creatorId) {
+                    creatorIsAdmin = true;
+                    break;
+                }
+            }
+
+            if (!creatorIsAdmin) {
+                admins.push({
+                    id: creatorId,
+                    name: "Creator"
+                });
+            }
+            // START OF ROLLBACK (needs to add at least one member)
+                
+            // Check if any admins has been added
+            for (const a of admins) {
+                if (a.id !== creatorId) {
+                    hasNonCreatorUser = true;
+                    break;
+                }
+            }
+            
+            // Check if member has been added
+            if (!hasNonCreatorUser) {
+                for (const m of members) {
+                    if (m.id !== creatorId) {
+                        hasNonCreatorUser = true;
+                        break;
+                    }
+                } 
+            }
+            
+            // If no other users added, abort create calendar
+            if (!hasNonCreatorUser) {
+
+                await apiRequest({
+                    entity: `calendars`,
+                    method: "DELETE",
+                    body: {
+                        id: calendarId,
+                        creatorId: creatorId
+                    }
+                });
+                
+                console.error("At least one member needs to be added to create a calendar");
+                return; 
+            }   
+            
+            // END OF ROLLBACK 
+            
+            
+            // If ok (trigger / POST /calendars (received)
             PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.POST, {
                 calendar: response,
                 admins: admins,
@@ -82,7 +139,7 @@ export function CalendarService() {
 
         } catch (err) {
             
-            console.error("CALENDARS POST ERROR:", err);
+            console.log("CALENDARS POST ERROR:", err);
             PubSub.publish(EVENTS.RESPONSE.ERROR.CALENDARS.POST, err);
             
         }
