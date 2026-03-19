@@ -23,6 +23,77 @@ export class GroupContainerBoxComp extends HTMLElement {
         this.eventListeners();
     }
     html() {
+        return `
+            <div class="content">
+                <landing-button-container>
+                    <landing-button label="My Calendar" view="home" active></landing-button>
+                    <landing-button label="My Groups" view="groupcalendar"></landing-button>
+                </landing-button-container>
+                <h3>My Groups</h3>
+                <div class="container">
+                    <div class="box">
+                        <img src="" alt="Group image">
+                        <div class="groupDetailBox">
+                            <h3>Hello world</h3>
+                            <p>Detta är beskrivningen på gruppen</p>
+                            <p>X antal members</p>
+                        </div>
+                        <div class="nextEventBox">
+                            <h4>Next event</h4>
+                            <p>X</p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <img src="" alt="Group image">
+                        <div class="groupDetailBox">
+                            <h3>Hello world</h3>
+                            <p>Detta är beskrivningen på gruppen</p>
+                            <p>X antal members</p>
+                        </div>
+                        <div class="nextEventBox">
+                            <h4>Next event</h4>
+                            <p>X</p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <img src="" alt="Group image">
+                        <div class="groupDetailBox">
+                            <h3>Hello world</h3>
+                            <p>Detta är beskrivningen på gruppen</p>
+                            <p>X antal members</p>
+                        </div>
+                        <div class="nextEventBox">
+                            <h4>Next event</h4>
+                            <p>X</p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <img src="" alt="Group image">
+                        <div class="groupDetailBox">
+                            <h3>Hello world</h3>
+                            <p>Detta är beskrivningen på gruppen</p>
+                            <p>X antal members</p>
+                        </div>
+                        <div class="nextEventBox">
+                            <h4>Next event</h4>
+                            <p>X</p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <img src="" alt="Group image">
+                        <div class="groupDetailBox">
+                            <h3>Hello world</h3>
+                            <p>Detta är beskrivningen på gruppen</p>
+                            <p>X antal members</p>
+                        </div>
+                        <div class="nextEventBox">
+                            <h4>Next event</h4>
+                            <p>X</p>
+                        </div>
+                    </div>
+                </div>
+                <bottom-nav></bottom-nav>
+            </div>
 
         let allHtml; 
 
@@ -116,7 +187,7 @@ export class GroupContainerBoxComp extends HTMLElement {
     }
     style() {
         return `
-        h1 {
+        h3 {
             text-align: center;
         }
         .content {
