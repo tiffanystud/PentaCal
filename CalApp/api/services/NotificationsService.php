@@ -15,7 +15,7 @@ class NotificationsService {
         return $db->getAll();
     }
 
-    public static function getByParams($notiId, $userId) {
+    public static function getWithParams($notiId, $userId) {
         $db = new DBAccess("notifications");
         $connectionsDb = new DBAccess("users_notifications");
 
@@ -25,7 +25,8 @@ class NotificationsService {
             $connections = array_values(array_filter($connectionsDb->getAll(), fn($x) => $x["userId"] === $userId));
             $notis = [];
             foreach($connections as $x) {
-                array_push($db->findById($x["notiId"]));
+                $noti = $db->findById($x["notiId"]);
+                array_push($notis, $noti);
             }
 
             return $notis;

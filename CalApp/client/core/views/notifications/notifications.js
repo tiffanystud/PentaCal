@@ -51,12 +51,13 @@ export class CreateNotificationsView {
         //store.getState().notis var bara en tom array [] (loopen kördes inte).
         try {
             let notifications = await apiRequest({
-                entity: "events",
+                entity: `notifications?userId=${store.getState().isLoggedIn.id}`,
                 method: "GET"
             });
+            console.log(notifications);
 
-            notifications = notifications.sort((a, b) => a.time.localeCompare(b.time));
-            notifications = notifications.sort((a, b) => new Date(a.date) - new Date(b.date));
+            notifications = notifications.sort((a, b) => a.notiContent.time.localeCompare(b.notiContent.time));
+            notifications = notifications.sort((a, b) => new Date(a.notiContent.date) - new Date(b.notiContent.date));
 
             store.setState({userData: {
                 ...store.getState().userData,
@@ -72,7 +73,8 @@ export class CreateNotificationsView {
             console.log(store.getState().userData.notis);
             for (let noti of store.getState().userData.notis) {
                 let notiCard = document.createElement("notification-card");
-                notiCard.data = noti;
+                notiCard.data = noti.notiContent;
+                notiCard.type = noti.type;
                 this.root.appendChild(notiCard);
             }
 

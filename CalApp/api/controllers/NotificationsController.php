@@ -17,7 +17,7 @@ class NotificationsController {
                     self::createResp(NotificationsService::getWithParams($notiId, null), 200);
                     return;
                 } else {
-                    self::createResp(NotificationsService::getAll(), 400);
+                    self::createResp(NotificationsService::getAll(), 200);
                 }
             } catch (Exception $e) {
                 $msg = $e->getMessage();

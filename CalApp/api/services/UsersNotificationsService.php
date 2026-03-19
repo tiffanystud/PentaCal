@@ -16,7 +16,7 @@ class UsersNotificationsService {
         } else if ($userId) {
             return array_values(array_filter($db->getAll(), fn($x) => $x["userId"] === $userId));
         } else if ($notiId) {
-            return array_find($db->getAll(), fn($x) => $x["notiId"] === $notiId);
+            return array_values(array_filter($db->getAll(), fn($x) => $x["notiId"] === $notiId));
         }
     }
 
