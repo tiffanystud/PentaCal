@@ -4,12 +4,12 @@ import { EVENTS } from "../../store/events.js";
 import { store } from "../../store/store.js";
 // import { CalendarService } from "../../services/calendarsService.js";
 
-export class CreateCalendarView {
+export class CreateCalendarView extends HTMLElement {
 
     constructor() {
         
-        this.app = document.querySelector("#app");
-        this.subs();
+        super();
+        this.attachShadow({mode: "open"});
         
     }
 
@@ -30,8 +30,7 @@ export class CreateCalendarView {
 
     render() {
 
-        this.app.innerHTML = `
-            <link rel="stylesheet" href="/core/views/createGroup/createGroupView.css">
+        this.shadowRoot.innerHTML = `
                     
             <h2>Create new calendar</h2>
 
