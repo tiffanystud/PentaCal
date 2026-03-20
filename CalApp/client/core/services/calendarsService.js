@@ -18,14 +18,14 @@ export function CalendarService() {
                 method: "GET",
             }
 
-            const response = await apiRequest(calRequest);
+            const resource = await apiRequest(calRequest);
 
             // Publish att response och resource är recieved 
-            PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.GET, response)
-            PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.GET, response)
+            PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.GET, resource)
+            PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.GET, resource)
 
             const currCals = store.getState().userData.cals;
-            const newCals = [...currCals, ...response];
+            const newCals = [...currCals, ...resource];
 
             // Uppdatera state
             store.setState({
@@ -57,14 +57,14 @@ export function CalendarService() {
         
         try {
             
-            const response = await apiRequest({
+            const resource = await apiRequest({
                 entity: "calendars",
                 method: "POST",
                 body: calendarPayload
             });
             
-            const calendarId = response.id;
-            const creatorId = response.creatorId;
+            const calendarId = resource.id;
+            const creatorId = resource.creatorId;
             let creatorIsAdmin = false;
             
             for (const a of admins) {
@@ -121,13 +121,13 @@ export function CalendarService() {
             
             // If ok (trigger / POST /calendars (received)
             PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.POST, {
-                calendar: response,
+                calendar: resource,
                 admins: admins,
                 members: members
             });
             
             const curr = store.getState().userData.cals;
-            const updatedCals = [...curr, response];
+            const updatedCals = [...curr, resource];
 
             // Uppdatera cals
             store.setState({
