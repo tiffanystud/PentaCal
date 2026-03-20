@@ -28,7 +28,9 @@ import "./core/views/contacts/contactsView.js";
 import "./core/views/profileView/profileView.js";
 import "./core/views/login/loginView.js"
 
+// DEVELOPMENT
+import "./core/views/development/development.js";
 
 
-
+// START
 newRouter.init();
