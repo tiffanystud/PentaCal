@@ -46,8 +46,9 @@ export class dummyLogin {
         PubSub.publish(EVENTS.STORE.UPDATED.ISLOGGEDIN);
 
         console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
-        console.log(store.getState())
+        console.log("State: ", store.getState())
         console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+        
     }
 
     logout() {

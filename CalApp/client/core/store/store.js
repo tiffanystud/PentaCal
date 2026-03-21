@@ -47,7 +47,7 @@ export class Store {
         
         if (!Store.allListeners[keyName]) {
             
-            console.log('New subscription: "', keyName, '" with listener: "', listener, '"');
+            console.log('New store sub:', keyName, ' with listener: ', listener);
             Store.allListeners[keyName] = []
             
         };
@@ -60,10 +60,11 @@ export class Store {
         if (!Store.allListeners[keyName]) {
             
             return "No listeners for event"
+            
         } else {
 
-            console.log('New nofify: "', keyName, '" with: "', data, '"');
-            Store.allListeners[keyName].forEach(listener => listener(data))
+            console.log('New store nofify:', keyName, ' with: ', data);
+            Store.allListeners[keyName].forEach(listener => listener(data));
         }
     }
     
@@ -80,109 +81,12 @@ export class Store {
         
     }
     
-    async loadState(userId) {
+async loadState() {
+    console.log("Uses StoreService instead");
+}
 
-        // User
-        const currUser = await apiRequest({
-            entity: `users?id=${userId}`,
-            method: "GET"
-        });
-
-        // UPDATE STATE
-        this.setState({
-            isLoggedIn: {
-                id: currUser.id,
-                username: currUser.name,
-                email: currUser.email
-            }
-        });
-
-        // Get User Groups (UG)
-        const usergroups = await apiRequest({
-            entity: `users_calendars?userId=${userId}`,
-            method: "GET"
-        });
-        
-        // Get Friends
-        const friends = await apiRequest({
-            entity: `friendships?userId=${userId}`,
-            method: "GET"
-        });
-
-        // Get Private MSG
-        const privateMessages = await apiRequest({
-            entity: `private_msg?userId=${userId}`,
-            method: "GET"
-        });
-
-        // Get Calendar MSG
-        const calendarMessages = [];
-        for (let ug of usergroups) {
-            const msgs = await apiRequest({
-                entity: `calendar_msg?senderId=${userId}&calId=${ug.calId}`,
-                method: "GET"
-            });
-
-            for (let msg of msgs) {
-                calendarMessages.push(msg);
-            }
-        }
-
-        // Get Pinned cals
-        const pinned = await apiRequest({
-            entity: `users_pinned_calenders?userId=${userId}`,
-            method: "GET"
-        });
-
-        // Get Avails
-        const availabilities = await apiRequest({
-            entity: `users_availabilities?userId=${userId}`,
-            method: "GET"
-        });
-        
-        // Get Calendars (based on UG)
-        const calIds = [];
-        for (let ug of usergroups) {
-            calIds.push(ug.calId);
-        }
-        
-        const cals = [];
-        for (let calId of calIds) {
-            const cal = await apiRequest({
-                entity: `calendars?id=${calId}`,
-                method: "GET"
-            });
-            cals.push(cal);
-        }
-
-        // Get Events (based on cals)
-        let events = [];
-        for (let calId of calIds) {
-
-            const eventsForCal = await apiRequest({
-                entity: `events?calId=${calId}`,
-                method: "GET"
-            });
-
-            for (let event of eventsForCal) {
-                events.push(event);
-            }
-        }
-
-        // UPDATE STATE
-        this.setState({
-            usergroups: usergroups,
-            cals: cals,
-            events: events,
-            friends: friends,
-            privateMessages: privateMessages,
-            calendarMessages: calendarMessages,
-            userPinnedCalendars: pinned,
-            availabilites: availabilities
-        });
-
-    }
     
 }
 
 export const store = new Store(state);
+
