@@ -18,10 +18,10 @@ export class HomeView extends HTMLElement {
     
     sub() {
         
-        // Test av EVENTS (init i index.js)
         PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.HOME, (data) => {
             
             console.log("HOME EVENT TRIGGERED", data);
+            
             if (data.page === "home") {
                 this.render(data);
             }
@@ -29,17 +29,13 @@ export class HomeView extends HTMLElement {
         });
 
         PubSub.subscribe(EVENTS.STATE.LOGIN.SUCCESS, () => {
-            
             // Re-render home, inloggad
             PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" });
-            
         });
         
         PubSub.subscribe(EVENTS.STATE.LOGOUT.SUCCESS, () => {
-            
-            // Re-render home, utloggad inloggad
+            // Re-render home, utloggad
             PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" });
-            
         });
         
         PubSub.subscribe("change:view", (data) => {
@@ -47,13 +43,14 @@ export class HomeView extends HTMLElement {
             if (data.mainPath === "home") {
                 this.render();
             }
-            if (data.url.pathname === "/") {
+/*             if (data.url.pathname === "/") {
                 this.render();
-            }
+            } */
             if (data.url === "/home") {
                 this.render();
             }
         })
+        
         PubSub.subscribe("change:page", (data) => {
             if (data.page === "home") { //bottom Nav
                 this.render();

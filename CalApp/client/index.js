@@ -34,6 +34,7 @@ import "./core/views/development/development.js";
 import { EVENTS } from "./core/store/events.js";
 import { PubSub } from "./core/store/pubsub.js";
 PubSub.subscribe("change:view", (data) => {
+    
     const { mainPath, subPath } = data;
 
     // 1. Om subPath matchar en PAGE → använd den
@@ -47,6 +48,7 @@ PubSub.subscribe("change:view", (data) => {
         PubSub.publish(EVENTS.VIEW.PAGE.SHOW[mainPath.toUpperCase()], data);
         return;
     }
+    
 });
 
 

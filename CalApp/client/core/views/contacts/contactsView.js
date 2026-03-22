@@ -17,19 +17,21 @@ export class ContactsView extends HTMLElement{
     sub() {
         
         PubSub.subscribe("change:page", (data) => {
-            console.log("CONTACTS change:page", data);
+
             if (data.page === "contacts"){
                 this.render();
             }
 
         });
-        PubSub.subscribe("change:view", (data) => {
-             console.log("CONTACTS change:view", data);
-            if (data.view === "contacts"){
+        
+        PubSub.subscribe("change:view", (data) => {    
+                    
+            if (data.view === "contacts" || data.view === "home/contacts"){
                 this.render();
-            }
-
+            } 
+            
         });
+
         
     }
     
