@@ -81,11 +81,6 @@ export class Store {
         
     }
     
-async loadState() {
-    console.log("Uses StoreService instead");
-}
-
-    
 }
 
 export const store = new Store(state);

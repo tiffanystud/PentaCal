@@ -15,14 +15,38 @@ export class HomeView extends HTMLElement {
         this.currentView = "my-calendar";
         this.sub();
     }
+    
     sub() {
         
         // Test av EVENTS (init i index.js)
         PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.HOME, (data) => {
-            this.render(data);
+            
+            console.log("HOME EVENT TRIGGERED", data);
+            if (data.page === "home") {
+                this.render(data);
+            }
+            
+        });
+
+        PubSub.subscribe(EVENTS.STATE.LOGIN.SUCCESS, () => {
+            
+            // Re-render home, inloggad
+            PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" });
+            
+        });
+        
+        PubSub.subscribe(EVENTS.STATE.LOGOUT.SUCCESS, () => {
+            
+            // Re-render home, utloggad inloggad
+            PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" });
+            
         });
         
         PubSub.subscribe("change:view", (data) => {
+            
+            if (data.mainPath === "home") {
+                this.render();
+            }
             if (data.url.pathname === "/") {
                 this.render();
             }

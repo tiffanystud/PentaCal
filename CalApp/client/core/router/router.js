@@ -3,9 +3,13 @@ import { PubSub } from "../store/pubsub.js";
 
 // ROUTERN PUBLICERAR ETT EVENT, MED URL OCH VYN SUBSCRIBAR PÅ EVENTET SOM SEDAN GER URL ELLER PARAMS OCH RENDERAR
 export class Router {
+    
     constructor(url) {
+        
         this.url = new URL(url, window.location.origin); // sträng
+        
         console.log(url);
+        
         this.urlPaths = this.url.pathname.split("/").filter(Boolean);
         this.mainPath = this.urlPaths[0];
         this.subPath = this.urlPaths[1];

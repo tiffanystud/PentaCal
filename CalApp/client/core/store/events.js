@@ -11,13 +11,16 @@ const RESOURCES = [
 ];
 
 const POPUPS = [
-    "createCalendar",
+    "createGroup",
+    "searchModal",
     "createEvent",
 ];
 
 export const PAGES = [
     "home",
-    "profile"
+    "profile",
+    "contacts",
+    "createGroup"
 ];
 
 
@@ -143,7 +146,7 @@ export const EVENTS = {
         }
     },
 
-    // Data Events (updated, user selected a resource)
+    // Data Events (updated data, user selected a resource)
     STORE: {
         
         UPDATED: buildStoreUpdatedEvents(),
