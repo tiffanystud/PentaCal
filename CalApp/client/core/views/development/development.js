@@ -39,12 +39,8 @@ export class dummyLogin {
             isLoggedIn: { id: userId }
         });
     
-        // Pubba att någon har loggat in och status har uppdaterats
+        // Pubba att någon vill logga in och status har uppdaterats
         PubSub.publish(EVENTS.STORE.UPDATED.ISLOGGEDIN);
-
-        console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
-        console.log("State: ", store.getState())
-        console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
         
     }
 
@@ -52,7 +48,7 @@ export class dummyLogin {
         
         // Pubba att någon vill logga ut (storeService)
         PubSub.publish(EVENTS.STATE.LOGOUT.START);
-
+        
     }
 
     updateUI(isLoggedIn) {

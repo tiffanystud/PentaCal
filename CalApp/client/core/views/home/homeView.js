@@ -40,12 +40,14 @@ export class HomeView extends HTMLElement {
         
         PubSub.subscribe("change:view", (data) => {
             
-            if (data.mainPath === "home") {
+            if (data.mainPath === "home" || "/") {
                 this.render();
             }
-/*             if (data.url.pathname === "/") {
+        /*             
+            if (data.url.pathname === "/") {
                 this.render();
-            } */
+            } 
+        */
             if (data.url === "/home") {
                 this.render();
             }
@@ -63,6 +65,7 @@ export class HomeView extends HTMLElement {
         this.app.innerHTML = `
         <cal-detail-btn></cal-detail-btn>
         <cal-render></cal-render>
+        <create-popup></create-popup>
         <bottom-nav></bottom-nav>
         `;
         

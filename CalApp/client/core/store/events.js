@@ -12,15 +12,17 @@ const RESOURCES = [
 
 const POPUPS = [
     "createGroup",
-    "searchModal",
     "createEvent",
+    "searchModal",
+    "createPopup"
 ];
 
 export const PAGES = [
     "home",
     "profile",
     "contacts",
-    "createGroup"
+    "createGroup",
+    "createEvent"
 ];
 
 
@@ -127,7 +129,6 @@ function buildPageShowEvents() {
 
     return events;
 }
-
 
 export const EVENTS = {
 

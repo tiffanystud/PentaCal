@@ -233,7 +233,11 @@ export class StoreService {
                 });
 
             PubSub.publish(EVENTS.STATE.LOGIN.SUCCESS, { userId });
-
+            
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            console.log("State: ", store.getState())
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            
             } catch (err) {
 
                 console.error("StoreService login error:", err);
@@ -248,6 +252,10 @@ export class StoreService {
             
             PubSub.publish(EVENTS.STATE.LOGOUT.SUCCESS);
             PubSub.publish(EVENTS.STORE.UPDATED.ISLOGGEDIN);
+            
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            console.log("State: ", store.getState())
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
             
         });
     }

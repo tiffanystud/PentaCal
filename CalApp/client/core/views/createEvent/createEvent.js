@@ -1,19 +1,28 @@
 import { PubSub } from "../../store/pubsub.js";
+import { EVENTS } from "../../store/events.js";
 
 export class CreateEvent extends HTMLElement {
     constructor() {
+        
         super();
         this.attachShadow({mode : "open"});
+        
         PubSub.subscribe("change:page", (data) => {
             if(data.page === "add"){ //bottom Nav
                 this.render();
             }
         });
+        
         PubSub.subscribe("change:view", (data) => {
             if(data.url.pathname === "/calendars/createEvent"){ //url
                 this.render();
             }
         });
+                  
+        PubSub.subscribe(EVENTS.VIEW.POPUP.SHOW.CREATEEVENT, () => {
+            this.render();
+        })
+        
     }
 
     html() {

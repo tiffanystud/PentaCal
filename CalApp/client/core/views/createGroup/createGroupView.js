@@ -26,6 +26,11 @@ export class CreateCalendarView {
                 this.render();
             }
         })
+        
+        PubSub.subscribe(EVENTS.VIEW.POPUP.SHOW.CREATEGROUP, () => {
+            this.render();
+        })
+        
     }
 
     render() {
