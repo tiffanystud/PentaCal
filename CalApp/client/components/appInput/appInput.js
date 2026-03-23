@@ -1,12 +1,22 @@
 
-// Ha bara globala eventlisteners som ej krockar med view specifika. Håll modulärt 
+/* Implementation, exempel:
+
+    <app-input
+        label="Description"
+        placeholder="Enter description of the group"
+        width="100%"
+        height="100px"
+        id="calendarDesc"
+    ></app-input>
+    
+*/
+
 export class AppInput extends HTMLElement {
     
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
         
-        // SE ÖVER **, följ Eriks förslag ist
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
@@ -99,13 +109,3 @@ export class AppInput extends HTMLElement {
 }
 
 customElements.define("app-input", AppInput);
-
-
-/* 
-    <app-input  
-        width="50%"
-        label="Input-field header text"
-        placeholder="Enter input"
-    ></app-input>
-    
-*/

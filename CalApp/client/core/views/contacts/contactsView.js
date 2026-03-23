@@ -15,19 +15,26 @@ export class ContactsView extends HTMLElement{
         this.sub();
     }
     sub() {
+        
         PubSub.subscribe("change:page", (data) => {
+
             if (data.page === "contacts"){
                 this.render();
             }
 
         });
-        PubSub.subscribe("change:view", (data) => {
-            if (data.view === "contacts"){
+        
+        PubSub.subscribe("change:view", (data) => {    
+                    
+            if (data.view === "contacts" || data.view === "home/contacts"){
                 this.render();
-            }
-
+            } 
+            
         });
+
+        
     }
+    
     async render(){
         const params = new URLSearchParams(location.search);
         const isGroupContext =

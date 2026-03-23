@@ -7,67 +7,67 @@ import { newRouter } from "../../index.js";
 export class BottomNav extends HTMLElement { 
     
         constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        
-        this.shadowRoot.innerHTML = `
-            <style>
-                .icon-light {
-                    display: none;
-                }
-                .nav-btn.activeBtn .icon-dark {
-                    display: none;
-                }
-                .nav-btn.activeBtn .icon-light {
-                    display: inline;
-                }
-                .button-container {
-                    border-top: 1px solid gray;
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-around;
-                    padding-top: 12px;
-                    padding-bottom: 12px;
-                    box-sizing: border-box;
-                }
-                .nav-btn {
-                    background: none;
-                    border: none;
-                }
-                .nav-btn:hover {
-                    cursor: pointer;
-                }
-            </style>
+            super();
+            this.attachShadow({ mode: "open" });
+            
+            this.shadowRoot.innerHTML = `
+                <style>
+                    .icon-light {
+                        display: none;
+                    }
+                    .nav-btn.activeBtn .icon-dark {
+                        display: none;
+                    }
+                    .nav-btn.activeBtn .icon-light {
+                        display: inline;
+                    }
+                    .button-container {
+                        border-top: 1px solid gray;
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-around;
+                        padding-top: 12px;
+                        padding-bottom: 12px;
+                        box-sizing: border-box;
+                    }
+                    .nav-btn {
+                        background: none;
+                        border: none;
+                    }
+                    .nav-btn:hover {
+                        cursor: pointer;
+                    }
+                </style>
 
-            <div class="button-container">
-                
-                <button class="nav-btn home">
-                    <img class="icon-dark" src="/../../assets/icons/home-dark.png">
-                    <img class="icon-light" src="/../../assets/icons/home-light.png">
-                </button>
-                
-                <button class="nav-btn contacts">
-                    <img class="icon-dark" src="/../../assets/icons/users-dark.png">
-                    <img class="icon-light" src="../../assets/icons/users-light.png">
-                </button>
-                
-                <button class="nav-btn add">
-                    <img class="icon-dark" src="/../../assets/icons/add-dark.png">
-                    <img class="icon-light" src="/../../assets/icons/add-light.png">
-                </button>
-                
-                <button class="nav-btn notifications">
-                    <img class="icon-dark" src="/../../assets/icons/send-dark.png">
-                    <img class="icon-light" src="/../../assets/icons/send-light.png">
-                </button>
-                
-                <button class="nav-btn profile">
-                    <img class="icon-dark" src="/../../assets/icons/profile-dark.png">
-                    <img class="icon-light" src="/../../assets/icons/profile-light.png">
-                </button>
-                
-            </div>
-            `;
+                <div class="button-container">
+                    
+                    <button class="nav-btn home">
+                        <img class="icon-dark" src="/../../assets/icons/home-dark.png">
+                        <img class="icon-light" src="/../../assets/icons/home-light.png">
+                    </button>
+                    
+                    <button class="nav-btn contacts">
+                        <img class="icon-dark" src="/../../assets/icons/users-dark.png">
+                        <img class="icon-light" src="../../assets/icons/users-light.png">
+                    </button>
+                    
+                    <button class="nav-btn add">
+                        <img class="icon-dark" src="/../../assets/icons/add-dark.png">
+                        <img class="icon-light" src="/../../assets/icons/add-light.png">
+                    </button>
+                    
+                    <button class="nav-btn notifications">
+                        <img class="icon-dark" src="/../../assets/icons/send-dark.png">
+                        <img class="icon-light" src="/../../assets/icons/send-light.png">
+                    </button>
+                    
+                    <button class="nav-btn profile">
+                        <img class="icon-dark" src="/../../assets/icons/profile-dark.png">
+                        <img class="icon-light" src="/../../assets/icons/profile-light.png">
+                    </button>
+                    
+                </div>
+                `;
         }
         
         connectedCallback(){
@@ -76,11 +76,11 @@ export class BottomNav extends HTMLElement {
             
             // Lägg till eventlisteners
             buttons.forEach(currBtn => {
+                
                 currBtn.addEventListener("click", () => {
                     
-                    // Rensa active på alla icons
+                    // Ge rätt knapp light/dark icons
                     buttons.forEach(btn => btn.classList.remove("activeBtn"))
-                    
                     currBtn.classList.add("activeBtn");
                     
                     // "home", "users", "add" ... etc
@@ -89,6 +89,10 @@ export class BottomNav extends HTMLElement {
                     PubSub.publish("change:page", {
                         page: currPage
                     });
+                    PubSub.publish("change:view", {
+                        page: currPage
+                    });
+                    
                     this.switchView(currPage);
 
                     // Sätt page till vad man trycker på
@@ -109,6 +113,7 @@ export class BottomNav extends HTMLElement {
             
         }
         switchView(view) {
+            
             const currentPath = window.location.pathname.split("/").filter(Boolean);
             const main = currentPath[0] || "home";
 
@@ -117,6 +122,7 @@ export class BottomNav extends HTMLElement {
             } else {
                 newRouter.navigate(`/${main}/${view}`);
             }
+            
         }
 }
 customElements.define("bottom-nav", BottomNav);

@@ -11,13 +11,18 @@ const RESOURCES = [
 ];
 
 const POPUPS = [
-    "createCalendar",
+    "createGroup",
     "createEvent",
+    "searchModal",
+    "createPopup"
 ];
 
 export const PAGES = [
     "home",
-    "profile"
+    "profile",
+    "contacts",
+    "createGroup",
+    "createEvent"
 ];
 
 
@@ -125,7 +130,6 @@ function buildPageShowEvents() {
     return events;
 }
 
-
 export const EVENTS = {
 
     // Sysem Events (login/logout)
@@ -143,7 +147,7 @@ export const EVENTS = {
         }
     },
 
-    // Data Events (updated, user selected a resource)
+    // Data Events (updated data, user selected a resource)
     STORE: {
         
         UPDATED: buildStoreUpdatedEvents(),

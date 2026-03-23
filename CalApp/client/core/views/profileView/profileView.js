@@ -49,7 +49,7 @@ export class ProfileView extends HTMLElement {
                 gap: 5px;
                 margin-top: 15px;
             }
-            button {
+            .btnProfile {
                 padding: 20px;
             }
             profile-edit-comp {

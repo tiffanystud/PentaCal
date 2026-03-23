@@ -9,16 +9,23 @@ export class StoreService {
 
     constructor() {
 
-        PubSub.subscribe(EVENTS.STATE.LOGIN.START, async (userId) => {
+        PubSub.subscribe(EVENTS.STATE.LOGIN.START, async (payload) => {
+
+            const userId = payload.userId;
 
             try {
-                // Get user
+                
+                // Get User
                 const currUser = await apiRequest({
                     entity: `users?id=${userId}`,
                     method: "GET"
                 });
 
-                // UPDATE STATE (user)
+                if (!currUser) {
+                    console.error("No user returned from API");
+                    return;
+                }
+
                 store.setState({
                     isLoggedIn: {
                         id: currUser.id,
@@ -27,79 +34,193 @@ export class StoreService {
                     }
                 });
 
-                // Get User Groups (UG)
-                const usergroups = await apiRequest({
-                    entity: `users_calendars?userId=${userId}`,
-                    method: "GET"
-                });
+                // Get UGs
+                let usergroups;
+
+                try {
+                    usergroups = await apiRequest({
+                        entity: `users_calendars?userId=${userId}`,
+                        method: "GET"
+                    });
+
+                    if (!usergroups) {
+                        usergroups = [];
+                    }
+
+                } catch (err) {
+                    console.error("Usergroups fetch error:", err);
+                    usergroups = [];
+                }
+
 
                 // Get Friends
-                const friends = await apiRequest({
-                    entity: `friendships?userId=${userId}`,
-                    method: "GET"
-                });
+                let friends;
 
-                // Get Private MSG
-                const privateMessages = await apiRequest({
-                    entity: `private_msg?userId=${userId}`,
-                    method: "GET"
-                });
-
-                // Get Calendar MSG
-                const calendarMessages = [];
-                for (let ug of usergroups) {
-                    const msgs = await apiRequest({
-                        entity: `calendar_msg?senderId=${userId}&calId=${ug.calId}`,
+                try {
+                    friends = await apiRequest({
+                        entity: `friendships?userId=${userId}`,
                         method: "GET"
                     });
 
-                    for (let msg of msgs) {
-                        calendarMessages.push(msg);
+                    if (!friends) {
+                        friends = [];
+                    }
+
+                } catch (err) {
+                    console.error("Friends fetch error:", err);
+                    friends = [];
+                }
+
+
+                // Get PMs
+                let privateMessages;
+
+                try {
+                    privateMessages = await apiRequest({
+                        entity: `private_msg?userId=${userId}`,
+                        method: "GET"
+                    });
+
+                    if (!privateMessages) {
+                        privateMessages = [];
+                    }
+
+                } catch (err) {
+                    console.error("Private messages fetch error:", err);
+                    privateMessages = [];
+                }
+
+                // Get Cal MSGS
+                const calendarMessages = [];
+
+                if (usergroups.length) {
+
+                    for (let ug of usergroups) {
+
+                        let msgs;
+
+                        try {
+                            msgs = await apiRequest({
+                                entity: `calendar_msg?senderId=${userId}&calId=${ug.calId}`,
+                                method: "GET"
+                            });
+
+                            if (!msgs) {
+                                msgs = [];
+                                continue;
+                            }
+
+                            for (let msg of msgs) {
+                                calendarMessages.push(msg);
+                            }
+
+                        } catch (err) {
+                            console.error("Calendar messages fetch error:", err);
+                            msgs = [];
+                        }
                     }
                 }
 
-                // Get Pinned cals
-                const pinned = await apiRequest({
-                    entity: `users_pinned_calenders?userId=${userId}`,
-                    method: "GET"
-                });
+
+                // Get Pinned Cals
+                let pinned;
+
+                try {
+                    pinned = await apiRequest({
+                        entity: `users_pinned_calenders?userId=${userId}`,
+                        method: "GET"
+                    });
+
+                    if (!pinned) {
+                        pinned = [];
+                    }
+
+                } catch (err) {
+                    console.error("Pinned fetch error:", err);
+                    pinned = [];
+                }
+
 
                 // Get Avails
-                const availabilities = await apiRequest({
-                    entity: `users_availabilities?userId=${userId}`,
-                    method: "GET"
-                });
+                let availabilities;
 
-                // Get Calendars (based on UG)
-                const calIds = [];
-                for (let ug of usergroups) {
-                    calIds.push(ug.calId);
+                try {
+                    availabilities = await apiRequest({
+                        entity: `users_availabilities?userId=${userId}`,
+                        method: "GET"
+                    });
+
+                    if (!availabilities) {
+                        availabilities = [];
+                    }
+
+                } catch (err) {
+                    console.error("Availabilities fetch error:", err);
+                    availabilities = [];
                 }
 
+
+                // Get Cals
                 const cals = [];
-                for (let calId of calIds) {
-                    const cal = await apiRequest({
-                        entity: `calendars?id=${calId}`,
-                        method: "GET"
-                    });
-                    cals.push(cal);
-                }
 
-                // Get Events (based on cals)
-                let events = [];
-                for (let calId of calIds) {
+                if (usergroups.length) {
 
-                    const eventsForCal = await apiRequest({
-                        entity: `events?calId=${calId}`,
-                        method: "GET"
-                    });
+                    for (let ug of usergroups) {
 
-                    for (let event of eventsForCal) {
-                        events.push(event);
+                        let cal;
+
+                        try {
+                            cal = await apiRequest({
+                                entity: `calendars?id=${ug.calId}`,
+                                method: "GET"
+                            });
+
+                            if (!cal) {
+                                continue;
+                            }
+
+                            cals.push(cal);
+
+                        } catch (err) {
+                            console.error("Calendar fetch error:", err);
+                            cal = null;
+                        }
                     }
                 }
 
-                // UPDATE STATE (all data)
+
+                // Get Events
+                let events = [];
+
+                if (cals.length) {
+
+                    for (let cal of cals) {
+
+                        let eventsForCal;
+
+                        try {
+                            eventsForCal = await apiRequest({
+                                entity: `events?calId=${cal.id}`,
+                                method: "GET"
+                            });
+
+                            if (!eventsForCal) {
+                                eventsForCal = [];
+                                continue;
+                            }
+
+                            for (let event of eventsForCal) {
+                                events.push(event);
+                            }
+
+                        } catch (err) {
+                            console.error("Events fetch error:", err);
+                            eventsForCal = [];
+                        }
+                    }
+                }
+
+                // UPDATE STORE
                 store.setState({
                     usergroups: usergroups,
                     cals: cals,
@@ -111,6 +232,12 @@ export class StoreService {
                     availabilites: availabilities
                 });
 
+            PubSub.publish(EVENTS.STATE.LOGIN.SUCCESS, { userId });
+            
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            console.log("State: ", store.getState())
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            
             } catch (err) {
 
                 console.error("StoreService login error:", err);
@@ -118,7 +245,20 @@ export class StoreService {
 
             }
         });
+        
+        PubSub.subscribe(EVENTS.STATE.LOGOUT.START, () => {
+            
+            store.resetState();
+            
+            PubSub.publish(EVENTS.STATE.LOGOUT.SUCCESS);
+            PubSub.publish(EVENTS.STORE.UPDATED.ISLOGGEDIN);
+            
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            console.log("State: ", store.getState())
+            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+            
+        });
     }
 }
 
-new StoreService()
+new StoreService();
