@@ -19,6 +19,7 @@ export class ContactsView extends HTMLElement{
         PubSub.subscribe("change:page", (data) => {
 
             if (data.page === "contacts"){
+                console.log(data, "runs");
                 this.render();
             }
 
@@ -26,7 +27,7 @@ export class ContactsView extends HTMLElement{
         
         PubSub.subscribe("change:view", (data) => {    
                     
-            if (data.view === "contacts" || data.view === "home/contacts"){
+            if (data.mainPath === "home" && data.subPath === "contacts"){
                 this.render();
             } 
             

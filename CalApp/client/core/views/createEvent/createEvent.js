@@ -14,7 +14,7 @@ export class CreateEvent extends HTMLElement {
         });
         
         PubSub.subscribe("change:view", (data) => {
-            if(data.url.pathname === "/calendars/createEvent"){ //url
+            if(data.mainPath === "calendars" && data.subPath === "createEvent"){ //url
                 this.render();
             }
         });

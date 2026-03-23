@@ -9,7 +9,7 @@ class CreateGroupLandingView {
 
     sub() {
         PubSub.subscribe("change:view", (data) => {
-            if (data.url.pathname === "/newHomeViewTest") {
+            if (data.mainPath === "newHomeViewTest") {
                 this.render();
             }
         })

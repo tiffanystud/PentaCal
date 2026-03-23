@@ -12,7 +12,7 @@ export class GroupContainerBoxComp extends HTMLElement {
             }
         });
         PubSub.subscribe("change:view", (data) => {
-            if (data.url.pathname === "/home/myGroups") {
+            if (data.mainPath === "home" && data.subPath === "myGroups") {
                 this.render();
             }
         });

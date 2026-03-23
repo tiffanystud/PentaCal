@@ -39,8 +39,7 @@ export class HomeView extends HTMLElement {
         });
         
         PubSub.subscribe("change:view", (data) => {
-            
-            if (data.mainPath === "home" || "/") {
+            if ((data.mainPath === "home" || data.mainPath === "/") && !data.subPath) {
                 this.render();
             }
         /*             
@@ -61,7 +60,7 @@ export class HomeView extends HTMLElement {
     }
 
     render() {
-
+        console.log("home render runs");
         this.app.innerHTML = `
         <cal-detail-btn></cal-detail-btn>
         <cal-render></cal-render>
