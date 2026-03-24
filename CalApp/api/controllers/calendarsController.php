@@ -37,14 +37,19 @@ class CalendarsController{
 
         if($method == "POST"){
             try{
-                if(!isset($input["creatorId"]) || !isset($input["name"]) || !isset($input["type"])){
+                if(
+                    !isset($input["creatorId"]) || 
+                    !isset($input["name"]) || 
+                    !isset($input["description"]) || 
+                    !isset($input["type"])
+                ){
                     return self::sendResponse(["error" => "Attributes missing"], 400);
                 } else {
                     return self::sendResponse(CalendarsService::calendarsPost($input), 201);
                 }
-            } catch(Invalid $error){
+            } catch(Invalid $error){ // invalid?
                 return self::sendResponse(["error" => $error->getMessage()], 400);
-            } catch(AlreadyInGroup $error){
+            } catch(AlreadyInGroup $error){ // AlreadyInGroup?
                 return self::sendResponse(["error" => $error->getMessage()], 409);
             }
 

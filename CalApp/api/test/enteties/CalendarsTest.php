@@ -68,6 +68,7 @@ function testCalendarGet_200()
                 "id" => "ID",
                 "creatorId" => "ID",
                 "name" => "STRING",
+                "description" => "STRING",
                 "type" => "string"
             ]
         ]
@@ -102,6 +103,7 @@ function testCalendarGetQuery_200()
             "id" => "ID",
             "creatorId" => "ID",
             "name" => "STRING",
+            "description" => "STRING",
             "type" => "string"
         ]
     ];
@@ -162,16 +164,18 @@ function testCalendarPost_201()
     $expected = [
         "status" => 201,
         "body" => [
-              "id" => "ID",
-              "creatorId" => "ID",
-              "name" => "STRING",
-              "type" => "STRING"
-            ]
+            "id" => "ID",
+            "creatorId" => "ID",
+            "name" => "STRING",
+            "description" => "STRING",
+            "type" => "STRING"
+        ]
     ];
 
     $body = [
         "creatorId" => "2",
         "name" => "testGroup",
+        "description" => "We conduct tests here",
         "type" => "public"
     ];
 
@@ -276,6 +280,7 @@ function testCalendarPatch_200()
             "id" => "ID",
             "creatorId" => "ID",
             "name" => "STRING",
+            "description" => "STRING",
             "type" => "STRING"
         ]
     ];
@@ -349,6 +354,7 @@ function testCalendarDelete_200()
             "id" => "ID",
             "creatorId" => "ID",
             "name" => "STRING",
+            "description" => "STRING",
             "type" => "STRING"
         ]
     ];

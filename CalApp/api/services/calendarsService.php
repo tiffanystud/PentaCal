@@ -31,13 +31,13 @@ class CalendarsService{
         $calendarTable = $db->getAll();
 
         if($input["type"] != "public" && $input["type"] != "private"){
-            throw new Invalid("Invalid group type");
+            throw new Invalid("Invalid group type");  // <- varför inte exception som alla andra, undantag ??
         }
         
         foreach($calendarTable as $cals){
             if($input["creatorId"] == $cals["creatorId"]){
                 if($input["name"] == $cals["name"]){
-                    throw new AlreadyInGroup("User is already in group with same name");
+                    throw new AlreadyInGroup("User is already in group with same name");  // <- varför inte exception som alla andra, undantag ??
                 }
             }
         }
@@ -46,6 +46,7 @@ class CalendarsService{
             "id" => uniqid(),
             "creatorId" => $input["creatorId"],
             "name" => $input["name"],
+            "description" => $input["description"],
             "type" => $input["type"]
         ];
         return $db->postData($newData);
