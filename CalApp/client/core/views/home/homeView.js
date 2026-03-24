@@ -42,9 +42,10 @@ export class HomeView extends HTMLElement {
 
         PubSub.subscribe("change:view", (data) => {
 
-            if (data.mainPath === "home" || "/") {
-                this.render();
-            }
+            // Samma med denna bortkommenterat, som test så körs newHomeView nu
+            // if (data.mainPath === "home" || "/") {
+            //     this.render();
+            // }
             /*             
                 if (data.url.pathname === "/") {
                     this.render();
