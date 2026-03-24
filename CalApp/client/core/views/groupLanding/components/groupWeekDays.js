@@ -153,4 +153,4 @@ export class GroupWeekDays extends HTMLElement {
 
 }
 
-customElements.define("week-days", GroupWeekDays);
+// customElements.define("week-days", GroupWeekDays);

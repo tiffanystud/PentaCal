@@ -1,4 +1,5 @@
 import { store } from "../../../store/store.js";
+import { PubSub } from "../../../store/pubsub.js";
 
 export class EventCard extends HTMLElement {
 
@@ -7,9 +8,8 @@ export class EventCard extends HTMLElement {
         this.attachShadow({ mode: "open" });
         this.events = [];
 
-        store.subscribe("calendar:events", (data) => {
-            console.log("omg");
-            this.events = data.calEvents;
+        store.subscribe("selectedEvents", (data) => {
+            this.events = data;
             this.render();
         })
         console.log(this.events);
@@ -21,7 +21,9 @@ export class EventCard extends HTMLElement {
         const days = ["Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"];
         const months = ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"];
 
-
+        PubSub.subscribe("change:date", data => {
+            
+        })
 
         // const infoForEvent = `
         //     <p>Kommande evenemang</p>
@@ -29,22 +31,26 @@ export class EventCard extends HTMLElement {
         let allHtml = "";
         for (let event of this.events) {
             const date = new Date(event.date);
-            allHtml += `
+            const currentDate = new Date();
+            if (date.getDate() == currentDate.getDate() || date.getMonth() == currentDate.getMonth()) {
 
-            <div class="eventCardOuter">
-            <div class="imgCont">Image here</div>
-                <div class="eventDesc"> 
-                    <div class="date">
-                        <p>${days[date.getDay()]}</p>
-                        <p>${date.getDate()}</p>
-                    </div>
-                    <div class="eventInfo">
-                        <p>${event.name}</p>
-                        <p>${event.location}</p>
+                allHtml += `
+
+                <div class="eventCardOuter">
+                <div class="imgCont">Image here</div>
+                    <div class="eventDesc"> 
+                        <div class="date">
+                            <p>${days[date.getDay()]}</p>
+                            <p>${date.getDate()}</p>
+                        </div>
+                        <div class="eventInfo">
+                            <p>${event.name}</p>
+                            <p>${event.location}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-             `;
+                ` ;
+            }
         }
         return allHtml;
     }
@@ -56,6 +62,11 @@ export class EventCard extends HTMLElement {
     style() {
         return `
         <style>
+            #events {
+                display: flex; 
+                flex-direction: column;
+                gap: 20px;
+            }
             .imgCont {
                 background-color: beige;
                 height: 50px;
@@ -98,7 +109,7 @@ export class EventCard extends HTMLElement {
     render() {
         this.shadowRoot.innerHTML = `
             ${this.style()}
-            <div class="events">
+            <div id="events">
                   ${this.html()}
             </div>
         `

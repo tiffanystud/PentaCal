@@ -1,4 +1,9 @@
 import { PubSub } from "../../store/pubsub.js";
+import { store } from "../../store/store.js";
+import { EVENTS } from "../../store/events.js";
+import "./components/filterCals.js";
+import "./components/eventCard.js";
+import "./components/groupWeekDays.js";
 
 class CreateGroupLandingView {
 
@@ -8,8 +13,12 @@ class CreateGroupLandingView {
     }
 
     sub() {
-        PubSub.subscribe("change:view", (data) => {
-            if (data.mainPath === "newHomeViewTest") {
+        PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.HOME, (data) => {
+            this.render();
+
+        });
+        PubSub.subscribe("change:view", (route) => {
+            if (route.url.pathname === "/newHomeViewTest") {
                 this.render();
             }
         })

@@ -15,43 +15,44 @@ export class HomeView extends HTMLElement {
         this.currentView = "my-calendar";
         this.sub();
     }
-    
+
     sub() {
-        
-        PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.HOME, (data) => {
-            
-            console.log("HOME EVENT TRIGGERED", data);
-            
-            if (data.page === "home") {
-                this.render(data);
-            }
-            
-        });
+
+        // PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.HOME, (data) => {
+
+        //     console.log("HOME EVENT TRIGGERED", data);
+
+        //     if (data.page === "home") {
+        //         this.render(data);
+        //     }
+
+        // });
 
         PubSub.subscribe(EVENTS.STATE.LOGIN.SUCCESS, () => {
             // Re-render home, inloggad
             PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" });
         });
-        
+
         PubSub.subscribe(EVENTS.STATE.LOGOUT.SUCCESS, () => {
             // Re-render home, utloggad
             PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" });
         });
-        
+
         PubSub.subscribe("change:view", (data) => {
-            if ((data.mainPath === "home" || data.mainPath === "/") && !data.subPath) {
+
+            if (data.mainPath === "home" || "/") {
                 this.render();
             }
-        /*             
-            if (data.url.pathname === "/") {
-                this.render();
-            } 
-        */
+            /*             
+                if (data.url.pathname === "/") {
+                    this.render();
+                } 
+            */
             if (data.url === "/home") {
                 this.render();
             }
         })
-        
+
         PubSub.subscribe("change:page", (data) => {
             if (data.page === "home") { //bottom Nav
                 this.render();
@@ -67,7 +68,7 @@ export class HomeView extends HTMLElement {
         <create-popup></create-popup>
         <bottom-nav></bottom-nav>
         `;
-        
+
     }
 
 }

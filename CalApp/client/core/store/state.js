@@ -1,36 +1,34 @@
 
 
 export const state = {
-    
+
     isLoggedIn: {
         id: "",
         username: "",
         email: ""
     },
-    
-    currentContext: {
-        currentCal: {},
-        currentEvents: []
-    },
-    
+
+    filterdCals: [],
+    selectedEvents: [],
+
     cals: [],
-    
+
     usergroups: [],
-    
+
     events: [],
-    
+
     friends: [],
-    
+
     privateMessages: [],
-    
+
     calendarMessages: [],
-    
+
     userPinnedCalendars: [],
-    
+
     availabilites: [],
-    
+
     notis: []
-    
+
 };
 
 

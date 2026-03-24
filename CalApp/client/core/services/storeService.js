@@ -14,7 +14,7 @@ export class StoreService {
             const userId = payload.userId;
 
             try {
-                
+
                 // Get User
                 const currUser = await apiRequest({
                     entity: `users?id=${userId}`,
@@ -221,6 +221,7 @@ export class StoreService {
                 }
 
                 // UPDATE STORE
+                // UPDATE STATE (all data)
                 store.setState({
                     usergroups: usergroups,
                     cals: cals,
@@ -232,12 +233,12 @@ export class StoreService {
                     availabilites: availabilities
                 });
 
-            PubSub.publish(EVENTS.STATE.LOGIN.SUCCESS, { userId });
-            
-            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
-            console.log("State: ", store.getState())
-            console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
-            
+                PubSub.publish(EVENTS.STATE.LOGIN.SUCCESS, { userId });
+
+                console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+                console.log("State: ", store.getState())
+                console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
+
             } catch (err) {
 
                 console.error("StoreService login error:", err);
@@ -245,18 +246,18 @@ export class StoreService {
 
             }
         });
-        
+
         PubSub.subscribe(EVENTS.STATE.LOGOUT.START, () => {
-            
+
             store.resetState();
-            
+
             PubSub.publish(EVENTS.STATE.LOGOUT.SUCCESS);
             PubSub.publish(EVENTS.STORE.UPDATED.ISLOGGEDIN);
-            
+
             console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
             console.log("State: ", store.getState())
             console.log("------ DEVELOPMENT PRODUCTION LOGS -------")
-            
+
         });
     }
 }

@@ -106,4 +106,4 @@ export class EventCard extends HTMLElement {
 
 }
 
-customElements.define("event-cards", EventCard);
+// customElements.define("event-cards", EventCard);

@@ -17,6 +17,7 @@ import "./core/services/calendarsService.js"
 import "./core/services/userGroupsService.js";
 import "./core/services/notificationsService.js";
 import "./core/services/storeService.js"
+import "./core/services/homeService.js";
 
 // VIEWS
 import "./core/views/createEvent/createEvent.js";
@@ -35,7 +36,7 @@ import "./core/views/development/development.js";
 import { EVENTS } from "./core/store/events.js";
 import { PubSub } from "./core/store/pubsub.js";
 PubSub.subscribe("change:view", (data) => {
-    
+
     const { mainPath, subPath } = data;
 
     // 1. Om subPath matchar en PAGE → använd den
