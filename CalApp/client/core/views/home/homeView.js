@@ -41,9 +41,9 @@ export class HomeView extends HTMLElement {
 
         PubSub.subscribe("change:view", (data) => {
 
-            if (data.mainPath === "home" || "/") {
-                this.render();
-            }
+            // if (data.mainPath === "home" || "/") {
+            //     this.render();
+            // }
             /*             
                 if (data.url.pathname === "/") {
                     this.render();

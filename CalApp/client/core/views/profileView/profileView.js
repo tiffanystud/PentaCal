@@ -1,19 +1,19 @@
 import { PubSub } from "../../store/pubsub.js";
-import {store} from "../../store/store.js"
+import { store } from "../../store/store.js"
 import "./components/editProfile.js"
 
 export class ProfileView extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({mode : "open"});
+        this.attachShadow({ mode: "open" });
 
         PubSub.subscribe("change:page", (data) => {
-            if(data.page === "profile"){ //bottom Nav
+            if (data.page === "profile") { //bottom Nav
                 this.render();
             }
         });
         PubSub.subscribe("change:view", (data) => {
-            if(data.mainPath === "home" && data.subPath === "profile"){ 
+            if (data.mainPath === "home" && data.subPath === "profile") {
                 this.render();
             }
         });
@@ -79,10 +79,10 @@ export class ProfileView extends HTMLElement {
             usernameDOM.textContent = newState.username;
             emailDOM.textContent = newState.email;
         })
-        
+
         const btnProfile = app.querySelectorAll(".btnProfile");
-        for(let btn of btnProfile) {
-            if(btn.classList.contains("profileBtnEdit")) {
+        for (let btn of btnProfile) {
+            if (btn.classList.contains("profileBtnEdit")) {
                 btn.addEventListener("click", () => {
                     const container = document.getElementById("container");
                     let profileEditComp = container.querySelector("profile-edit-comp");
@@ -93,10 +93,10 @@ export class ProfileView extends HTMLElement {
                         container.appendChild(editComp);
                     }
                 });
-            } 
+            }
         }
 
-        
+
     }
 }
 customElements.define("profile-view", ProfileView);
