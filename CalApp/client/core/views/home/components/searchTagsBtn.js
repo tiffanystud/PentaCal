@@ -5,6 +5,7 @@ export class SearchTags extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
+        this.selectedTags = [];
         this.render();
         this.eventListeners();
     }
@@ -13,7 +14,7 @@ export class SearchTags extends HTMLElement {
         return `
         <div id="tagsFilter">
             <div id="searchBtn">Search tags</div>
-            <div id="selectedTags">hej</div>
+            <div id="selectedTags"></div>
         </div>
         `
     }
@@ -24,6 +25,7 @@ export class SearchTags extends HTMLElement {
                 #tagsFilter {
                     display: flex;
                     flex-direction: column;
+                    gap: 5px;
                 }
                 #searchBtn {
                     display: flex;
@@ -33,6 +35,14 @@ export class SearchTags extends HTMLElement {
                     cursor: pointer;
                     background-color: white;
                 }
+                #selectedTags {
+                    display: flex;
+                    gap: 10px;
+                }
+                .tags {
+                background-color: white;
+                padding: 5px;
+                }
             </style>
         `
 
@@ -41,8 +51,17 @@ export class SearchTags extends HTMLElement {
     eventListeners() {
         this.shadowRoot.querySelector("#searchBtn").addEventListener("click", () => {
             PubSub.publish("Tags::OpenSearchModal");
-
         })
+
+        PubSub.subscribe("Users::Selected", data => {
+            // data.selectedItem
+            // data.context
+            let tagsDiv = document.createElement("div");
+            tagsDiv.classList.add("tags");
+            tagsDiv.innerHTML = data.selectedItem;
+            this.shadowRoot.querySelector("#selectedTags").appendChild(tagsDiv);
+        })
+
     }
 
     render() {

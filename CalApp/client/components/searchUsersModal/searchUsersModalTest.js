@@ -1,6 +1,6 @@
 import { PubSub } from "../../core/store/pubsub.js";
 import { apiRequest } from "../../core/services/api.js";
-import { state } from "../../core/store/state.js";
+import { store } from "../../core/store/store.js";
 
 export class SearchUsersModalTest extends HTMLElement {
 
@@ -114,10 +114,6 @@ export class SearchUsersModalTest extends HTMLElement {
         this.unsubscribeTags = PubSub.subscribe("Tags::OpenSearchModal", componentData => {
             // What component opens modal
             this.openModal();
-            this.searchInput.addEventListener("input", () => {
-                const query = this.searchInput.value.trim();
-                this.searchTags(query);
-            });
         });
 
         // Close modal
@@ -135,6 +131,11 @@ export class SearchUsersModalTest extends HTMLElement {
         //         this.searchTags(query);
         //     }
         // });
+
+        this.searchInput.addEventListener("input", () => {
+            const query = this.searchInput.value.trim();
+            this.searchTags(query);
+        });
     }
 
     disconnectedCallback() {
@@ -193,28 +194,33 @@ export class SearchUsersModalTest extends HTMLElement {
             return;
         }
 
-        const filterdTags = state.selectedEvents.filter(event => event.tags.toLowerCase().includes(query.toLowerCase()));
+        const state = store.getState();
+
+        const filterdTags = state.selectedEvents.filter(event => event.tags.includes(query));
         console.log(state.selectedEvents);
 
-        this.renderResults(filterdTags);
+        this.renderResults(filterdTags, "tags");
 
 
     }
 
-    renderResults(users) {
+    renderResults(entity, key) {
 
         this.resultsContainer.innerHTML = "";
 
-        users.forEach(currUser => {
+        entity.forEach(currObj => {
 
             const row = document.createElement("div");
             row.classList.add("result-row");
-            row.textContent = currUser.name;
+            row.textContent = currObj[key];
 
             // Klick på user > publicera event 
             row.addEventListener("click", () => {
-                PubSub.publish("Users::UserSelected", {
-                    user: currUser,
+                let newState = store.getState().selectedEvents.filter(event => event.tags == currObj[key]);
+                // Setstate för selectedEvents så events får en notify för att filtrera ut rätt events för tag
+                store.setState({ "selectedEvents": newState });
+                PubSub.publish("Users::Selected", {
+                    selectedItem: currObj[key],
                     context: this.currContext // From comp. using search module
                 });
                 this.closeModal();
