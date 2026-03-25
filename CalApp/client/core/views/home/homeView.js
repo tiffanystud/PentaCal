@@ -69,7 +69,6 @@ export class HomeView extends HTMLElement {
         <cal-detail-btn></cal-detail-btn>
         <cal-render></cal-render>
         <create-popup></create-popup>
-        <bottom-nav></bottom-nav>
         `;
 
     }

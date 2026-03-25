@@ -7,43 +7,43 @@ import { ContactCardContainer } from "./components/contactCardContainer.js";
 import { apiRequest } from "../../services/api.js";
 
 
-export class ContactsView extends HTMLElement{
-    constructor(){
+export class ContactsView extends HTMLElement {
+    constructor() {
         super();
         this.app = document.querySelector("#app");
-        this.attachShadow({mode: "open"});
+        this.attachShadow({ mode: "open" });
         this.sub();
     }
     sub() {
-        
+
         PubSub.subscribe("change:page", (data) => {
 
-            if (data.page === "contacts"){
+            if (data.page === "contacts") {
                 console.log(data, "runs");
                 this.render();
             }
 
         });
-        
-        PubSub.subscribe("change:view", (data) => {    
-                    
-            if (data.mainPath === "home" && data.subPath === "contacts"){
+
+        PubSub.subscribe("change:view", (data) => {
+
+            if (data.mainPath === "home" && data.subPath === "contacts") {
                 this.render();
-            } 
-            
+            }
+
         });
 
-        
+
     }
-    
-    async render(){
+
+    async render() {
         const params = new URLSearchParams(location.search);
         const isGroupContext =
-//            location.pathname.startsWith("home/groups") &&
+            //            location.pathname.startsWith("home/groups") &&
             params.has("id");
         const groupId = params.get("id");
         let context = "My Contacts";
-        if (isGroupContext){
+        if (isGroupContext) {
             try {
                 const group = await apiRequest({
                     entity: `calendars?id=${groupId}`,
@@ -51,7 +51,7 @@ export class ContactsView extends HTMLElement{
                 })
                 context = group.name;
 
-            } catch(err){
+            } catch (err) {
                 return err;
             }
         }
@@ -78,7 +78,6 @@ export class ContactsView extends HTMLElement{
             <app-input placeholder="Search" width="350px"></app-input>
             <contact-card-container context="${isGroupContext ? "group" : "friends"}" group-id="${groupId || ''}"></contact-card-container>
         </div>
-        <bottom-nav></bottom-nav>
         `;
 
     }

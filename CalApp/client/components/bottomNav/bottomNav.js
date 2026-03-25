@@ -4,13 +4,13 @@ import { store } from "/core/store/store.js"
 import { PubSub } from "../../core/store/pubsub.js";
 import { newRouter } from "../../index.js";
 
-export class BottomNav extends HTMLElement { 
-    
-        constructor() {
-            super();
-            this.attachShadow({ mode: "open" });
-            
-            this.shadowRoot.innerHTML = `
+export class BottomNav extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+
+        this.shadowRoot.innerHTML = `
                 <style>
                     .icon-light {
                         display: none;
@@ -23,12 +23,13 @@ export class BottomNav extends HTMLElement {
                     }
                     .button-container {
                         border-top: 1px solid gray;
-                        width: 100%;
+                        width: 390px;
                         display: flex;
                         justify-content: space-around;
                         padding-top: 12px;
                         padding-bottom: 12px;
                         box-sizing: border-box;
+                        background-color: grey;
                     }
                     .nav-btn {
                         background: none;
@@ -68,67 +69,67 @@ export class BottomNav extends HTMLElement {
                     
                 </div>
                 `;
-        }
-        
-        connectedCallback(){
-            
-            const buttons = this.shadowRoot.querySelectorAll(".nav-btn");
-            
-            // Lägg till eventlisteners
-            buttons.forEach(currBtn => {
-                
-                currBtn.addEventListener("click", () => {
-                    
-                    // Ge rätt knapp light/dark icons
-                    buttons.forEach(btn => btn.classList.remove("activeBtn"))
-                    currBtn.classList.add("activeBtn");
-                    
-                    // "home", "users", "add" ... etc
-                    const currPage = currBtn.classList[1]; 
-                    console.log(currPage);
-                    
-                    // Få nedan att fungera
-                    // PubSub(EVENTS.VIEW.PAGE.SHOW[currPage]);
-                    
-                    /*  OK?                  
-                    PubSub.publish("change:page", {
-                        page: currPage
-                    });
-                    PubSub.publish("change:view", {
-                        page: currPage
-                    }); 
-                    */
-                    
-                    this.switchView(currPage);
+    }
 
-                    // Sätt page till vad man trycker på
-/*                     store.setState({
-                        data: {
-                            ...store.getState().data,
-                            pages: {
-                                currentPage: currPage
-                            }
-                        }
-                    }); */
-                    
-                    // se över i events 
-                    // store.notify(EVENTS.STORE.UPDATED)
-                    
-                })
+    connectedCallback() {
+
+        const buttons = this.shadowRoot.querySelectorAll(".nav-btn");
+
+        // Lägg till eventlisteners
+        buttons.forEach(currBtn => {
+
+            currBtn.addEventListener("click", () => {
+
+                // Ge rätt knapp light/dark icons
+                buttons.forEach(btn => btn.classList.remove("activeBtn"))
+                currBtn.classList.add("activeBtn");
+
+                // "home", "users", "add" ... etc
+                const currPage = currBtn.classList[1];
+                console.log(currPage);
+
+                // Få nedan att fungera
+                // PubSub(EVENTS.VIEW.PAGE.SHOW[currPage]);
+
+                /*  OK?                  
+                PubSub.publish("change:page", {
+                    page: currPage
+                });
+                PubSub.publish("change:view", {
+                    page: currPage
+                }); 
+                */
+
+                this.switchView(currPage);
+
+                // Sätt page till vad man trycker på
+                /*                     store.setState({
+                                        data: {
+                                            ...store.getState().data,
+                                            pages: {
+                                                currentPage: currPage
+                                            }
+                                        }
+                                    }); */
+
+                // se över i events 
+                // store.notify(EVENTS.STORE.UPDATED)
+
             })
-            
-        }
-        switchView(view) {
-            
-            const currentPath = window.location.pathname.split("/").filter(Boolean);
-            const main = currentPath[0] || "home";
+        })
 
-            if (view === "home") {
-                newRouter.navigate(`/${main}`);
-            } else {
-                newRouter.navigate(`/${main}/${view}`);
-            }
-            
+    }
+    switchView(view) {
+
+        const currentPath = window.location.pathname.split("/").filter(Boolean);
+        const main = currentPath[0] || "home";
+
+        if (view === "home") {
+            newRouter.navigate(`/${main}`);
+        } else {
+            newRouter.navigate(`/${main}/${view}`);
         }
+
+    }
 }
 customElements.define("bottom-nav", BottomNav);
