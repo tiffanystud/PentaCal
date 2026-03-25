@@ -25,6 +25,11 @@ export class NotificationsBar extends HTMLElement {
         } else {
             eventNotis = notifications;
         }
+
+        if (eventNotis.length === 0) {
+            this.shadowRoot.innerHTML += "<p>No new notifications!</p>";
+            return;
+        }
         console.log(eventNotis);
         eventNotis.forEach(async (x) => {
             let event = await apiRequest({
