@@ -67,9 +67,7 @@ export class ProfileView extends HTMLElement {
                     <button class=" btnProfile profileBtnEdit ">Edit profile</button>
                     <button class=" btnProfile profileLogout">Log out</button>
                 </div>
-            </div>
-            <bottom-nav>
-            
+            </div>            
         </div>            
         `;
 

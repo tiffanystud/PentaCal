@@ -95,7 +95,6 @@ export class CreateEvent extends HTMLElement {
                 <button id="createEventBtn">Create Event</button>
 
             </div>
-            <bottom-nav></bottom-nav>
         </div> 
         `
         this.getAllCals();
