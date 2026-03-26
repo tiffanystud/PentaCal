@@ -1,5 +1,6 @@
 import { PubSub } from "../../store/pubsub.js";
 import { store } from "../../store/store.js"
+import { EVENTS } from "../../store/events.js";
 import "./components/editProfile.js"
 
 export class ProfileView extends HTMLElement {
@@ -7,16 +8,18 @@ export class ProfileView extends HTMLElement {
         super();
         this.attachShadow({ mode: "open" });
 
-        PubSub.subscribe("change:page", (data) => {
-            if (data.page === "profile") { //bottom Nav
+        PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW, (data) => {
+            if (data === "profile") { //bottom Nav
                 this.render();
             }
+
+        
         });
-        PubSub.subscribe("change:view", (data) => {
-            if (data.mainPath === "calendars" && data.subPath === "profile") {
-                this.render();
-            }
-        });
+        //PubSub.subscribe("change:view", (data) => {
+        //    if (data.mainPath === "calendars" && data.subPath === "profile") {
+        //        this.render();
+        //    }
+        //});
     }
     render() {
         let app = document.getElementById("app");
@@ -68,7 +71,6 @@ export class ProfileView extends HTMLElement {
                     <button class=" btnProfile profileLogout">Log out</button>
                 </div>
             </div>
-            <bottom-nav>
             
         </div>            
         `;

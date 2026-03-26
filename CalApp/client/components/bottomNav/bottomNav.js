@@ -89,7 +89,7 @@ export class BottomNav extends HTMLElement {
                 console.log(currPage);
 
                 // Få nedan att fungera
-                // PubSub(EVENTS.VIEW.PAGE.SHOW[currPage]);
+                PubSub.publish(EVENTS.VIEW.PAGE.SHOW, currPage);
 
                 /*  OK?                  
                 PubSub.publish("change:page", {
