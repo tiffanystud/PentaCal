@@ -7,10 +7,10 @@ import { store } from "../../store/store.js";
 export class CreateCalendarView {
 
     constructor() {
-        
+
         this.app = document.querySelector("#app");
         this.subs();
-        
+
     }
 
     subs() {
@@ -26,11 +26,11 @@ export class CreateCalendarView {
                 this.render();
             }
         })
-        
+
         PubSub.subscribe(EVENTS.VIEW.POPUP.SHOW.CREATEGROUP, () => {
             this.render();
         })
-        
+
     }
 
     render() {
@@ -62,7 +62,7 @@ export class CreateCalendarView {
                 active-info-text="Calendar is now set to public and will be available to all users"
             ></toggle-btn>
             
-            <search-users-modal></search-users-modal>
+            <search-users-modal-test></search-users-modal-test>
 
             <add-members 
                 titleElem="Add Admins" 

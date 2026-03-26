@@ -1,7 +1,7 @@
 import { PubSub } from "../../core/store/pubsub.js";
 import { apiRequest } from "../../core/services/api.js";
 
-export class SearchUsersModal extends HTMLElement {
+export class MessageFeedPreview extends HTMLElement {
 
     constructor() {
         super();

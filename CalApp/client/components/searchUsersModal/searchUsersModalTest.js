@@ -82,7 +82,7 @@ export class SearchUsersModalTest extends HTMLElement {
                 <div class="modal">
 
                     <div class="modal-header">
-                        <h3>Search users</h3>
+                        <h3></h3>
                         <button class="close-btn">X</button>
                     </div>
 
@@ -104,7 +104,8 @@ export class SearchUsersModalTest extends HTMLElement {
 
         // Open modal (global event)
         this.unsubscribeOpen = PubSub.subscribe("Users::OpenSearchModal", componentData => {
-            this.currContext = componentData.context; // What component opens modal
+            this.shadowRoot.querySelector("h3").innerHTML = `Search users`; // temporär lösning, content typ ska fås av componentdata istället
+            this.currContext = componentData.context; // What component opens modal // Var sker publishen av Users::OpenSearchModal?
             this.openModal();
             this.searchInput.addEventListener("input", () => {
                 const query = this.searchInput.value.trim();
@@ -113,6 +114,7 @@ export class SearchUsersModalTest extends HTMLElement {
         });
         this.unsubscribeTags = PubSub.subscribe("Tags::OpenSearchModal", componentData => {
             // What component opens modal
+            this.shadowRoot.querySelector("h3").innerHTML = `Search tags`; // temporär lösning, content typ ska fås av componentdata istället
             this.openModal();
             this.searchInput.addEventListener("input", () => {
                 const query = this.searchInput.value.trim();
@@ -189,6 +191,8 @@ export class SearchUsersModalTest extends HTMLElement {
 
     searchTags(query) {
 
+        this.modalHeaderText = "tags";
+
         if (!query) {
             this.resultsContainer.innerHTML = "";
             return;
@@ -218,16 +222,14 @@ export class SearchUsersModalTest extends HTMLElement {
             const row = document.createElement("div");
             row.classList.add("result-row");
 
-            row.textContent = currObj;
-
-
+            row.textContent = currObj.name || currObj;
 
             // Klick på user > publicera event 
             row.addEventListener("click", () => {
                 // let newState = store.getState().selectedEvents.filter(event => event.tags == currObj);
                 // Setstate för selectedEvents så events får en notify för att filtrera ut rätt events för tag
                 PubSub.publish("Users::Selected", {
-                    selectedItem: currObj,
+                    selectedItem: currObj.name || currObj,
                     context: this.currContext // From comp. using search module
                 });
                 this.closeModal();
