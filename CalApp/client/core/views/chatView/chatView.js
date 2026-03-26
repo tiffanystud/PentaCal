@@ -54,11 +54,35 @@ export class ChatView extends HTMLElement {
     let allCals = state.cals; //[{name}]
     let allFriends = state.friends;
     
-    let allData = [...allEvents, ...allCals, ...allFriends];
-    let allNames = [];
-    for(let data of allData) {
-        if(data.name) {
-            allNames.push(data.name.toLowerCase())
+    let allDataWithType = [];
+
+    // Events
+    for (let event of allEvents) {
+        if (event.name) {
+            allDataWithType.push({
+                name: event.name,
+                type: "event"
+            });
+        }
+    }
+
+    // Calendars
+    for (let cal of allCals) {
+        if (cal.name) {
+            allDataWithType.push({
+                name: cal.name,
+                type: "calendar"
+            });
+        }
+    }
+
+    // Friends
+    for (let friend of allFriends) {
+        if (friend.name) {
+            allDataWithType.push({
+                name: friend.name,
+                type: "friend"
+            });
         }
     }
 
@@ -68,14 +92,33 @@ export class ChatView extends HTMLElement {
 
         let valueInput = searchBar.getValue().toLowerCase();
         if (valueInput.length > 1) {
-            for (let name of allNames) {
-                if (name.toLowerCase().includes(valueInput)) {
+            for (let data of allDataWithType) {
+                if (data.name.toLowerCase().includes(valueInput)) {
+                    const divContainer = document.createElement("div");
+                    divContainer.style.background = "white";
+                    divContainer.style.padding = "5px";
+                    divContainer.style.borderBottom = "1px solid black";
+
                     const div = document.createElement("div");
-                    div.textContent = name[0].toUpperCase() + name.slice(1).toLowerCase();
-                    div.style.background = "white";
-                    div.style.padding = "5px"
-                    div.style.borderBottom = "1px solid black"
-                    dataDiv.appendChild(div)
+                    div.style.display = "flex";
+                    div.style.justifyContent = "space-between";
+
+                    // Skapa p-element eller span för texten
+                    const pName = document.createElement("p");
+                    pName.textContent = data.name[0].toUpperCase() + data.name.slice(1).toLowerCase();
+
+                    const pType = document.createElement("p");
+                    pType.textContent = data.type[0].toUpperCase() + data.type.slice(1).toLowerCase();
+
+                    // Lägg till i flex-div
+                    div.appendChild(pName);
+                    div.appendChild(pType);
+
+                    // Lägg flex-div i container
+                    divContainer.appendChild(div);
+
+                    // Lägg container i dataDiv
+                    dataDiv.appendChild(divContainer);
                 }
             }
         }
