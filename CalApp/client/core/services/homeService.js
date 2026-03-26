@@ -8,13 +8,13 @@ export class HomeService {
         // Just nu blir calList ett objekt och inte array, se över!
         PubSub.subscribe("SELECTEDCALS.EVENTS.STATE.POST", cal => {
             store.setState({
-                "filterdCals": cal
+                "selectedCals": [...store.getState().selectedCals, cal]
             });
             this.addSelectedEvents(cal);
         })
         PubSub.subscribe("SELECTEDCALS.EVENTS.STATE.DELETE", cal => {
             store.setState({
-                "filterdCals": cal
+                "selectedCals": cal
             });
             this.deleteSelectedEvents(cal);
         })

@@ -7,6 +7,7 @@ export class EventCard extends HTMLElement {
         super();
         this.attachShadow({ mode: "open" });
         this.events = [];
+        this.selectedTags = [];
 
         store.subscribe("selectedEvents", (data) => {
             this.events = data;
@@ -25,8 +26,7 @@ export class EventCard extends HTMLElement {
         //     <p>Kommande evenemang</p>
         //     <p>${months[date.getMonth()]}</p>`;
         const currentDate = new Date();
-        // let allHtml = `<p>${months[currentDate.getMonth()]}</p>`;
-        let allHtml = "";
+
         let monthElements = {}
         const eventsContainer = document.createElement("div");
         eventsContainer.id = "events";

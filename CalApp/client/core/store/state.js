@@ -8,8 +8,9 @@ export const state = {
         email: ""
     },
 
-    filterdCals: [],
+    selectedCals: [],
     selectedEvents: [],
+    selectedTags: [],
 
     cals: [],
 

@@ -1,4 +1,5 @@
 import { PubSub } from "../../../store/pubsub.js";
+import { store } from "../../../store/store.js";
 
 export class SearchTags extends HTMLElement {
 
@@ -41,7 +42,8 @@ export class SearchTags extends HTMLElement {
                 }
                 .tags {
                 background-color: white;
-                padding: 5px;
+                padding: 10px;
+                border-radius: 10px;
                 }
             </style>
         `
@@ -56,11 +58,40 @@ export class SearchTags extends HTMLElement {
         PubSub.subscribe("Users::Selected", data => {
             // data.selectedItem
             // data.context
+
+            let state = store.getState();
+            let currentEvents = state.selectedEvents;
+            let filteredEvents = state.selectedEvents;
+
+            for (let tags of state.selectedTags) {
+                filteredEvents = filteredEvents.filter(event => event.tags == tags);
+            }
+
+            store.setState({ "selectedTags": [...state.selectedTags, data.selectedItem] });
+            store.setState({ "selectedEvents": filteredEvents });
+
+            console.log(store.getState().selectedTags)
+
             let tagsDiv = document.createElement("div");
             tagsDiv.classList.add("tags");
             tagsDiv.innerHTML = data.selectedItem;
+            const closeBtn = document.createElement("button");
+            closeBtn.classList.add("closeBtn");
+            closeBtn.innerHTML = "&times;";
+            tagsDiv.appendChild(closeBtn);
             this.shadowRoot.querySelector("#selectedTags").appendChild(tagsDiv);
+
+
+            closeBtn.addEventListener("click", () => {
+                store.setState({ "selectedEvents": currentEvents });
+                let newTags = state.selectedTags.filter(tag => tag != data.selectedItem);
+                store.setState({ "selectedTags": newTags })
+                // PubSub.publish("SELECTEDCALS.EVENTS.STATE.POST", state.selectedCals);
+                tagsDiv.remove();
+            })
+
         })
+
 
     }
 

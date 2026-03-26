@@ -114,6 +114,10 @@ export class SearchUsersModalTest extends HTMLElement {
         this.unsubscribeTags = PubSub.subscribe("Tags::OpenSearchModal", componentData => {
             // What component opens modal
             this.openModal();
+            this.searchInput.addEventListener("input", () => {
+                const query = this.searchInput.value.trim();
+                this.searchTags(query);
+            });
         });
 
         // Close modal
@@ -132,10 +136,6 @@ export class SearchUsersModalTest extends HTMLElement {
         //     }
         // });
 
-        this.searchInput.addEventListener("input", () => {
-            const query = this.searchInput.value.trim();
-            this.searchTags(query);
-        });
     }
 
     disconnectedCallback() {
@@ -194,12 +194,17 @@ export class SearchUsersModalTest extends HTMLElement {
             return;
         }
 
-        const state = store.getState();
-
+        let state = store.getState();
+        console.log(state.selectedEvents);
         const filterdTags = state.selectedEvents.filter(event => event.tags.includes(query));
         console.log(state.selectedEvents);
+        console.log(filterdTags);
 
-        this.renderResults(filterdTags, "tags");
+
+        // Dessa tre rader sätter in alla tags strängar och gör en ny array utan duplikationer, så det inte dupliceras i render
+        let allTagsString = filterdTags.map(event => event.tags);
+        let uniqueFilterdsTags = [...new Set(allTagsString)];
+        this.renderResults(uniqueFilterdsTags, "tags");
 
 
     }
@@ -212,15 +217,17 @@ export class SearchUsersModalTest extends HTMLElement {
 
             const row = document.createElement("div");
             row.classList.add("result-row");
-            row.textContent = currObj[key];
+
+            row.textContent = currObj;
+
+
 
             // Klick på user > publicera event 
             row.addEventListener("click", () => {
-                let newState = store.getState().selectedEvents.filter(event => event.tags == currObj[key]);
+                // let newState = store.getState().selectedEvents.filter(event => event.tags == currObj);
                 // Setstate för selectedEvents så events får en notify för att filtrera ut rätt events för tag
-                store.setState({ "selectedEvents": newState });
                 PubSub.publish("Users::Selected", {
-                    selectedItem: currObj[key],
+                    selectedItem: currObj,
                     context: this.currContext // From comp. using search module
                 });
                 this.closeModal();

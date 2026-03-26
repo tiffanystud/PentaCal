@@ -99,7 +99,7 @@ function buildStoreSelectedEvents() {
 
 
 function buildPopupShowEvents() {
-    
+
     const events = {};
 
     for (const popup of POPUPS) {
@@ -111,7 +111,7 @@ function buildPopupShowEvents() {
 }
 
 function buildPopupCloseEvents() {
-    
+
     const events = {};
 
     for (const popup of POPUPS) {
@@ -152,28 +152,28 @@ export const EVENTS = {
 
     // Data Events (updated data, user selected a resource)
     STORE: {
-        
+
         UPDATED: buildStoreUpdatedEvents(),
         SELECTED: buildStoreSelectedEvents()
-   
+
     },
-    
+
     // UI Events
     VIEW: {
-            
+
         PAGE: {
-            
+
             SHOW: buildPageShowEvents(),
-            
+
         },
-        
+
         POPUP: {
-            
+
             SHOW: buildPopupShowEvents(),
             CLOSE: buildPopupCloseEvents()
-            
+
         }
-            
+
     },
 
     // API Events
@@ -184,7 +184,7 @@ export const EVENTS = {
         ERROR: buildResourcesWithActions("request", "error", READ_ACTIONS)
 
     },
-    
+
     // API Events
     RESPONSE: {
 
@@ -193,12 +193,12 @@ export const EVENTS = {
         ERROR: buildResourcesWithActions("response", "error", READ_ACTIONS)
 
     },
-    
+
     // API Events
     RESOURCE: {
 
-        RECEIVED: buildResourcesWithActions( "resource", "received", READ_ACTIONS ),
-        ERROR: buildResourcesWithActions("resource", "error", READ_ACTIONS )
+        RECEIVED: buildResourcesWithActions("resource", "received", READ_ACTIONS),
+        ERROR: buildResourcesWithActions("resource", "error", READ_ACTIONS)
 
     }
 
