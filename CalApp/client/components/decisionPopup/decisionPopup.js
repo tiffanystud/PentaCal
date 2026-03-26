@@ -1,13 +1,21 @@
-import { EVENTS } from "../../core/store/events";
+/* 
+<desicion-popup 
+    popupHeader="Ta bort kalender?"
+    popuptext="Detta går inte att ångra."
+    popupBtnCancel="Nej, avbryt"
+    popupBtnDelete="Ja, ta bort">
+</desicion-popup>
+*/
 
+import { EVENTS } from "../../core/store/events.js";
+import { PubSub } from "../../core/store/pubsub.js"
 
-export class desicionPopup extends HTMLElement {
+export class DesicionPopup extends HTMLElement {
 
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
 
-        // HTML + CSS
         this.shadowRoot.innerHTML = `
             <style>
                 .modal-backdrop {
@@ -148,7 +156,8 @@ export class desicionPopup extends HTMLElement {
 
     subs() {
         
-        Pubsub.subscribe(EVENTS.VIEW.POPUP.DESICIONPOPUP, () => {
+        PubSub.subscribe(EVENTS.VIEW.POPUP.SHOW.DESICIONPOPUP, (componentData) => {
+            this.currContext = componentData.context; // Vilken komponent öppnar popupen
             this.openModal();
         })
         
@@ -170,14 +179,6 @@ export class desicionPopup extends HTMLElement {
         this.cancelBtn.innerText = this.getAttribute("popupBtnCancel") || "No, cancel";
         this.deleteBtn.innerText = this.getAttribute("popupBtnDelete") || "Yes, proceed";
 
-        // --- OPEN MODAL (GLOBAL EVENT) ---
-        this.unsubscribeOpen = PubSub.subscribe(
-            EVENTS.VIEW.POPUP.SHOW["desicionPopup"], // Fixat stavfel
-            componentData => {
-                this.currContext = componentData.context; // Vilken komponent öppnar popupen
-                this.openModal();
-            }
-        );
 
         // Close
         this.closeBtn.addEventListener("click", () => this.closeModal());
@@ -186,16 +187,17 @@ export class desicionPopup extends HTMLElement {
             if (e.target === this.backdrop) this.closeModal();
         });
 
-        // Cancel
+        // Cancel BTN
         this.cancelBtn.addEventListener("click", () => {
             PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME);
             this.closeModal();
         });
 
-        // Confirm
+        // Confirm BTN
         this.deleteBtn.addEventListener("click", () => {
             PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME);
             PubSub.publish(EVENTS.STORE.UPDATED.CALENDARS);
+            // Ska context skickas vidare?
             this.closeModal();
         });
     }
@@ -210,3 +212,4 @@ export class desicionPopup extends HTMLElement {
         this.backdrop.classList.add("hidden");
     }
 }
+customElements.define("decision-popup", DesicionPopup);
