@@ -44,19 +44,20 @@ export class ChatView extends HTMLElement {
             }
         </style>
         <h2>Chats</h2>
-        <app-input id="searchBar" placeholder="Type a calender, group, friend or event"></app-input>
+        <app-input id="searchBar" placeholder="Type calender or a friend to chat"></app-input>
         <div id="data"></div>
     `
     const searchBar = content.querySelector("#searchBar");
     let dataDiv = content.querySelector("#data");
 
-    let allEvents = state.events; //[{name}]
+    //let allEvents = state.events; //[{name}]
     let allCals = state.cals; //[{name}]
     let allFriends = state.friends;
     
     let allDataWithType = [];
 
     // Events
+    /*
     for (let event of allEvents) {
         if (event.name) {
             allDataWithType.push({
@@ -65,6 +66,8 @@ export class ChatView extends HTMLElement {
             });
         }
     }
+    */
+    
 
     // Calendars
     for (let cal of allCals) {
@@ -98,26 +101,16 @@ export class ChatView extends HTMLElement {
                     divContainer.style.background = "white";
                     divContainer.style.padding = "5px";
                     divContainer.style.borderBottom = "1px solid black";
-
                     const div = document.createElement("div");
                     div.style.display = "flex";
                     div.style.justifyContent = "space-between";
-
-                    // Skapa p-element eller span för texten
                     const pName = document.createElement("p");
                     pName.textContent = data.name[0].toUpperCase() + data.name.slice(1).toLowerCase();
-
                     const pType = document.createElement("p");
                     pType.textContent = data.type[0].toUpperCase() + data.type.slice(1).toLowerCase();
-
-                    // Lägg till i flex-div
                     div.appendChild(pName);
                     div.appendChild(pType);
-
-                    // Lägg flex-div i container
                     divContainer.appendChild(div);
-
-                    // Lägg container i dataDiv
                     dataDiv.appendChild(divContainer);
                 }
             }
