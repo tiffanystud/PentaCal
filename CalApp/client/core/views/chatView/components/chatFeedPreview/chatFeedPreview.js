@@ -7,7 +7,7 @@ import { store } from "../../../../store/store.js";
 export class ChatFeedPreview extends HTMLElement {
 
     constructor() {
-        
+
         super();
         this.subs();
         this.innerHTML = `
@@ -119,34 +119,39 @@ export class ChatFeedPreview extends HTMLElement {
     connectedCallback() {
 
         // Gör en loading screen?
-        
+
         const state = getState();
         const userId = state.isLoggedIn.id;
-        
+
         this.allMesssages = PubSub.publish(EVENTS.REQUEST.GET.CHAT, {
-            userId: userId, 
+            userId: userId,
             msgType: "all"
         });
-        
+
+
+
         this.popupContainer = this.shadowRoot.querySelector(".popupContainer");
 
-        
 
 
+
+        PubSub.subscribe(EVENTS.RESPONSE.RECEIVED.CHAT.GET, (data) => {
+            this.renderMessages(data);
+        });
 
         // När man trycker på en chatbox, öppna upp konversationen
-/*         this.deleteBtn.addEventListener("click", () => {
-
-            payload = {
-                chatId: "",
-
-            }
-
-            PubSub.publish(EVENTS.VIEW.PAGE.SHOW.CHAT, { chatId });
-            PubSub.publish(EVENTS.STORE.UPDATED.CALENDARS);
-            // Ska context skickas vidare?
-            this.closeModal();
-        }); */
+        /*         this.deleteBtn.addEventListener("click", () => {
+        
+                    payload = {
+                        chatId: "",
+        
+                    }
+        
+                    PubSub.publish(EVENTS.VIEW.PAGE.SHOW.CHAT, { chatId });
+                    PubSub.publish(EVENTS.STORE.UPDATED.CALENDARS);
+                    // Ska context skickas vidare?
+                    this.closeModal();
+                }); */
     }
 
     // Open
@@ -162,10 +167,88 @@ export class ChatFeedPreview extends HTMLElement {
     notification() {
         backgroundColor = "transparent"
     }
-    
-    renderMessages() {
-    
-        const allMessages = ""
+
+    renderMessages(allMessages) {
+
+        const container = this.shadowRoot.querySelector(".chatFeedContainer");
+        container.innerHTML = "";
+
+        if (!allMessages) return;
+
+        const merged = [
+            ...allMessages.privateMSG.map(m => ({ ...m, type: "private" })),
+            ...allMessages.calendarMSG.map(m => ({ ...m, type: "calendar" }))
+        ];
+
+        merged.sort((a, b) => {
+            const da = new Date(`${a.date}T${a.time}`);
+            const db = new Date(`${b.date}T${b.time}`);
+            return db - da;
+        });
+
+        const now = Date.now();
+
+        for (let msg of merged) {
+
+            let chatName = "";
+            let senderName = "";
+
+            if (msg.type === "private") {
+                senderName = store.getUserName(msg.senderId);
+                chatName = senderName;
+            }
+
+            if (msg.type === "calendar") {
+                senderName = store.getUserName(msg.senderId);
+                chatName = store.getCalendarName(msg.calId);
+            }
+
+            const box = document.createElement("div");
+            box.classList.add("chatBox");
+
+            box.innerHTML = `
+            <div class="chatBoxContent">
+
+                <div class="groupImg"></div>
+
+                <div class="messageContainer">
+
+                    <div class="messageTextContainer">
+
+                        <h4 class="chatName">${chatName}</h4>
+
+                        <div class="messageContent">
+                            <p class="messageTextContent textContent">
+                                ${senderName}: ${msg.content}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="notificationCirkle"></div>
+
+                </div>
+
+            </div>
+        `;
+
+            // 24 h notification cirkle (lastlogged "unseen" in implementation later)
+            const msgDate = new Date(`${msg.date}T${msg.time}`);
+            const diffMs = now - msgDate.getTime();
+            const diffHours = diffMs / (1000 * 60 * 60);
+
+            const notif = box.querySelector(".notificationCirkle");
+
+            if (diffHours > 24) {
+                notif.classList.add("hidden");
+            } else {
+                notif.classList.remove("hidden");
+            }
+
+            container.appendChild(box);
+        }
     }
-    
+
 }
+
+
