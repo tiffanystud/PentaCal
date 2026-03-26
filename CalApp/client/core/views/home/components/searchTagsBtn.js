@@ -59,15 +59,16 @@ export class SearchTags extends HTMLElement {
             // data.selectedItem
             // data.context
 
-            let state = store.getState();
-            let currentEvents = state.selectedEvents;
-            let filteredEvents = state.selectedEvents;
+            store.setState({ "selectedTags": [...store.getState().selectedTags, data.selectedItem] });
 
-            for (let tags of state.selectedTags) {
-                filteredEvents = filteredEvents.filter(event => event.tags == tags);
+            let currentEvents = store.getState().selectedEvents;
+
+            let filteredEvents;
+
+            for (let tags of store.getState().selectedTags) {
+                filteredEvents = currentEvents.filter(event => event.tags == tags);
             }
 
-            store.setState({ "selectedTags": [...state.selectedTags, data.selectedItem] });
             store.setState({ "selectedEvents": filteredEvents });
 
             console.log(store.getState().selectedTags)
@@ -84,7 +85,7 @@ export class SearchTags extends HTMLElement {
 
             closeBtn.addEventListener("click", () => {
                 store.setState({ "selectedEvents": currentEvents });
-                let newTags = state.selectedTags.filter(tag => tag != data.selectedItem);
+                let newTags = store.getState().selectedTags.filter(tag => tag != data.selectedItem);
                 store.setState({ "selectedTags": newTags })
                 // PubSub.publish("SELECTEDCALS.EVENTS.STATE.POST", state.selectedCals);
                 tagsDiv.remove();
