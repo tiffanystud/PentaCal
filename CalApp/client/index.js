@@ -32,6 +32,7 @@ import "./core/views/profileView/profileView.js";
 import "./core/views/login/loginView.js"
 import "./core/views/newHomeView/newHomeView.js";
 import "./core/views/home/homeView.js";
+import "./core/views/chatView/chatView.js"
 
 // DEVELOPMENT
 import "./core/views/development/development.js";

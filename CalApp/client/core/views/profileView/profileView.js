@@ -8,8 +8,13 @@ export class ProfileView extends HTMLElement {
         super();
         this.attachShadow({ mode: "open" });
 
-        PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW, (data) => {
-            if (data === "profile") { //bottom Nav
+        PubSub.subscribe("change:page", (data) => {
+            if (data.page === "profile") { //bottom Nav
+                this.render();
+            }
+        });
+        PubSub.subscribe("change:view", (data) => {
+            if (data.mainPath === "home" && data.subPath === "profile") {
                 this.render();
             }
 
@@ -70,8 +75,7 @@ export class ProfileView extends HTMLElement {
                     <button class=" btnProfile profileBtnEdit ">Edit profile</button>
                     <button class=" btnProfile profileLogout">Log out</button>
                 </div>
-            </div>
-            
+            </div>            
         </div>            
         `;
 

@@ -22,9 +22,6 @@ export class HomeView extends HTMLElement {
 
 
         PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.HOME, (data) => {
-
-            console.log("HOME EVENT TRIGGERED", data);
-
             if (data.page === "home") {
                 this.render(data);
             }
@@ -64,8 +61,8 @@ export class HomeView extends HTMLElement {
     }
 
     render() {
-        console.log("home render runs");
-        this.app.innerHTML = `
+        let content = document.querySelector("#content")
+        content.innerHTML = `
         <notifications-bar></notifications-bar>
         <cal-detail-btn></cal-detail-btn>
         <filter-cals></filter-cals>
