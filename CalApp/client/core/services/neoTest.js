@@ -7,7 +7,6 @@ import { apiRequest } from "./api.js";
 
 PubSub.subscribe("change:view", (data) => {
     if (data.mainPath === "msgTest") {
-        document.querySelector("#content").innerHTML = "<messages-input></messages-input>";
         PubSub.subscribe(EVENTS.STATE.LOGIN.SUCCESS, async () => {
             let allUsers = await apiRequest({
                 entity: "users",
@@ -28,6 +27,7 @@ PubSub.subscribe("change:view", (data) => {
                 }
                 document.querySelector("#app").appendChild(msgBox);
             })
+            document.querySelector("#app").appendChild(document.createElement("messages-input"));
         }) 
     }
 });
