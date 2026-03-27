@@ -5,10 +5,34 @@ export class CalDetailBtn extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: "open"});
-        this.detail = "All";
         this.isOpen = false;
         this.render();
+
     }
+
+    connectedCallback() {
+        this.detail = this.getCalName(this.detail);
+        this.render();
+        
+        this._sub = PubSub.subscribe("change:detail-btn", (calId) => {
+            this.detail = this.getCalName(calId);
+            this.render();
+    });
+    }
+
+    getCalName(id) {
+        if (!id){
+            return "All";
+        }
+        const calendars = store.getState().cals;
+        const cal = calendars.find(c => c.id === id);
+        if (cal){
+            return cal.name;
+        } else {
+            return "All";
+        }
+    }
+    
     render(){
         const calendars = store.getState().cals;
         this.shadowRoot.innerHTML = `
@@ -70,6 +94,10 @@ export class CalDetailBtn extends HTMLElement{
 
         let clicked = 0;
 
+        detailButton.addEventListener("click", () =>{
+            isDown = true;
+            this.toggleDropdown(true);
+        })
         detailButton.addEventListener("pointerdown", () =>{
             if (isDown === false){
                 isDown = true;
@@ -88,10 +116,9 @@ export class CalDetailBtn extends HTMLElement{
         dropdown.addEventListener("click", (e) => {
             const item = e.target.closest(".item");
             if (!item) return;
-
             this.detail = item.textContent;
             detailButton.textContent = this.detail;
-            PubSub.publish("change:detailbtn", item.id);
+            PubSub.publish("change:detail-btn", item.id);
             this.toggleDropdown(false);
         });
         document.addEventListener("click", (e) => {
@@ -102,6 +129,8 @@ export class CalDetailBtn extends HTMLElement{
             }
         });
     }
+
+
 
     toggleDropdown(open){
         this.isOpen = open;

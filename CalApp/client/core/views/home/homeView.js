@@ -1,4 +1,4 @@
-import { store } from "../../store/store.js";
+
 import { PubSub } from "../../store/pubsub.js";
 import { EVENTS } from "../../store/events.js";
 import { LandingButtonContainer } from "./components/landingButtons.js";
@@ -8,6 +8,7 @@ import { CalRender } from "./components/calRender.js";
 import { BottomNav } from "../../../components/bottomNav/bottomNav.js";
 import "./components/searchTagsBtn.js";
 import "../../../components/searchUsersModal/searchUsersModalTest.js";
+import "./components/eventCardPopup.js";
 
 export class HomeView extends HTMLElement {
     constructor() {
@@ -38,16 +39,12 @@ export class HomeView extends HTMLElement {
         });
 
         PubSub.subscribe("change:view", (data) => {
-
-            // if (data.mainPath === "home" || "/") {
-            //     this.render();
-            // }
-            /*             
-                if (data.url.pathname === "/") {
-                    this.render();
-                } 
-            */
             if (data.url === "/home") {
+                this.render();
+            }
+        })
+        PubSub.subscribe("change:page", (data) => {
+            if (data.page === "home") {
                 this.render();
             }
         })
@@ -63,13 +60,14 @@ export class HomeView extends HTMLElement {
         let content = document.querySelector("#content")
         content.innerHTML = `
         <notifications-bar></notifications-bar>
-        <cal-detail-btn></cal-detail-btn>
+        <detail-container></detail-container>
         <filter-cals></filter-cals>
         <week-chart></week-chart>
         <search-tags></search-tags>
         <event-cards></event-cards>
         <create-popup></create-popup>
         <search-users-modal-test></search-users-modal-test>
+        <event-card-popup></event-card-popup>
         `;
 
     }

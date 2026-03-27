@@ -8,7 +8,7 @@ export function userGroupsService() {
 
     // Just for rollback functionality
     const newCalendar = []
-    
+
     // POST /user_calendars
     PubSub.subscribe(EVENTS.REQUEST.SENT.USERGROUPS.POST, async function (payload) {
 
@@ -21,15 +21,15 @@ export function userGroupsService() {
                 body: payload
             });
 
-            
+
             PubSub.publish(EVENTS.RESPONSE.RECEIVED.USERGROUPS.POST, response);
 
             // Uppdatera store om OK
             newCalendar.push({
-    /*             payload.calId, 
-                payload.userId */
+                /*             payload.calId, 
+                            payload.userId */
             })
-            
+
             const curr = store.getState().userData.usergroups || [];
             const updatedUG = [...curr, response];
 
@@ -41,10 +41,10 @@ export function userGroupsService() {
             });
 
         } catch (err) {
-            
+
             console.error("USERGROUPS POST ERROR:", err);
             PubSub.publish(EVENTS.REQUEST.ERROR.USERGROUPS.POST, err);
-            
+
         }
     });
 }

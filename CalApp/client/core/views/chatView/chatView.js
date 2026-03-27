@@ -8,6 +8,7 @@ export class ChatView extends HTMLElement {
         super();
         this.state;
         this.attachShadow({ mode: "open" });
+        
         PubSub.subscribe("change:page", (data) => {
             console.log("SUB FIRED", data);
             if (data.page === "chat") {
@@ -15,6 +16,7 @@ export class ChatView extends HTMLElement {
             }
 
         });
+        
         PubSub.subscribe("change:view", (data) => {
 
             if (data.mainPath === "home" && data.subPath === "chat") {
@@ -74,7 +76,8 @@ export class ChatView extends HTMLElement {
         if (cal.name) {
             allDataWithType.push({
                 name: cal.name,
-                type: "calendar"
+                type: "calendar",
+                id: cal.id
             });
         }
     }
@@ -84,13 +87,15 @@ export class ChatView extends HTMLElement {
         if (friend.name) {
             allDataWithType.push({
                 name: friend.name,
-                type: "friend"
+                type: "friend",
             });
         }
     }
 
 
-    searchBar.addEventListener("input", function(event) {
+    searchBar.addEventListener("input", () => {
+        let messageContainer = document.getElementById("messageContainer");
+        messageContainer.innerHTML = "";
         dataDiv.innerHTML = "";
 
         let valueInput = searchBar.getValue().toLowerCase();
@@ -111,7 +116,11 @@ export class ChatView extends HTMLElement {
                     div.appendChild(pName);
                     div.appendChild(pType);
                     divContainer.appendChild(div);
+                    divContainer.addEventListener("click" , () => {
+                        this.something(state.isLoggedIn.id, data.id,state )
+                    })
                     dataDiv.appendChild(divContainer);
+                    
                 }
             }
         }

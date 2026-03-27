@@ -7,9 +7,10 @@ export const newRouter = new Router(window.location.href);
 import "./components/addMembers/addMembers.js";
 import "./components/appInput/appInput.js";
 import "./components/bottomNav/bottomNav.js";
-import "./components/searchUsersModal/searchUsersModal.js";
+// import "./components/searchUsersModal/searchUsersModal.js";
 import "./components/toggleBtn/toggleBtn.js";
 import "./components/createPopup/createPopup.js";
+import "./components/messageBox/messageBox.js";
 
 
 // SERVICES (init all pubsub)
@@ -34,7 +35,7 @@ import "./core/views/newHomeView/newHomeView.js";
 import "./core/views/home/homeView.js";
 import "./core/views/chatView/chatView.js"
 
-// DEVELOPMENT
+// DEVELOPMENT (dummy-login)
 import "./core/views/development/development.js";
 import { EVENTS } from "./core/store/events.js";
 import { PubSub } from "./core/store/pubsub.js";
@@ -53,20 +54,9 @@ PubSub.subscribe("change:view", (data) => {
         PubSub.publish(EVENTS.VIEW.PAGE.SHOW[mainPath.toUpperCase()], data);
         return;
     }
+
 });
 
 
 // START
 newRouter.init();
-
-/* PubSub.subscribe("change:view", (data) => {
-    console.log("INDEX.JS RECEIVED:", data.mainPath, data.subPath);
-    
-    const page = data.mainPath;     // från router ex. "createGroup"
-    const key = page.toUpperCase(); // "CREATEGROUP"
-
-    if (EVENTS.VIEW.PAGE.SHOW[key]) {
-        PubSub.publish(EVENTS.VIEW.PAGE.SHOW[key], data);
-    console.log("INDEX.JS MAPPING:", { mainPath: page, subPath: data.subPath, key, event: EVENTS.VIEW.PAGE.SHOW[key] });
-    }
-}); */
