@@ -92,6 +92,8 @@ export class ChatView extends HTMLElement {
 
 
     searchBar.addEventListener("input", () => {
+        let messageContainer = document.getElementById("messageContainer");
+        messageContainer.innerHTML = "";
         dataDiv.innerHTML = "";
 
         let valueInput = searchBar.getValue().toLowerCase();
@@ -123,29 +125,31 @@ export class ChatView extends HTMLElement {
     })}
     something(myId, calId,state) { //only cal id for now
         let messageContainer = document.getElementById("messageContainer");
+        for(let calMess of state.calendarMessages) {
+            console.log(`CalId: ${calMess.calId} === Selected id: ${calId}`)
+            if(calMess.calId === calId) {
+                console.log(calMess);
+                let messageBox = document.createElement("message-box");
+                messageBox.message = calMess;
+                if(calMess.senderId === myId) {
+                    console.log("my mess")
+                    messageBox.users = {
+                        sender: myId,
+                        receiver: calId
+                    }
+                    messageBox.alignRight = true;      
 
-        for(let calmess of state.calendarMessages) {
-            console.log(calmess);
-            let messageBox = document.createElement("message-box");
-            messageBox.message = calmess;
-            if(calmess.senderId === myId) {
-                console.log("my mess")
-                messageBox.users = {
-                    sender: myId,
-                    receiver: calId
-                }
-                messageBox.alignRight = true;      
+                } else {
+                    console.log("Other")
 
-            } else {
-                console.log("Other")
+                    messageBox.users = {
+                        sender: calmess.senderId,
+                        receiver: calId
+                    }
 
-                messageBox.users = {
-                    sender: calmess.senderId,
-                    receiver: calId
-                }
-
-            } 
-            messageContainer.appendChild(messageBox)
+                } 
+                messageContainer.appendChild(messageBox)
+            }
         }
 
         
