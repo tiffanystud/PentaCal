@@ -70,6 +70,10 @@ export class CalDetailBtn extends HTMLElement{
 
         let clicked = 0;
 
+        detailButton.addEventListener("click", () =>{
+            isDown = true;
+            this.toggleDropdown(true);
+        })
         detailButton.addEventListener("pointerdown", () =>{
             if (isDown === false){
                 isDown = true;
@@ -88,10 +92,9 @@ export class CalDetailBtn extends HTMLElement{
         dropdown.addEventListener("click", (e) => {
             const item = e.target.closest(".item");
             if (!item) return;
-
             this.detail = item.textContent;
             detailButton.textContent = this.detail;
-            PubSub.publish("change:detailbtn", item.id);
+            PubSub.publish("change:detail-btn", item.id);
             this.toggleDropdown(false);
         });
         document.addEventListener("click", (e) => {
@@ -102,6 +105,8 @@ export class CalDetailBtn extends HTMLElement{
             }
         });
     }
+
+
 
     toggleDropdown(open){
         this.isOpen = open;

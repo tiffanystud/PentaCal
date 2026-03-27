@@ -84,6 +84,12 @@ export class CalendarInfoPopUp extends HTMLElement{
                 width: 24px;
                 height: 24px;
             }
+
+            #close {
+                background: 
+            }
+
+
             .button-container {
                 height: 140px;
                 display: flex;
