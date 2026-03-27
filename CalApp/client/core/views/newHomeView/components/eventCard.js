@@ -12,6 +12,7 @@ export class EventCard extends HTMLElement {
         store.subscribe("selectedEvents", (data) => {
             this.events = data;
             this.render();
+            this.eventListeners();
         })
         console.log(this.events);
     }
@@ -47,7 +48,7 @@ export class EventCard extends HTMLElement {
 
             let monthDiv = monthElements[date.getMonth()];
             monthDiv.innerHTML += `
-                    <div class="eventCardOuter">
+                    <div class="eventCardOuter" id="${event.id}">
                     <div class="imgCont">Image here</div>
                         <div class="eventDesc"> 
                             <div class="date">
@@ -114,6 +115,17 @@ export class EventCard extends HTMLElement {
             }
         </style>
                 `;
+    }
+
+    eventListeners() {
+        let allEventCards = this.shadowRoot.querySelectorAll(".eventCardOuter");
+
+        for (let eventCard of allEventCards) {
+            eventCard.addEventListener("click", () => {
+                PubSub.publish("EVENT.RESOURCE", store.getState().selectedEvents.find(event => event.id == eventCard.id));
+            })
+        }
+
     }
 
     render() {

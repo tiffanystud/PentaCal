@@ -8,6 +8,7 @@ import { CalRender } from "./components/calRender.js";
 import { BottomNav } from "../../../components/bottomNav/bottomNav.js";
 import "./components/searchTagsBtn.js";
 import "../../../components/searchUsersModal/searchUsersModalTest.js";
+import "./components/eventCardPopup.js";
 
 export class HomeView extends HTMLElement {
     constructor() {
@@ -71,6 +72,7 @@ export class HomeView extends HTMLElement {
         <event-cards></event-cards>
         <create-popup></create-popup>
         <search-users-modal-test></search-users-modal-test>
+        <event-card-popup></event-card-popup>
         `;
 
     }
