@@ -21,6 +21,7 @@ export class CalRender extends HTMLElement {
                     display: block;
                 }
             </style>
+            <week-chart></week-chart>
             <event-cards></event-cards>
         `;
     }

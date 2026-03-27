@@ -90,6 +90,9 @@ export class BottomNav extends HTMLElement {
                 PubSub.publish("change:page", {
                     page: currPage
                 }); 
+                PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, {
+                    page: currPage
+                }); 
                 
                 this.switchView(currPage);
 

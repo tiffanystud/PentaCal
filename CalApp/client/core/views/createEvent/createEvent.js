@@ -28,8 +28,8 @@ export class CreateEvent extends HTMLElement {
         
     }
     render() {
-        let app = document.getElementById("app");
-        app.innerHTML = `
+        let content = document.getElementById("content");
+        content.innerHTML = `
         <style>
             h1 {
             text-align: center;

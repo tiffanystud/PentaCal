@@ -10,7 +10,7 @@ import { apiRequest } from "../../services/api.js";
 export class ContactsView extends HTMLElement {
     constructor() {
         super();
-        this.app = document.querySelector("#app");
+        this.content = document.querySelector("#content");
         this.attachShadow({ mode: "open" });
         this.sub();
     }
@@ -55,7 +55,7 @@ export class ContactsView extends HTMLElement {
                 return err;
             }
         }
-        this.app.innerHTML = `
+        this.content.innerHTML = `
         <style>
             app-input{
                 display: inline-block;
