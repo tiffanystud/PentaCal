@@ -118,6 +118,7 @@ export class MessageFeedPreview extends HTMLElement {
         // Subscribe messages received, save returned unsubscribe fn
         this.subscriptions.push(
             PubSub.subscribe(EVENTS.RESPONSE.RECEIVED.MESSAGES.GET, (data) => {
+                console.log(data);
                 this.renderMessages(data);
             })
         );
@@ -133,6 +134,7 @@ export class MessageFeedPreview extends HTMLElement {
         this.subs();
 
         const state = store.getState();
+        console.log(state, "HI FROOM MSGFPV-1-1--2-2-2--2-")
         const userId = state.isLoggedIn.id;
 
         this.popupContainer = this.shadowRoot.querySelector(".popupContainer");
@@ -142,7 +144,7 @@ export class MessageFeedPreview extends HTMLElement {
             userId: userId,
             msgType: "all"
         });
- 
+
         console.log()
     }
 
@@ -175,6 +177,7 @@ export class MessageFeedPreview extends HTMLElement {
     }
 
     getUserName(id, users) {
+        console.log("GET USERNAME:", id, users)
         const u = users.find(x => x.id === id);
         return u ? u.name : "Unknown";
     }
@@ -188,35 +191,79 @@ export class MessageFeedPreview extends HTMLElement {
 
         if (!allMessages) return;
 
-        console.log(allMessages, allMessages.users, allMessages.calendars, "TRYING TO BUILD")
-        
-        this.users = allMessages.users || [];
-        this.calendars = allMessages.calendars || [];
-
-        const state = store.getState();
-
         const container = this.shadowRoot.querySelector(".chatFeedContainer");
         container.innerHTML = "";
 
-        const merged = [
+        const state = store.getState();
+        this.users = allMessages.users || [];
+        this.calendars = allMessages.calendars || [];
+
+
+        // Group all msgs
+        const allUserMessages = [
             ...(allMessages.privateMSG || []).map(m => ({ ...m, type: "private" })),
             ...(allMessages.calendarMSG || []).map(m => ({ ...m, type: "calendar" }))
         ];
 
-        merged.sort((a, b) => {
+        // Just use last message of every chat
+        const userChats = {}
+        for (let currMsg of allUserMessages) {
+
+            let chatId;
+
+            if (currMsg.type === "private") {
+
+                // Create a "chatID"
+                const a = currMsg.senderId;
+                const b = currMsg.receiverId;
+                chatId = a < b ? `${a}-${b}` : `${b}-${a}`;
+
+            } else {
+
+                // Calendar "chatID"
+                chatId = `cal-${currMsg.calId}`;
+            }
+
+            // Save chats
+            if (!userChats[chatId]) {
+                userChats[chatId] = currMsg;
+            } else {
+
+                // Preview with latest messsage
+                const old = userChats[chatId];
+                const oldDate = new Date(`${old.date}T${old.time}`);
+                const newDate = new Date(`${currMsg.date}T${currMsg.time}`);
+
+                if (newDate > oldDate) {
+                    userChats[chatId] = currMsg;
+                }
+            }
+        }
+
+        // Convert object to array of chats
+        const chats = Object.values(userChats);
+
+        // sort by latest
+        chats.sort((a, b) => {
             const da = new Date(`${a.date}T${a.time}`);
             const db = new Date(`${b.date}T${b.time}`);
             return db - da;
         });
 
-        for (let msg of merged) {
-            
+
+        // Render msg
+        for (let msg of chats) {
+
             let chatName = "";
             let senderName = "";
 
             if (msg.type === "private") {
 
-                senderName = this.getUserName(msg.senderId, this.users);
+                if (msg.senderId == state.isLoggedIn.id) {
+                    senderName = "Me";
+                } else {
+                    senderName = this.getUserName(msg.senderId, this.users);
+                }
 
                 if (msg.senderId === state.isLoggedIn.id) {
                     chatName = this.getUserName(msg.receiverId, this.users);
@@ -226,28 +273,32 @@ export class MessageFeedPreview extends HTMLElement {
 
             } else if (msg.type === "calendar") {
 
-                senderName = this.getUserName(msg.senderId, this.users);
-                chatName = this.getCalendarName(msg.calId, this.calendars);
+                if (msg.senderId == state.isLoggedIn.id) {
+                    senderName = "Me";
+                } else {
+                    senderName = this.getUserName(msg.senderId, this.users);
+                }
 
+                chatName = this.getCalendarName(msg.calId, this.calendars);
             }
 
             const box = document.createElement("div");
             box.classList.add("chatBox");
 
             box.innerHTML = `
-            <div class="chatBoxContent">
-                <div class="groupImg"></div>
-                <div class="messageContainer">
-                    <div class="messageTextContainer">
-                        <h4 class="chatName">${chatName}</h4>
-                        <div class="messageContent">
-                            <p class="messageTextContent textContent"> ${senderName}:  ${msg.content}</p>
-                        </div>
+        <div class="chatBoxContent">
+            <div class="groupImg"></div>
+            <div class="messageContainer">
+                <div class="messageTextContainer">
+                    <h4 class="chatName">${chatName}</h4>
+                    <div class="messageContent">
+                        <p class="messageTextContent textContent"> ${senderName}:  ${msg.content}</p>
                     </div>
-                    <div class="notificationCirkle"></div>
                 </div>
+                <div class="notificationCirkle"></div>
             </div>
-            `;
+        </div>
+        `;
 
             // 24h noti cirkle (change to "unread" in later development)
             const now = Date.now();
@@ -257,7 +308,6 @@ export class MessageFeedPreview extends HTMLElement {
             notif.classList.toggle("hidden", diffHours > 24);
 
             container.appendChild(box);
-
         }
     }
 

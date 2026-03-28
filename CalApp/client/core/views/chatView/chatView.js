@@ -28,10 +28,6 @@ export class ChatView extends HTMLElement {
     }
     
 
-       
-
-    
-
     render() {
         let content = document.querySelector("#content");
         let state = store.getState();

@@ -1,6 +1,7 @@
 
 import { apiRequest } from "./api.js";
 import { PubSub } from "../store/pubsub.js";
+import { store } from "../store/store.js";
 import { EVENTS } from "../store/events.js";
 
 export function MessagesService() {
@@ -13,44 +14,33 @@ export function MessagesService() {
 
         const userId = payload.userId;
         const msgType = payload.msgType;
+
         if (msgType == "all") {
 
             try {
 
-                const resourceUserCalendars = await apiRequest({
-                    entity: "user_calendars",
-                    method: "GET"
-                });
+                const state = store.getState();
 
-                const resourcePrivateMsg = await apiRequest({
-                    entity: "private_msg",
-                    method: "GET"
-                });
-
-                const resourceCalendars = await apiRequest({
-                    entity: "calendars",
-                    method: "GET"
-                });
-
+                const resourceUserCalendars = state.usergroups;
+                const resourcePrivateMsg = state.privateMessages;
+                const resourceCalendarMsg = state.calendarMessages;
+                const resourceCalendars = state.cals;
                 const resourceUsers = await apiRequest({
                     entity: "users",
                     method: "GET"
-                });
-
+                })
+            
                 // Filter User Cals
-                const userCalIds = resourceUserCalendars.filter(uc => uc.userId == userId).map(uc => uc.calId);
+                const userCalIds = resourceUserCalendars
+                    .filter(uc => uc.userId == userId)
+                    .map(uc => uc.calId);
 
                 // Get all cals for User Cals
                 let filteredCalMsg = [];
-                for (let calId of userCalIds) {
-
-                    const calendarMsgs = await apiRequest({
-                        entity: "calendar_msg",
-                        method: "GET",
-                        query: { calId: calId }
-                    });
-
-                    filteredCalMsg.push(...calendarMsgs);
+                for (let currCalMsg of resourceCalendarMsg) {
+                    if (userCalIds.includes(currCalMsg.calId)) {
+                        filteredCalMsg.push(currCalMsg);
+                    }
                 }
 
                 // All PMGS
@@ -79,7 +69,6 @@ export function MessagesService() {
             } catch (err) {
                 PubSub.publish(EVENTS.REQUEST.ERROR.MESSAGES.GET, err, true);
             }
-            
         } else if (msgType == "private") {
 
             try {
@@ -166,6 +155,7 @@ export function MessagesService() {
                     userCalendars: resourceUserCalendars,
                     calendarMsg: resourceCalendarMsg
                 }, true)
+
 
                 // Resource
                 PubSub.publish(EVENTS.RESOURCE.RECEIVED.MESSAGES.GET, {
