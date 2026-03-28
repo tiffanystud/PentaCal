@@ -30,7 +30,7 @@ export class StoreService {
                         username: currUser.name,
                         email: currUser.email
                     }
-                });
+                }, true);
 
                 // Get UGs
                 let usergroups;
@@ -238,7 +238,7 @@ export class StoreService {
                     userPinnedCalendars: pinned,
                     availabilites: availabilities,
                     notis: notis
-                });
+                }, true);
 
                 PubSub.publish(EVENTS.STATE.LOGIN.SUCCESS, { userId });
 
@@ -252,8 +252,9 @@ export class StoreService {
                 PubSub.publish(EVENTS.STATE.LOGIN.ERROR, err);
 
             }
-        });
+        }, true);
 
+        
         PubSub.subscribe(EVENTS.STATE.LOGOUT.START, () => {
 
             store.resetState();
@@ -261,7 +262,8 @@ export class StoreService {
             PubSub.publish(EVENTS.STATE.LOGOUT.SUCCESS);
             PubSub.publish(EVENTS.STORE.UPDATED.ISLOGGEDIN);
 
-        });
+        }, true);
+        
     }
 }
 
