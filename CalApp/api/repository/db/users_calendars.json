@@ -349,6 +349,12 @@
             "isAdmin": true
         },
         {
+            "id": "65f90011d021",
+            "userId": "699dab0435090",
+            "calId": "65fa00bb11b01",
+            "isAdmin": false
+        },
+        {
             "id": "65f90011d004",
             "userId": "65e10aa11a001",
             "calId": "65f900bb11b01",
@@ -817,12 +823,6 @@
             "isAdmin": true
         },
         {
-            "id": "00006e100037",
-            "userId": "65f3aa11a010",
-            "calId": "65f3bb11b007",
-            "isAdmin": true
-        },
-        {
             "id": "00006e100038",
             "userId": "65f3aa11a011",
             "calId": "65f3bb11b007",
@@ -969,12 +969,6 @@
         {
             "id": "00006e100050",
             "userId": "65e10aa11a001",
-            "calId": "65f900bb11b01",
-            "isAdmin": false
-        },
-        {
-            "id": "00006e100051",
-            "userId": "699dab0435090",
             "calId": "65f900bb11b01",
             "isAdmin": false
         },
