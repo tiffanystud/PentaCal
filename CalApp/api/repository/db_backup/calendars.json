@@ -185,9 +185,9 @@
         {
             "id": "69bc0b6761c21",
             "creatorId": "65e10aa11a001",
-            "name": "Malmö Underground",
-            "description": "",
-            "type": "private"
+            "name": "Malmö REKO-Ring",
+            "description": "Vi tycker att kedjan mellan producent och konsument borde vara mycket kortare! Vi vill göra det enklare att stötta småskaliga, lokala initiativ. REKO-ringen innebär direkthandel där producenternas matsvinn och dyra mellanhänder minimeras. Varor förhandsbeställs på Penta betalas innan konsumenter och producenter träffas för samordnad varuutlämning varje vecka.",
+            "type": "public"
         },
         {
             "id": "6a1f3c84e209",
@@ -199,7 +199,7 @@
         {
             "id": "6b2e4d95f310",
             "creatorId": "65f3aa11a002",
-            "name": "Podcast: Två Killar Ett Mikrofon",
+            "name": "Podcast: Två Killar En Mikrofon",
             "description": "Inspelningsschema, gästbokningar och alla de gånger vi säger 'vi fixar det live' och sedan inte gör det. En kalender för Sveriges troligtvis mest oförberedda men ärliga poddprojekt.",
             "type": "private"
         },
