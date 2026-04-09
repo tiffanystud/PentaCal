@@ -58,7 +58,7 @@ export const EVENTS = {
             ISLOGGEDIN: "data:updated:isloggedin",
             MESSAGES: "data:updated:messages"
         },
-        
+
         RETURNED: {
             MESSAGES: "data:returned:messages"
         },
@@ -103,7 +103,9 @@ export const EVENTS = {
                 SEARCHMODAL: "view:popup:searchModal:show",
                 CREATEPOPUP: "view:popup:createPopup:show",
                 DECISIONPOPUP: "view:popup:decisionpopup:show",
-                MESSAGEFEEDPREVIEW: "view:popup:messagefeedpreview:show"
+                MESSAGEFEEDPREVIEW: "view:popup:messagefeedpreview:show",
+                TEST1: "view:popup:test1:show",
+                TEST2: "view:popup:test2:show"
             },
 
             CLOSE: {
@@ -112,7 +114,9 @@ export const EVENTS = {
                 SEARCHMODAL: "view:popup:searchModal:close",
                 CREATEPOPUP: "view:popup:createPopup:close",
                 DECISIONPOPUP: "view:popup:decisionpopup:close",
-                MESSAGEFEEDPREVIEW: "view:popup:messagefeedpreview:close"
+                MESSAGEFEEDPREVIEW: "view:popup:messagefeedpreview:close",
+                TEST1: "view:popup:test1:close",
+                TEST2: "view:popup:test2:close"
             }
 
         }
