@@ -5,7 +5,6 @@ require_once __DIR__ . "/../middleware/Middleware.php";
 
 // Controllers
 require_once "users/UserController.php";
-require_once "users/UsersCalendarsController.php";
 require_once "users/UsersAvailabilitiesController.php";
 require_once "users/FriendshipsController.php";
 
@@ -16,6 +15,7 @@ require_once "events/EventAdminsController.php";
 require_once "calendars/CalendarsMSGController.php";
 require_once "calendars/CalendarsController.php";
 require_once "calendars/PinnedCalendarsController.php";
+require_once "users/UsersCalendarsController.php";
 
 require_once "BackupDBController.php";
 require_once "RestoreDBController.php";
@@ -256,34 +256,6 @@ function Router($requestUrl = null){
         case "restore_database":
             CorsMiddleware::handle();
             RestoreDBController::handle();
-            break;
-
-        case "notifications":
-            switch($method) {
-                case "GET":
-                    CorsMiddleware::handle();
-                    NotificationsController::handle($method, $input);
-                    break;
-                default:
-                    CorsMiddleware::handle();
-                    JsonMiddleware::handle();
-                    NotificationsController::handle($method, $input);
-                    break;
-            }
-            break;
-
-            case "users_notifications":
-            switch($method) {
-                case "GET":
-                    CorsMiddleware::handle();
-                    UsersNotificationsController::handle($method, $input);
-                    break;
-                default:
-                    CorsMiddleware::handle();
-                    JsonMiddleware::handle();
-                    UsersNotificationsController::handle($method, $input);
-                    break;
-            }
             break;
             
         default:
