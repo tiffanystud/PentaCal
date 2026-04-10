@@ -20,7 +20,7 @@ class CalendarsMSGController {
             }
         } else if ($method === "POST") {
             try {
-                sendJSON(CalendarsMSGService::create($input), 200);
+                sendJSON(CalendarsMSGService::post($input), 200);
             } catch (Exception $e) {
                 $msg = $e->getMessage();
                 $data = ["error" => $msg];
@@ -32,7 +32,7 @@ class CalendarsMSGController {
             }
         } else if ($method === "PATCH") {
             try {
-                sendJSON(CreateMSGService::update($input), 200);
+                sendJSON(CreateMSGService::patch($input), 200);
             } catch (Exception $e) {
                 $msg = $e->getMessage();
                 $data = ["error" => $msg];

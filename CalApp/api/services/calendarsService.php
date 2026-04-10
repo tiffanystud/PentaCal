@@ -15,7 +15,7 @@ class CalendarsService {
         }
     }
 
-    public static function getById($input){
+    public static function getByParams($input){
         $db = new DBAccess("calendars");
         $calendarById = $db->findById($input["id"]);
 
