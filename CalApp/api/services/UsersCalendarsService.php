@@ -160,11 +160,11 @@ class UsersCalendarsService {
 
         $userExists = $dbU->findById($userId);
         if (!$userExists){
-            throw new Exception("User not found.", 404);
+            throw new Exception("User not found");
         }
 
 
-        $relations = self::getAllRelationsByCalId($calId);
+        $relations = self::getByParams(["calId" => $calId]);
 
         foreach ($relations as $rel) {
             if ($rel["userId"] == $userId) {
@@ -173,7 +173,7 @@ class UsersCalendarsService {
             }
         }
 
-        throw new Exception("User not in calendar.");
+        throw new Exception("User not in calendar");
 
         // is admin admin?
         /*
