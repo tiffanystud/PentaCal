@@ -1,6 +1,7 @@
 /* Allmän komponent/popup som ej kan länkas till */
 
-import { PubSub } from "../../../store/pubsub";
+import { PubSub } from "../../../store/pubsub.js";
+import { EVENTS } from "../../../store/events.js";
 
 export class TestComp1 extends HTMLElement {
 
@@ -11,23 +12,98 @@ export class TestComp1 extends HTMLElement {
 
     }
 
-    // Komponentens egna "constructor"
-    connectedCallback() { }
+    connectedCallback() {
+        this.subs();
+        this.render();
+        this.eListeners();
+    }
 
-    // Ta bort globala lyssnare (om inaktiv komponent)
     disconnectedCallback() {
-        if (this.unsubscribe) this.unsubscribe();
+
+        // Run unsub fn when popup is disconnected
+        if (this.unsubscribeOpen) this.unsubscribeOpen();
+        if (this.unsubscribeDataUpd) this.unsubscribeDataUpd();
+
+    }
+
+    subs() {
+
+        // Save all unsub fn to unsub in disconnectedCallback
+
+        this.unsubscribeOpen = PubSub.subscribe(EVENTS.VIEW.POPUP.SHOW.TEST1,
+            () => {
+                this.openPopup();
+            }
+        );
+
+        this.unsubscribeDataUpd = PubSub.subscribe(EVENTS.DATA.UPDATED.TEST,
+            () => {
+                // Rerender if new data
+                if (this.isOpen) this.render();
+            }
+        );
+
+
     }
 
     getValue() {
+
         // Metod om komponent ska returnera något
         // Ex. en lista events, användare, T/F etc
+        return this.data;
+
     }
 
-    setValue() {
+    setValue(data) {
         // Metod om komponent ska ta emot värde
+        this.data = data;
     }
-    
+
+    openPopup(data) {
+
+        if (this.isOpen) return;
+
+        this.isOpen = true;
+        this.data = data || null;
+        this.setValue(data);
+
+        this.shadowRoot.querySelector(".popup").style.display = "block";
+
+    }
+
+    closePopup() {
+
+        this.isOpen = false;
+
+        PubSub.publish(EVENTS.VIEW.POPUP.CLOSE.TEST1,
+            this.data || null
+        );
+
+        this.shadowRoot.querySelector(".popup").style.display = "none";
+    }
+
+
+    // UI and Events
+    render() {
+        this.shadowRoot.innerHTML = ``;
+    }
+
+    eListeners() {
+
+        this.shadowRoot.addEventListener("click", (e) => {
+
+            if (e.target.id === "test-comp-1-close-btn") {
+                const returnValue = this.getValue();
+                this.closePopup(returnValue);
+            }
+            
+            if (e.target.id === "test-comp-1-outer-overlay") {
+                const returnValue = this.getValue();
+                this.closePopup(returnValue);
+            }
+
+        });
+    }
 }
 
 customElements.define("test-comp-1", TestComp1);

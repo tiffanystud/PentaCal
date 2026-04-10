@@ -50,13 +50,14 @@ export const EVENTS = {
     DATA: {
 
         UPDATED: {
+            TEST: "data:updated:test",
             CALENDARS: "data:updated:calendars",
             CALENDARSEVENTS: "data:updated:calendarsevents",
             EVENTS: "data:updated:events",
             USERS: "data:updated:users",
             USERGROUPS: "data:updated:usergroups",
             ISLOGGEDIN: "data:updated:isloggedin",
-            MESSAGES: "data:updated:messages"
+            MESSAGES: "data:updated:messages",
         },
 
         RETURNED: {
@@ -64,6 +65,7 @@ export const EVENTS = {
         },
 
         SELECTED: {
+            TEST: "data:updated:test",
             CALENDARS: "data:selected:calendars",
             CALENDARSEVENTS: "data:selected:calendarsevents",
             EVENTS: "data:selected:events",
