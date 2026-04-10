@@ -4,7 +4,7 @@ import { PubSub } from "../store/Pubsub.js";
 // ROUTERN PUBLICERAR ETT EVENT, MED URL OCH VYN SUBSCRIBAR PÅ EVENTET SOM SEDAN GER URL ELLER PARAMS OCH RENDERAR
 // 1. Läsa av aktuell URL 2. Dela upp den i mainPath/subPath 3. Skicka ut ett event (PubSub) så att vyer kan rendera rätt innehåll
 
-export class Router {
+export class router {
 
     handleUrl(url) {
         // Tar emot url och splittar till delar
@@ -41,5 +41,4 @@ export class Router {
 
 }
 
-
-new Router();
+export const Router = new Router();
