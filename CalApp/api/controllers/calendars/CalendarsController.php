@@ -5,9 +5,6 @@ require_once __DIR__ . "/../sendJSON.php";
 class CalendarsController{
 
     public static function handle($method, $input){
-
-
-
         if($method === "GET") {
             try {
                 if(empty($input)) {
