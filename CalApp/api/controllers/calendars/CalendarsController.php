@@ -1,10 +1,10 @@
 <?php
 
-require_once __DIR__ . "/../services/CalendarsService.php";
-require_once "sendJSON.php";
+require_once __DIR__ . "/../../services/CalendarsService.php";
+require_once __DIR__ . "/../sendJSON.php";
 class CalendarsController{
 
-    public function handle($method, $input){
+    public static function handle($method, $input){
 
 
 
