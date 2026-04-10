@@ -1,6 +1,7 @@
 import { PubSub } from "../../../store/pubsub.js";
 import { EVENTS } from "../../../store/events.js";
 import { Router } from "../../../router/router.js";
+import { TestView } from "./testView.js";
 
 export class testService {
 
@@ -13,7 +14,7 @@ export class testService {
         // Router pub?
         PubSub.subscribe(EVENTS.VIEW.PAGE.SHOW.ANY, (data) => {
             if (data.mainPath === "home") {
-                this.render();
+                TestView.renderHTML();
             }
         })
 

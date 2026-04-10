@@ -2,36 +2,11 @@
 import "./testService";
 // import { TestService } from "./testService";
 
-export class TestView {
-
-    constructor() {
-        // this.subs(); 
-    }
-
-    /* subs() {
-
-        // Router pub?
-        PubSub.subscribe("change:page", (data) => {
-            if (data.page === "home") {
-                this.render();
-            }
-        })
-
-        // Login
-        PubSub.subscribe(EVENTS.AUTH.LOGIN.SUCCESS, () => {
-            PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" }, true);
-        }, true);
-
-        // Logout
-        PubSub.subscribe(EVENTS.AUTH.LOGOUT.SUCCESS, () => {
-            PubSub.publish(EVENTS.VIEW.PAGE.SHOW.HOME, { page: "home" }, true);
-        }, true);
-
-    } */
+export class testView {
 
     renderHTML() {
 
-        let content = document.querySelector("#content");
+        const content = document.querySelector("#content");
         content.innerHTML = `
             <notifications-bar></notifications-bar>
             <detail-container></detail-container>
@@ -48,4 +23,4 @@ export class TestView {
     
 }
 
-new TestView();
+export const TestView = new testView();
