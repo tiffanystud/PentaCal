@@ -1,5 +1,5 @@
 // ROUTER
-import { Router } from "./core/router/router.js";
+import { Router } from "./core/router/Router.js";
 // export const newRouter = new Router(window.location.href);
 
 
@@ -17,7 +17,7 @@ import "./components/messageBox/messageBox.js";
 import "./core/services/calendarsService.js"
 import "./core/services/userGroupsService.js";
 import "./core/services/notificationsService.js";
-import "./core/services/storeService.js"
+import "./core/services/StoreService.js"
 import "./core/services/homeService.js";
 import "./core/services/neoTest.js";
 import "./core/services/messagesService.js";
