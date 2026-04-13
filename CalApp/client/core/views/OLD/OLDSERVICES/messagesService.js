@@ -1,5 +1,5 @@
 
-import { apiRequest } from "../../../services/api.js";
+import { apiRequest } from "../../../services/APIService.js";
 import { PubSub } from "../../../store/Pubsub.js";
 import { store } from "../../../store/Store.js";
 import { EVENTS } from "../../../store/Events.js";

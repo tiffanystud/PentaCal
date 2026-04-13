@@ -5,8 +5,14 @@ import { EVENTS } from "../../../../store/Events.js";
 export class CalDetailBtnComp extends HTMLElement {
 
     constructor() {
+        
         super();
         this.attachShadow({ mode: "open" });
+        
+        this.loading = false;
+        this.isOpen = false;
+        this.data = null;
+        
     }
 
     subs() {
@@ -26,6 +32,14 @@ export class CalDetailBtnComp extends HTMLElement {
         this.render();
     }
 
+    
+    getCalendarName(id) {
+        if(!id) {
+            return "all";
+            
+            const calendars = 
+        }
+    }
 
 }
 

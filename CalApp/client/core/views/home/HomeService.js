@@ -1,6 +1,6 @@
 import { PubSub } from "../../store/Pubsub.js";
 import { EVENTS } from "../../store/Events.js";
-import { Router } from "../../router/router.js"; // Sökväg??
+import { Router } from "../../router/Router.js";
 import { HomeView } from "./HomeView.js";
 
 //COMPONENTS
