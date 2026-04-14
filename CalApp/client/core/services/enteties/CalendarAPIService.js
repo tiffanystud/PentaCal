@@ -32,24 +32,15 @@ class calendarAPIService {
 
     unsubs() {
         // Always active?? 
-        if (this.unsubGET) unsubGET();
-        if (this.unsubPOST) unsubPOST();
-        if (this.unsubPATCH) unsubPATCH();
-        if (this.unsubDELETE) unsubDELETE();
+        if (this.unsubGET) this.unsubGET();
+        if (this.unsubPOST) this.unsubPOST();
+        if (this.unsubPATCH) this.unsubPATCH();
+        if (this.unsubDELETE) this.unsubDELETE();
     }
 
-    pubRequestError(ENTITY, METHOD) {
-        return PubSub.publish(EVENTS.REQUEST.ERROR[ENTITY][METHOD]);
+    sendErrorMSG() {
+        return "";
     }
-    
-    pubResourceReceived(ENTITY, METHOD) {
-        return PubSub.publish(EVENTS.RESOURCE.RECEIVED[ENTITY][METHOD]);
-    }
-    
-    pubResourceError(ENTITY, METHOD) {
-        return PubSub.publish(EVENTS.RESOURCE.ERROR[ENTITY][METHOD]);
-    }
-    
 
     // METHODS
     GET(id = null) {
@@ -61,27 +52,28 @@ class calendarAPIService {
 
             // If in state, return calendar from state
             const cal = userCalendars.find(c => c.id === id);
-            if (cal) return cal;
+            if (cal) {
+                PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.GET)
+                return cal
+            }
 
-            else {
-                try {
+            try {
 
-                    const allCals = apiRequest({
-                        "entity": "calendars",
-                        "method": "GET"
-                    })
+                const allCals = apiRequest({
+                    "entity": "calendars",
+                    "method": "GET"
+                })
 
-                    // PUB OK
-                    PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.GET);
+                // PUB OK
+                PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.GET)
 
-                    const calendar = allCals.find(c => c.id === id);
-                    return calendar;
+                const calendar = allCals.find(c => c.id === id);
+                return calendar;
 
-                } catch (err) {
-                    // PUB !OK
-                    PubSub.publish(EVENTS.RESOURCE.ERROR.CALENDARS.GET);
-                    return err;
-                }
+            } catch (err) {
+                // PUB !OK
+                PubSub.publish(EVENTS.RESOURCE.ERROR.CALENDARS.GET)
+                return err;
             }
         }
 
@@ -93,15 +85,12 @@ class calendarAPIService {
                 "method": "GET"
             })
 
-            // PUB OK
             PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.GET);
 
-            const calendar = allCals.find(c => c.id === id);
-            return calendar;
+            return allCals;
 
         } catch (err) {
-            // PUB !OK
-            pubRequestError("GET")
+            PubSub.publish(EVENTS.RESOURCE.ERROR.CALENDARS.GET)
             return err;
         }
 
@@ -109,13 +98,22 @@ class calendarAPIService {
 
     POST(newCalendar) {
 
-        if (!newCalendar) return pubRequestError("POST");
+        if (!newCalendar) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.POST);
+            return this.sendErrorMSG();
+        }
 
-        // All attributes
-        if (!newCalendar.creatorId) return pubRequestError("POST");
-        if (!newCalendar.calendarName) return pubRequestError("POST");
+        // Constraints
+        if (!newCalendar.creatorId) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.POST);
+            return this.sendErrorMSG();
+        }
+        if (!newCalendar.calendarName) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.POST);
+            return this.sendErrorMSG();
+        }
         if (!newCalendar.description) newCalendar.description = "";
-        if (!newCalendar.type) newCalendar.creatorId = "public";
+        if (!newCalendar.type) newCalendar.type = "public";
 
         try {
 
@@ -126,12 +124,12 @@ class calendarAPIService {
             })
 
             // PUB OK
-            PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.POST);
+            PubSub.publish(EVENTS.RESPONSE.RECEIVED.CALENDARS.POST);
             return created;
 
         } catch (err) {
             // PUB !OK
-            pubRequestError("POST")
+            PubSub.publish(EVENTS.RESPONSE.ERROR.CALENDARS.POST);
             return err;
         }
 
@@ -139,15 +137,19 @@ class calendarAPIService {
 
     PATCH(newData) {
 
-        if (!newData) return pubRequestError("PATCH");
+        if (!newData) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.PATCH);
+            return this.sendErrorMSG()
+        }
 
-        // All attributes
         if (
-            !newCalendar.calendarName == null &&
-            !newCalendar.description == null &&
-            !newCalendar.type == null
-        ) return pubRequestError("PATCH");
-
+            newData.calendarName == null &&
+            newData.description == null &&
+            newData.type == null
+        ) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.PATCH);
+            return this.sendErrorMSG();
+        }
 
         try {
 
@@ -162,8 +164,7 @@ class calendarAPIService {
             return patched;
 
         } catch (err) {
-            // PUB !OK
-            pubRequestError("PATCH")
+            PubSub.publish(EVENTS.RESOURCE.ERROR.CALENDARS.PATCH);
             return err;
         }
 
@@ -171,16 +172,22 @@ class calendarAPIService {
 
     DELETE(id) {
 
-        if (!id) return pubRequestError("DELETE");
+        if (!id) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.DELETE);
+            return this.sendErrorMSG();
+        }
 
-        // Constraints
         const foundCalendar = store.getState().cals.find(c => c.id === id);
         const userID = store.getState().isLoggedin.id;
-        if (foundCalendar.creatorId !== userID) return pubRequestError("DELETE");
+
+        if (!foundCalendar || foundCalendar.creatorId !== userID) {
+            PubSub.publish(EVENTS.REQUEST.ERROR.CALENDARS.DELETE);
+            return this.sendErrorMSG();
+        }
 
         try {
 
-            const patched = apiRequest({
+            const result = apiRequest({
                 "entity": "calendars",
                 "method": "DELETE",
                 "body": id
@@ -188,11 +195,10 @@ class calendarAPIService {
 
             // PUB OK
             PubSub.publish(EVENTS.RESOURCE.RECEIVED.CALENDARS.DELETE);
-            return patched;
+            return result;
 
         } catch (err) {
-            // PUB !OK
-            pubRequestError("DELETE")
+            PubSub.publish(EVENTS.RESOURCE.ERROR.CALENDARS.DELETE);
             return err;
         }
 
