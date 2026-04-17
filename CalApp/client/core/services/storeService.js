@@ -1,4 +1,4 @@
-import { apiRequest } from "./ApiService.js";
+import { apiRequest } from "./APIService.js";
 import { PubSub } from "../store/Pubsub.js";
 import { store } from "../store/Store.js";
 import { EVENTS } from "../store/Events.js";
@@ -268,12 +268,12 @@ export class storeService {
 
         // Selected
         PubSub.subscribe(EVENTS.DATA.SELECTED.CALENDARS, (ids = null) => {
-            // Expects array
+            // Expects array if sevral
 
-            const currStateCals = store.getState().cals;
+            const currStateNotis = store.getState().cals;
 
             // No ID (return all)
-            if (!ids) return currStateCals;
+            if (!ids) return currStateNotis;
 
             // One ID (return filtered)
             if (!ids[1]) return currStateCals.find(currCal => currCal.id == ids);
@@ -281,11 +281,34 @@ export class storeService {
             // Sevral IDs (return filtered)
             let filteredCals = [];
             for (let currId of ids) {
-                for (currCal of currStateCals) {
+                for (currCal of currStateNotis) {
                     if (currCal.id == currId) filteredCals.push(currCal);
                 }
             }
             return filteredCals;
+
+        })
+
+
+        PubSub.subscribe(EVENTS.DATA.SELECTED.NOTIFICATIONS, (ids = null) => {
+            // Expects array if sevral
+
+            const currStateNotis = store.getState().notis;
+
+            // No ID (return all)
+            if (!ids) return currStateNotis;
+
+            // One ID (return filtered)
+            if (!ids[1]) return currStateNotis.find(currCal => currCal.id == ids);
+
+            // Sevral IDs (return filtered)
+            let filteredNotis = [];
+            for (let currId of ids) {
+                for (currNotis of currStateNotis) {
+                    if (currNotis.id == currId) filteredNotis.push(currCal);
+                }
+            }
+            return filteredNotis;
 
         })
 
@@ -367,6 +390,7 @@ export class storeService {
 
         })
 
+
     }
 
     // Use to subscribe to changes in state
@@ -376,6 +400,7 @@ export class storeService {
         store.subscribe(stateKey, (data) => {
             callback(data);
         });
+
     }
 
 }
