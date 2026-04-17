@@ -1,86 +1,72 @@
 <?php
 
 require_once __DIR__ . "/../../services/EventAdminsService.php";
+require_once __DIR__ . "/../sendJSON.php";
 
 class EventAdminsController {
     public static function handle($method, $input) {
-        if ($method === "GET") {
-            try {
-                $userId = $input["userId"] ?? null;
-                $eventId = $input["eventId"] ?? null;
 
-                if ($userId && $eventId) {
-                    self::createResp(EventAdminsService::getById(["eventId" => $eventId, "userId" => $userId]), 200);
-                    return;
-                } else if ($userId) {
-                    self::createResp(EventAdminsService::getById(["userId" => $userId]), 200);
-                    return;
-                } else if ($eventId) {
-                    self::createResp(EventAdminsService::getById(["eventId" => $eventId]), 200);
-                    return;
-                } else {
-                    self::createResp(EventAdminsService::getAll(), 200);
-                    return;
+        try {
+            if($method == "GET") {
+                $data = EventAdminsService::getAll($input);
+                sendJson([$data],200);
+
+            } elseif($method == "POST") {
+                if(!isset($input["userId"]) || !isset($input["eventId"]) || !isset($input["canDelete"]) || !isset($input["canEdit"]) || !isset($input["isCreator"])) {
+                    throw new Exception("Missing attributes");
                 }
-            } catch (Exception $e) {
-                $msg = $e->getMessage();
-                if ($msg === "Not found") {
-                    self::createResp(["error" => "Not found"], 404);
-                } else {
-                    self::createResp(["error" => "Bad request"], 400);
+                $data = EventAdminsService::post($input);
+                sendJson([$data],200);
+
+            } elseif($method == "PATCH") {
+                if(!isset($input["userId"]) || !isset($input["eventId"])) {
+                    throw new Exception("Missing attributes");
                 }
+                $data = EventAdminsService::patch($input);
+                sendJson([$data],200);
+
+            } elseif($method == "DELETE") {
+                if(!isset($input["userId"]) || !isset($input["eventId"])) {
+                    throw new Exception("Missing attributes");
+                }
+                $data = EventAdminsService::delete($input);
+                sendJson([$data],200);
             }
-        } else if ($method === "POST") {
-            try {
-                self::createResp(EventAdminsService::newEventAdmin($input), 201);
-                return;
-            } catch (Exception $e) {
-                $msg = $e->getMessage();
-                if ($msg === "Missing attributes") {
-                    self::createResp(["error" => $msg], 400);
-                } else if ($msg === "Not found") {
-                    self::createResp(["error" => $msg], 404);
-                } else if ($msg === "Unauthorized") {
-                    self::createResp(["error" => $msg], 403);
-                }
-            }
-        } else if ($method === "PATCH") {
-            try {
-                self::createResp(EventAdminsService::patchEventAdmin($input), 200);
-                return;
-            } catch (Exception $e) {
-                $msg = $e->getMessage();
-                if ($msg === "Missing attributes") {
-                    self::createResp(["error" => $msg], 400);
-                } else if ($msg === "Not found") {
-                    self::createResp(["error" => $msg], 404);
-                } else if ($msg === "Unauthorized") {
-                    self::createResp(["error" => $msg], 403);
-                }
-            }
-        } else if ($method === "DELETE") {
-            try {
-                self::createResp(EventAdminsService::deleteEventAdmin($input), 200);
-                return;
-            } catch (Exception $e) {
-                $msg = $e->getMessage();
-                if ($msg === "Missing attributes") {
-                    self::createResp(["error" => $msg], 400);
-                } else if ($msg === "Not found") {
-                    self::createResp(["error" => $msg], 404);
-                } else if ($msg === "Unauthorized") {
-                    self::createResp(["error" => $msg], 403);
-                }
-            }
-        } else {
-            self::createResp(["error" => "Bad request"], 400);
+        } catch(Exception $error) {
+            self::errorHandler($error);
         }
-    }
 
-    public static function createResp($resp, $code) {
-        http_response_code($code);
-        echo json_encode($resp);
-        return;
+        
+    }
+    public static function errorHandler($error) {
+        $message = $error->getMessage(); 
+
+        //POST
+        if($message === "Missing attributes") {
+            sendJson(["error" => "Missing attributes"], 400);
+        }
+        if($message == "Not found") {
+            sendJson(["error" => "Not found"], 404);
+        }
+
+        //PATCH
+        if($message === "Missing attributes") {
+            sendJson(["error" => "Missing attributes"], 400);
+        }
+        if($message == "Not found") {
+            sendJson(["error" => "Not found"], 404);
+        }
+
+
+        //DELETE
+        if($message === "Missing attributes") {
+            sendJson(["error" => "Missing attributes"], 400);
+        }
+        if($message == "Not found") {
+            sendJson(["error" => "Not found"], 404);
+        }
+
+
     }
 }
 
