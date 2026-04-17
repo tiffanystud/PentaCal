@@ -677,6 +677,92 @@ If you send a POST, PATCH or DELETE request, the Content-Type header must be set
 }
 ```
 
+### pinned_calendars
+#### GET
+- Used to: Get all pinned_calendars connections from database
+- Expected request-body: none
+- Possible response statuses: 200
+- Response-body: array of pinned_calendars connections
+- Example response:
+> 200 OK
+```json
+[{
+    "id": "65e10aa11e001",
+    "userId": "65e10aa11a001",
+    "calId": "65e10aa11b002"
+}]
+```
+
+#### POST
+- Used to: Create a new pinned_calendars connection and add it to the database
+- Expected request-body: 
+```js
+{
+    userId: string,
+    calId: string
+}
+```
+- Possible response statuses: 201, 400, 409
+- Response-body: Created connection-object or error-object
+- Example response:
+> 200 OK | Connection created
+```json
+{
+    "id": "65e10aa11e001",
+    "userId": "65e10aa11a001",
+    "calId": "65e10aa11b002"
+}
+```
+
+> 400 Bad Request | Required attributes missing
+```js
+{
+    error: "Missing attributes"
+}
+```
+
+> 409 Conflict | Connection already exists
+```js
+{
+    error: "Calendar already pinned"
+}
+```
+
+#### DELETE
+- Used to: Delete connection from database
+- Expected request-body:
+```js
+{
+    userId: string,
+    calId: string
+}
+```
+- Possible response statuses: 200, 400, 404
+- Response-body: Deleted connection-object or error-object
+- Example response:
+> 200 OK | Successfully deleted
+```json
+{
+    "id": "65e10aa11e001",
+    "userId": "65e10aa11a001",
+    "calId": "65e10aa11b002"
+}
+```
+
+> 400 Bad Request | Required attributes missing
+```js
+{
+    error: "Missing attributes"
+}
+```
+
+> 404 Not Found | No connection was found with provided IDs
+```js
+{
+    error: "Not found"
+}
+```
+
 ### /events
 #### GET
 - Used to: Get all events from database
