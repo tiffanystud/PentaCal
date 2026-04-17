@@ -13,21 +13,21 @@ class PinnedCalendarsController{
 
             if($method == "GET"){
                 $data = PinnedCalendarsService::getAll();
-                sendJson([$data], 200);
+                sendJson($data, 200);
 
             } else if($method == "POST"){
                 if(!isset($input["userId"]) || !isset($input["calId"])) {
                     throw new Exception("Missing attributes");
                 }
                 $data = PinnedCalendarsService::post($input);
-                sendJson([$data],200);
+                sendJson($data,200);
 
             } else if($method == "DELETE"){
                 if(!isset($input["userId"]) || !isset($input["calId"])) {
                     throw new Exception("Missing attributes");
                 } 
                 $data = PinnedCalendarsService::delete($input);
-                sendJson([$data],200);
+                sendJson($data,200);
             }
 
         } catch(Exception $error) {
