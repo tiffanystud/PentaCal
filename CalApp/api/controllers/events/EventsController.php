@@ -11,11 +11,11 @@ class EventsController {
     public static function handle($method, $input) {
         try {
             if($method == "GET") {
-                if(!isset($input["calId"])) {
+                if(isset($input["calId"])) {
                     $data = EventsService::getByParams($input);
                     sendJson([$data],200);
                 }
-                if(!isset($input["eventId"])) {
+                if(isset($input["eventId"])) {
                     $data = EventsService::getByParams($input);
                     sendJson([$data],200);
                 }

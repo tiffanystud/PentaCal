@@ -8,8 +8,22 @@ class EventAdminsController {
 
         try {
             if($method == "GET") {
-                $data = EventAdminsService::getAll($input);
-                sendJson([$data],200);
+                if(isset($input["eventId"]) || isset($input["userId"])) {
+                    $data = EventAdminsService::getByParams($input);
+                    sendJson([$data],200);
+                }
+                if(isset($input["eventId"])) {
+                    $data = EventAdminsService::getByParams($input);
+                    sendJson([$data],200);
+                }
+                if(isset($input["userId"])) {
+                    $data = EventAdminsService::getByParams($input);
+                    sendJson([$data],200);
+                }
+                if(empty($input)) {
+                    $data = EventAdminsService::getAll($input);
+                    sendJson([$data],200);
+                }
 
             } elseif($method == "POST") {
                 if(!isset($input["userId"]) || !isset($input["eventId"]) || !isset($input["canDelete"]) || !isset($input["canEdit"]) || !isset($input["isCreator"])) {
@@ -40,6 +54,11 @@ class EventAdminsController {
     }
     public static function errorHandler($error) {
         $message = $error->getMessage(); 
+
+        //GET PARAMS
+        if($message == "Not found") {
+            sendJson(["error" => "Not found"], 404);
+        }
 
         //POST
         if($message === "Missing attributes") {
