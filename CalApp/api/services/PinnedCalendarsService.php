@@ -4,7 +4,7 @@ require_once __DIR__ . "/../repository/DBAccess.php";
 
 class PinnedCalendarsService {
 
-    public static function pinnedCalendarsGetAll(){
+    public static function getAll() {
         $db = new DBAccess("pinned_calendars");
         $pinnedCalendarTable = $db->getAll();
         
