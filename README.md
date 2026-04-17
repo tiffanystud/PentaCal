@@ -1369,7 +1369,7 @@ If you send a POST, PATCH or DELETE request, the Content-Type header must be set
 > 404 Not Found | Receiver does not exist
 ```json
 {
-    error: "The receiver doesn't exist"
+    error: "The receiver or sender doesn't exist"
 }
 ```
 #### PATCH
