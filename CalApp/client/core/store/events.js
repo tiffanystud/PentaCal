@@ -55,7 +55,7 @@ export const EVENTS = {
             CALENDARSEVENTS: "data:updated:calendarsevents",
             EVENTS: "data:updated:events",
             USERS: "data:updated:users",
-            USERGROUPS: "data:updated:usergroups",
+            USERCALENDARS: "data:updated:usercalendars",
             ISLOGGEDIN: "data:updated:isloggedin",
             MESSAGES: "data:updated:messages",
         },
@@ -70,7 +70,7 @@ export const EVENTS = {
             CALENDARSEVENTS: "data:selected:calendarsevents",
             EVENTS: "data:selected:events",
             USERS: "data:selected:users",
-            USERGROUPS: "data:selected:usergroups",
+            USERCALENDARS: "data:selected:usercalendars",
             ISLOGGEDIN: "data:selected:isloggedin",
             MESSAGES: "data:selected:messages",
             NOTIFICATIONS: "data:selected:notifications",
@@ -161,11 +161,11 @@ export const EVENTS = {
                 PATCH: "request:sent:users:patch",
                 DELETE: "request:sent:users:delete"
             },
-            USERGROUPS: {
-                POST: "request:sent:usergroups:post",
-                GET: "request:sent:usergroups:get",
-                PATCH: "request:sent:usergroups:patch",
-                DELETE: "request:sent:usergroups:delete"
+            USERCALENDARS: {
+                POST: "request:sent:usercalendars:post",
+                GET: "request:sent:usercalendars:get",
+                PATCH: "request:sent:usercalendars:patch",
+                DELETE: "request:sent:usercalendars:delete"
             },
             ISLOGGEDIN: {
                 POST: "request:sent:isloggedin:post",
@@ -198,9 +198,9 @@ export const EVENTS = {
                 POST: "request:received:users:post",
                 GET: "request:received:users:get"
             },
-            USERGROUPS: {
-                POST: "request:received:usergroups:post",
-                GET: "request:received:usergroups:get"
+            USERCALENDARS: {
+                POST: "request:received:usercalendars:post",
+                GET: "request:received:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "request:received:isloggedin:post",
@@ -237,9 +237,9 @@ export const EVENTS = {
                 POST: "request:error:users:post",
                 GET: "request:error:users:get"
             },
-            USERGROUPS: {
-                POST: "request:error:usergroups:post",
-                GET: "request:error:usergroups:get"
+            USERCALENDARS: {
+                POST: "request:error:usercalendars:post",
+                GET: "request:error:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "request:error:isloggedin:post",
@@ -281,9 +281,9 @@ export const EVENTS = {
                 POST: "response:sent:users:post",
                 GET: "response:sent:users:get"
             },
-            USERGROUPS: {
-                POST: "response:sent:usergroups:post",
-                GET: "response:sent:usergroups:get"
+            USERCALENDARS: {
+                POST: "response:sent:usercalendars:post",
+                GET: "response:sent:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "response:sent:isloggedin:post",
@@ -318,9 +318,9 @@ export const EVENTS = {
                 POST: "response:received:users:post",
                 GET: "response:received:users:get"
             },
-            USERGROUPS: {
-                POST: "response:received:usergroups:post",
-                GET: "response:received:usergroups:get"
+            USERCALENDARS: {
+                POST: "response:received:usercalendars:post",
+                GET: "response:received:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "response:received:isloggedin:post",
@@ -357,9 +357,9 @@ export const EVENTS = {
                 POST: "response:error:users:post",
                 GET: "response:error:users:get"
             },
-            USERGROUPS: {
-                POST: "response:error:usergroups:post",
-                GET: "response:error:usergroups:get"
+            USERCALENDARS: {
+                POST: "response:error:usercalendars:post",
+                GET: "response:error:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "response:error:isloggedin:post",
@@ -402,9 +402,9 @@ export const EVENTS = {
                 POST: "resource:received:users:post",
                 GET: "resource:received:users:get"
             },
-            USERGROUPS: {
-                POST: "resource:received:usergroups:post",
-                GET: "resource:received:usergroups:get"
+            USERCALENDARS: {
+                POST: "resource:received:usercalendars:post",
+                GET: "resource:received:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "resource:received:isloggedin:post",
@@ -441,9 +441,9 @@ export const EVENTS = {
                 POST: "resource:error:users:post",
                 GET: "resource:error:users:get"
             },
-            USERGROUPS: {
-                POST: "resource:error:usergroups:post",
-                GET: "resource:error:usergroups:get"
+            USERCALENDARS: {
+                POST: "resource:error:usercalendars:post",
+                GET: "resource:error:usercalendars:get"
             },
             ISLOGGEDIN: {
                 POST: "resource:error:isloggedin:post",
