@@ -764,6 +764,29 @@ If you send a POST, PATCH or DELETE request, the Content-Type header must be set
 }
 ```
 
+### pinned_calendars?userId=id
+#### GET
+- Used to: Get all connections with specific userId
+- Expected request-body: none, but request-param "userId" expected
+- Possible response statuses: 200, 404
+- Response-body: array of connection-objects or error-object
+- Example response:
+> 200 OK | Connections-objects found
+```json
+[{
+    "id": "65e10aa11e001",
+    "userId": "65e10aa11a001",
+    "calId": "65e10aa11b002"
+}]
+```
+
+> 404 Not Found | No connections were found with provided userId
+```js
+{
+    error: "Not Found"
+}
+```
+
 ### /events
 #### GET
 - Used to: Get all events from database
