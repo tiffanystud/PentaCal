@@ -1,4 +1,4 @@
-import { apiRequest } from "./ApiService.js";
+import { apiRequest } from "./APIService.js";
 import { PubSub } from "../store/Pubsub.js";
 import { store } from "../store/Store.js";
 import { EVENTS } from "../store/Events.js";
@@ -268,7 +268,7 @@ export class storeService {
 
         // Selected
         PubSub.subscribe(EVENTS.DATA.SELECTED.CALENDARS, (ids = null) => {
-            // Expects array
+            // Expects array if sevral
 
             const currStateCals = store.getState().cals;
 
@@ -298,6 +298,7 @@ export class storeService {
         store.subscribe(stateKey, (data) => {
             callback(data);
         });
+        
     }
     
 }

@@ -136,6 +136,12 @@ export const EVENTS = {
                 PATCH: "request:sent:calendars:patch",
                 DELETE: "request:sent:calendars:delete"
             },
+            NOTIFICATIONS: {
+                POST: "request:sent:notifications:post",
+                GET: "request:sent:notifications:get",
+                PATCH: "request:sent:notifications:patch",
+                DELETE: "request:sent:notifications:delete"
+            },
             CALENDARSEVENTS: {
                 POST: "request:sent:calendarsevents:post",
                 GET: "request:sent:calendarsevents:get",
@@ -202,7 +208,13 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "request:received:messages:post",
                 GET: "request:received:messages:get"
-            }
+            },
+            NOTIFICATIONS: {
+                POST: "request:received:notifications:post",
+                GET: "request:received:notifications:get",
+                PATCH: "request:received:notifications:patch",
+                DELETE: "request:received:notifications:delete"
+            },
         },
 
         ERROR: {
@@ -235,6 +247,12 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "request:error:messages:post",
                 GET: "request:error:messages:get"
+            },
+            NOTIFICATIONS: {
+                POST: "request:error:notifications:post",
+                GET: "request:error:notifications:get",
+                PATCH: "request:error:notifications:patch",
+                DELETE: "request:error:notifications:delete",
             }
         }
 
@@ -273,6 +291,12 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "response:sent:messages:post",
                 GET: "response:sent:messages:get"
+            },
+            NOTIFICATIONS: {
+                POST: "response:sent:notifications:post",
+                GET: "response:sent:notifications:get",
+                PATCH: "response:sent:notifications:patch",
+                DELETE: "response:sent:notifications:delete"
             }
         },
 
@@ -304,7 +328,13 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "response:received:messages:post",
                 GET: "response:received:messages:get"
-            }
+            },
+            NOTIFICATIONS: {
+                POST: "response:received:notifications:post",
+                GET: "response:received:notifications:get",
+                PATCH: "response:received:notifications:patch",
+                DELETE: "response:received:notifications:delete",
+            },
         },
 
         ERROR: {
@@ -337,7 +367,14 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "response:error:messages:post",
                 GET: "response:error:messages:get"
-            }
+            },
+            NOTIFICATIONS: {
+                POST: "response:error:notifications:post",
+                GET: "response:error:notifications:get",
+                PATCH: "response:error:notifications:patch",
+                DELETE: "response:error:notifications:delete",
+            },
+
         }
 
     },
@@ -375,7 +412,13 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "resource:received:messages:post",
                 GET: "resource:received:messages:get"
-            }
+            },
+            NOTIFICATIONS: {
+                POST: "resource:received:notifications:post",
+                GET: "resource:received:notifications:get",
+                PATCH: "resource:received:notifications:patch",
+                DELETE: "resource:received:notifications:delete"
+            },
         },
 
         ERROR: {
@@ -408,7 +451,13 @@ export const EVENTS = {
             MESSAGES: {
                 POST: "resource:error:messages:post",
                 GET: "resource:error:messages:get"
-            }
+            },
+            NOTIFICATIONS: {
+                POST: "resource:error:notifications:post",
+                GET: "resource:error:notifications:get",
+                PATCH: "resource:error:notifications:patch",
+                DELETE: "resource:error:notifications:delete"
+            },
         }
 
     }
